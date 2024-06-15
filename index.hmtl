@@ -3,14 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Website</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Perspectiv</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+        .header {
+            background-color: #f5f5f5;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .header nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+        .featured-article {
+            position: relative;
+            margin: 2rem 0;
+        }
+        .featured-article img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+        .featured-article .info {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 0;
+        }
+        .article-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .article-card:hover {
+            transform: scale(1.02);
+        }
+        .article-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .article-card .content {
+            padding: 1rem;
+        }
+        .article-card .content h3 {
+            margin: 0.5rem 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .article-card .content p {
+            color: #555;
+            font-size: 0.9rem;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .search-bar input {
+            width: 50%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>News Articles</h1>
-    <div id="articles">
-        <!-- Articles will be injected here by JavaScript -->
-    </div>
-    <script src="script.js"></script>
+    <header class="header">
+        <div class="logo">Perspectiv</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    <section class="featured-article">
+        <img src="https://source.unsplash.com/random/1200x600?nature" alt="Featured Article">
+        <div class="info">
+            <h2>Featured Article Title</h2>
+            <p>Short description of the featured article.</p>
+        </div>
+    </section>
+    <section class="search-bar">
+        <input type="text" placeholder="Search articles...">
+    </section>
+    <section class="article-grid">
+        <article class="article-card">
+            <img src="https://source.unsplash.com/random/300x200?news" alt="Article Image">
+            <div class="content">
+                <h3>Article Title 1</h3>
+                <p>Short description of the article.</p>
+            </div>
+        </article>
+        <article class="article-card">
+            <img src="https://source.unsplash.com/random/300x200?world" alt="Article Image">
+            <div class="content">
+                <h3>Article Title 2</h3>
+                <p>Short description of the article.</p>
+            </div>
+        </article>
+        <article class="article-card">
+            <img src="https://source.unsplash.com/random/300x200?technology" alt="Article Image">
+            <div class="content">
+                <h3>Article Title 3</h3>
+                <p>Short description of the article.</p>
+            </div>
+        </article>
+        <article class="article-card">
+            <img src="https://source.unsplash.com/random/300x200?health" alt="Article Image">
+            <div class="content">
+                <h3>Article Title 4</h3>
+                <p>Short description of the article.</p>
+            </div>
+        </article>
+        <article class="article-card">
+            <img src="https://source.unsplash.com/random/300x200?lifestyle" alt="Article Image">
+            <div class="content">
+                <h3>Article Title 5</h3>
+                <p>Short description of the article.</p>
+            </div>
+        </article>
+        <article class="article-card">
+            <img src="https://source.unsplash.com/random/300x200?sports" alt="Article Image">
+            <div class="content">
+                <h3>Article Title 6</h3>
+                <p>Short description of the article.</p>
+            </div>
+        </article>
+    </section>
 </body>
 </html>
