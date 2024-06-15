@@ -1,56 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article 3 - Flow Media</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-    </style>
+    <title>Article 3</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
-<body class="bg-gray-100">
-    <header class="bg-white shadow-md">
-        <div class="container mx-auto flex justify-between items-center p-5">
-            <div class="text-lg font-bold">Flow Media</div>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="index.html" class="hover:text-gray-700">Home</a></li>
-                    <li><a href="index.html#articles" class="hover:text-gray-700">Articles</a></li>
-                    <li><a href="#" class="hover:text-gray-700">About us</a></li>
-                    <li><a href="#" class="hover:text-gray-700">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="flex space-x-4">
-                <a href="#" class="text-gray-600"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="text-gray-600"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-600"><i class="fab fa-instagram\"></i></a>
-            </div>
-        </div>
-    </header>
-
-    <section class="container mx-auto py-16">
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
-            <img src="https://source.unsplash.com/random/800x400?health" alt="Article Image">
-            <div class="p-5">
-                <h1 class="text-4xl font-bold mb-4">Le Titre de l'Article 3</h1>
-                <p class="text-gray-700 mb-4">Voici un résumé de l'article 3. Cet article aborde les dernières nouvelles et conseils en matière de santé et de bien-être.</p>
-                <p class="text-gray-700">Le contenu détaillé de l'article serait ici. Vous pouvez ajouter autant de texte que nécessaire pour donner à vos lecteurs toutes les informations qu'ils recherchent.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2024 Flow Media. All rights reserved.</p>
-        </div>
-    </footer>
+<body>
+    <h1 id="title">Loading...</h1>
+    <div id="content">Loading...</div>
+    <script src="script.js"></script>
+    <script>
+        loadArticle(2); // Load the third article
+    </script>
 </body>
-
 </html>
