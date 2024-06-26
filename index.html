@@ -258,17 +258,8 @@ label {
         <div class="main-article">
             <section class="mb-10">
                 <h1 class="text-4xl font-bold mb-6 text-center">Actu du jour</h1>
-                <div class="bg-gray-700 rounded-lg overflow-hidden article-card mx-auto">
-                    <img src="https://images.unsplash.com/photo-1611599535365-6b0b3ddc43f6?fit=crop&w=600&h=400&q=80" alt="Image de l'actu du jour" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h2 class="text-3xl font-bold mb-2">Titre de l'actu du jour</h2>
-                        <p class="text-gray-300 mb-4">Résumé de l'actu du jour...</p>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 10%;">G: 10%</div>
-                            <div class="bias-segment white" style="width: 70%;">C: 70%</div>
-                            <div class="bias-segment blue" style="width: 20%;">D: 20%</div>
-                        </div>
-                    </div>
+                <div class="bg-gray-700 rounded-lg overflow-hidden article-card mx-auto" id="main-news">
+                    <!-- Contenu dynamique ici -->
                 </div>
             </section>
 
@@ -307,79 +298,8 @@ label {
 
         <!-- Mini Articles Section -->
         <div class="side-articles">
-            <div class="mini-articles-container">
-                <!-- Mini Article 1 -->
-                <div class="mini-article-card">
-                    <img src="https://images.unsplash.com/photo-1589712125069-2d04a8c19cfc?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                    <div class="mini-article-content">
-                        <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 1</h2>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 15%;"></div>
-                            <div class="bias-segment white" style="width: 50%;"></div>
-                            <div class="bias-segment blue" style="width: 35%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mini Article 2 -->
-                <div class="mini-article-card">
-                    <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                    <div class="mini-article-content">
-                        <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 2</h2>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 25%;"></div>
-                            <div class="bias-segment white" style="width: 25%;"></div>
-                            <div class="bias-segment blue" style="width: 50%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mini Article 3 -->
-                <div class="mini-article-card">
-                    <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                    <div class="mini-article-content">
-                        <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 3</h2>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 10%;"></div>
-                            <div class="bias-segment white" style="width: 60%;"></div>
-                            <div class="bias-segment blue" style="width: 30%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mini Article 4 -->
-                <div class="mini-article-card">
-                    <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                    <div class="mini-article-content">
-                        <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 4</h2>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 15%;"></div>
-                            <div class="bias-segment white" style="width: 50%;"></div>
-                            <div class="bias-segment blue" style="width: 35%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mini Article 5 -->
-                <div class="mini-article-card">
-                    <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                    <div class="mini-article-content">
-                        <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 5</h2>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 25%;"></div>
-                            <div class="bias-segment white" style="width: 25%;"></div>
-                            <div class="bias-segment blue" style="width: 50%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mini Article 6 -->
-                <div class="mini-article-card">
-                    <img src="https://images.unsplash.com/photo-1589712125069-2d04a8c19cfc?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                    <div class="mini-article-content">
-                        <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 6</h2>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 10%;"></div>
-                            <div class="bias-segment white" style="width: 60%;"></div>
-                            <div class="bias-segment blue" style="width: 30%;"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="mini-articles-container" id="mini-articles">
+                <!-- Contenu dynamique ici -->
             </div>
 
             <!-- Countdown Section -->
@@ -400,63 +320,72 @@ label {
     <!-- Derniers Articles -->
     <section class="latest-articles mt-10">
         <h1 class="text-4xl font-bold mb-10 text-center">Derniers Articles</h1>
-        <div class="latest-article">
-            <div class="latest-article-content">
-                <h2 class="latest-article-title">Albanian appeals court upholds prison term for Greek minority mayor, raising tensions with Athens</h2>
-                <div class="latest-article-bias">
-                    <div class="bias-bar">
-                        <div class="bias-segment red" style="width: 10%;"></div>
-                        <div class="bias-segment white" style="width: 45%;"></div>
-                        <div class="bias-segment blue" style="width: 45%;"></div>
-                    </div>
-                </div>
-            </div>
-            <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-        </div>
-        <div class="latest-article">
-            <div class="latest-article-content">
-                <h2 class="latest-article-title">A botulism outbreak in Russia leaves 1 dead, scores more hospitalized after eating readymade salads</h2>
-                <div class="latest-article-bias">
-                    <div class="bias-bar">
-                        <div class="bias-segment red" style="width: 15%;"></div>
-                        <div class="bias-segment white" style="width: 35%;"></div>
-                        <div class="bias-segment blue" style="width: 50%;"></div>
-                    </div>
-                </div>
-            </div>
-            <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-        </div>
-        <div class="latest-article">
-            <div class="latest-article-content">
-                <h2 class="latest-article-title">India’s Prime Minister Modi will visit Russia, the Kremlin says</h2>
-                <div class="latest-article-bias">
-                    <div class="bias-bar">
-                        <div class="bias-segment red" style="width: 20%;"></div>
-                        <div class="bias-segment white" style="width: 30%;"></div>
-                        <div class="bias-segment blue" style="width: 50%;"></div>
-                    </div>
-                </div>
-            </div>
-            <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-        </div>
-        <div class="latest-article">
-            <div class="latest-article-content">
-                <h2 class="latest-article-title">Kenya protesters 'shot dead' and fires started in parliament after controversial tax bill passes</h2>
-                <div class="latest-article-bias">
-                    <div class="bias-bar">
-                        <div class="bias-segment red" style="width: 25%;"></div>
-                        <div class="bias-segment white" style="width: 25%;"></div>
-                        <div class="bias-segment blue" style="width: 50%;"></div>
-                    </div>
-                </div>
-            </div>
-            <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
+        <div id="latest-articles">
+            <!-- Contenu dynamique ici -->
         </div>
     </section>
 </main>
 
 <script>
     $(document).ready(function() {
+        function fetchNews() {
+            $.ajax({
+                url: 'http://localhost:3000/news',  // Assurez-vous que le port et l'URL correspondent à votre serveur proxy
+                method: 'GET',
+                success: function(data) {
+                    console.log(data);  // Vérifiez les données reçues de l'API
+                    displayMainNews(data.articles[0]);
+                    displayMiniArticles(data.articles.slice(1, 5));
+                    displayLatestArticles(data.articles.slice(5, 9));
+                },
+                error: function(error) {
+                    console.log('Error fetching news:', error);
+                }
+            });
+        }
+
+        function displayMainNews(article) {
+            $('#main-news').html(`
+                <img src="${article.urlToImage}" alt="Image de l'actu du jour" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-2">${article.title}</h2>
+                    <p class="text-gray-300 mb-4">${article.description}</p>
+                </div>
+            `);
+        }
+
+        function displayMiniArticles(articles) {
+            var miniArticlesHtml = '';
+            articles.forEach(function(article) {
+                miniArticlesHtml += `
+                    <div class="mini-article-card">
+                        <img src="${article.urlToImage}" alt="Image de l'article">
+                        <div class="mini-article-content">
+                            <h2 class="text-sm font-bold mb-2">${article.title}</h2>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#mini-articles').html(miniArticlesHtml);
+        }
+
+        function displayLatestArticles(articles) {
+            var latestArticlesHtml = '';
+            articles.forEach(function(article) {
+                latestArticlesHtml += `
+                    <div class="latest-article">
+                        <div class="latest-article-content">
+                            <h2 class="latest-article-title">${article.title}</h2>
+                        </div>
+                        <img src="${article.urlToImage}" alt="Image de l'article">
+                    </div>
+                `;
+            });
+            $('#latest-articles').html(latestArticlesHtml);
+        }
+
+        fetchNews();
+
         var tl = gsap.timeline();
 
         $('.icon-wrap').click(function() {
@@ -512,6 +441,9 @@ label {
     countdown("July 26, 2024 00:00:00", "paris-olympics-countdown");
     countdown("June 30, 2024 00:00:00", "election-countdown");
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
