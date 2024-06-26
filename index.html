@@ -1,402 +1,420 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perspectiv</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perspectiv</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var apiKey = '0dd205a802df427cb42c317f6931c67d'; // Remplacez par votre clé API NewsAPI
+    var url = `https://newsapi.org/v2/top-headlines?country=fr&apiKey=${apiKey}`;
+
+    $.get(url, function(data) {
+      var articles = data.articles;
+      if (articles.length > 0) {
+        var mainArticle = articles[0];
+        $('#main-article-title').text(mainArticle.title);
+        $('#main-article-image').attr('src', mainArticle.urlToImage);
+        $('#main-article-summary').text(mainArticle.description);
+
+        var miniArticlesHtml = '';
+        for (var i = 1; i < Math.min(7, articles.length); i++) {
+          var miniArticle = articles[i];
+          miniArticlesHtml += `
+            <div class="mini-article-card">
+              <img src="${miniArticle.urlToImage}" alt="Image de l'article">
+              <div class="mini-article-content">
+                <h2 class="text-sm font-bold mb-2">${miniArticle.title}</h2>
+                <div class="bias-bar">
+                  <div class="bias-segment red" style="width: 10%;"></div>
+                  <div class="bias-segment white" style="width: 60%;"></div>
+                  <div class="bias-segment blue" style="width: 30%;"></div>
+                </div>
+              </div>
+            </div>
+          `;
         }
-        .bar-text {
-            font-size: 0.75rem;
-            padding-left: 4px;
-            padding-right: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        $('#mini-articles-container').html(miniArticlesHtml);
+      }
+    });
+
+    var tl = gsap.timeline();
+
+    $('.icon-wrap').click(function() {
+      if ($(this).hasClass('open')) {
+        $(this).removeClass('open');
+        tl.to('.icon-wrap', {duration: 0.3, css: {width: '70px', boxShadow: '0px 6px 6px rgba(255, 255, 255, .28)'}})
+          .to('.icon-wrap', {duration: 0.3, css: {borderRadius: "50%"}}, '-=0.2');
+        gsap.to('svg', {duration: 0.3, fill: '#f4f4f4', rotation: 0});
+        gsap.to('input, label', {duration: 0.3, width: 0});
+      } else {
+        $(this).addClass('open');
+        tl.to('.icon-wrap', {duration: 0.7, css: {borderRadius: "20px", width: '400px', boxShadow: 'rgba(255, 255, 255, 0.28) -3px 16px 52px 0px'}, ease: "elastic.out(1, 0.7)"});
+        gsap.to('svg', {duration: 0.3, fill: '#8c8c8c', rotation: '90deg'});
+        gsap.to('input', {duration: 0.3, width: '81%'});
+        gsap.to('label', {duration: 0.3, width: '78%'});
+      }
+    });
+
+    $('input').focus(function() {
+      $('.label-wrap').animate({opacity: 0}, 100);
+    });
+    $('input').blur(function() {
+      if (!$(this).val()) {
+        $('.label-wrap').animate({opacity: 1}, 1200);
+      } else {
+        $('.label-wrap').animate({opacity: 0}, 100);
+      }
+    });
+
+    // Countdown Timer Script
+    function countdown(targetDate, elementId) {
+      const countDownDate = new Date(targetDate).getTime();
+
+      const countdownFunction = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById(elementId).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (distance < 0) {
+          clearInterval(countdownFunction);
+          document.getElementById(elementId).innerHTML = "EXPIRED";
         }
-        .article-card, .mini-article-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid white;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-        .article-card:hover, .mini-article-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-        .icon {
-            display: inline-block;
-            width: 2em;
-            height: 2em;
-            font-size: 15px;
-        }
-        .form-control {
-            width: 0;
-            position: absolute;
-            top: 50%;
-            overflow: hidden;
-            margin: 0;
-            transform: translateY(-50%);
-            height: 38px;
-            right: 18px;
-            border: none;
-            box-shadow: none;
-            font-size: 22px;
-            color: #f4f4f4;
-            letter-spacing: 1px;
-            background-color: #1f2937;
-        }
-        .form-control:focus {
-            outline: none;
-            border: none;
-            border-color: transparent;
-            box-shadow: none;
-        }
-        .icon-wrap {
-            border-radius: 50%;
-            box-shadow: 0px 6px 6px rgba(255, 255, 255, .28);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 70px;
-            height: 70px;
-            cursor: pointer;
-            background-color: #1f2937;
-            margin-top: 2rem;
-        }
-        svg {
-            position: absolute;
-            left: 20px;
-        }
-        .form-group {
-            margin: 0;
-            position: relative;
-        }
-        .label-wrap {
-            overflow: hidden;
-            position: absolute;
-            transform: translateY(-50%);
-            top: 50%;
-            width: 100%;
-            height: 36px;
-            z-index: 4;
-            pointer-events: none;
-        }
-        label {
-            position: absolute!important;
-            transform: translateY(-50%);
-            top: 50%;
-            right: 18px;
-            z-index: 10;
-            font-size: 22px;
-            margin: 0;
-            width: 0;
-            overflow: hidden;
-            pointer-events: none;
-            white-space: nowrap;
-            letter-spacing: 1px;
-            color: #f4f4f4;
-        }
-        .mini-articles-container {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .mini-article-card {
-            background: #1f2937;
-            padding: 0.5rem;
-            border-radius: 12px;
-            border: 2px solid white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            width: 150px; /* Reduce the width of mini article cards */
-        }
-        .mini-article-card img {
-            width: 100%;
-            height: 60px; /* Reduce the height of images */
-            border-radius: 8px;
-            object-fit: cover;
-            margin-bottom: 0.5rem;
-        }
-        .mini-article-content {
-            flex: 1;
-        }
-        .main-content {
-            display: flex;
-            gap: 2rem;
-            justify-content: center; /* Center the main content */
-        }
-        .main-article {
-            flex: 2;
-            min-width: 300px;
-        }
-        .side-articles {
-            flex: 0 0 auto;
-            margin-left: auto; /* Align side articles to the right */
-        }
-        .separator {
-            height: 100%;
-            width: 4px;
-            background-color: white;
-            border-radius: 12px;
-        }
-        .bias-bar {
-            display: flex;
-            height: 16px;
-            width: 100%;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-        .bias-segment {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.75rem;
-        }
-        .bias-segment.red { background-color: red; }
-        .bias-segment.white { background-color: white; color: black; }
-        .bias-segment.blue { background-color: blue; }
-    </style>
+      }, 1000);
+    }
+
+    countdown("July 26, 2024 00:00:00", "paris-olympics-countdown");
+    countdown("June 30, 2024 00:00:00", "election-countdown");
+  });
+</script>
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+}
+.bar-text {
+    font-size: 0.75rem;
+    padding-left: 4px;
+    padding-right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.article-card, .mini-article-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+.article-card:hover, .mini-article-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+.icon {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    font-size: 15px;
+}
+.form-control {
+    width: 0;
+    position: absolute;
+    top: 50%;
+    overflow: hidden;
+    margin: 0;
+    transform: translateY(-50%);
+    height: 38px;
+    right: 18px;
+    border: none;
+    box-shadow: none;
+    font-size: 22px;
+    color: #f4f4f4;
+    letter-spacing: 1px;
+    background-color: #1f2937;
+}
+.form-control:focus {
+    outline: none;
+    border: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+.icon-wrap {
+    border-radius: 50%;
+    box-shadow: 0px 6px 6px rgba(255, 255, 255, .28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    background-color: #1f2937;
+    margin-top: 2rem;
+}
+svg {
+    position: absolute;
+    left: 20px;
+}
+.form-group {
+    margin: 0;
+    position: relative;
+}
+.label-wrap {
+    overflow: hidden;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    width: 100%;
+    height: 36px;
+    z-index: 4;
+    pointer-events: none;
+}
+label {
+    position: absolute!important;
+    transform: translateY(-50%);
+    top: 50%;
+    right: 18px;
+    z-index: 10;
+    font-size: 22px;
+    margin: 0;
+    width: 0;
+    overflow: hidden;
+    pointer-events: none;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    color: #f4f4f4;
+}
+.mini-articles-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.mini-article-card {
+    background: #1f2937;
+    padding: 0.5rem;
+    border-radius: 12px;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Adjust to fit the grid */
+}
+.mini-article-card img {
+    width: 100%;
+    height: 60px; /* Reduce the height of images */
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+}
+.mini-article-content {
+    flex: 1;
+}
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 2rem;
+}
+.main-article {
+    min-width: 300px;
+}
+.side-articles {
+    min-width: 200px;
+}
+.separator {
+    height: auto;
+    width: 4px;
+    background-color: white;
+    border-radius: 12px;
+    margin: 0 1rem; /* Add margins to create space around the separator */
+}
+.bias-bar {
+    display: flex;
+    height: 16px; /* Adjusted height for bias bar */
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+.bias-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+}
+.bias-segment.red { background-color: #FF6B6B; } /* Soft red */
+.bias-segment.white { background-color: #F7F7F7; color: black; } /* Soft white */
+.bias-segment.blue { background-color: #4A90E2; } /* Soft blue */
+.latest-articles {
+    margin-top: 2rem;
+}
+.latest-article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #333;
+    padding: 1rem 0;
+}
+.latest-article img {
+    width: 100px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-left: 1rem;
+}
+.latest-article-content {
+    flex: 1;
+}
+.latest-article-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #f4f4f4;
+}
+.latest-article-summary {
+    font-size: 1rem;
+    color: #d1d5db;
+}
+.latest-article-bias {
+    margin-top: 0.5rem;
+}
+.countdown-container {
+    margin-top: 2rem;
+    background-color: #1f2937;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid white;
+}
+.countdown-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #f4f4f4;
+    margin-bottom: 1rem;
+}
+.countdown {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #333;
+}
+.countdown:last-child {
+    border-bottom: none;
+}
+.countdown-event {
+    font-size: 1rem;
+    color: #d1d5db;
+}
+.countdown-time {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f4f4f4;
+}
+</style>
 </head>
 <body class="bg-gray-900 text-white">
 
-    <!-- Navigation -->
-    <nav class="bg-gray-800 shadow mb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-center h-16">
-                <div class="flex items-center space-x-6">
-                    <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">À propos</a>
-                    <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Profil</a>
-                    <span class="text-3xl font-bold mx-6">Perspectiv</span>
-                    <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Contact</a>
-                    <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Articles</a>
-                </div>
+<!-- Navigation -->
+<nav class="bg-gray-800 shadow mb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-center h-16">
+            <div class="flex items-center space-x-6">
+                <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">À propos</a>
+                <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Profil</a>
+                <span class="text-3xl font-bold mx-6">Perspectiv</span>
+                <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Contact</a>
+                <a href="#" class="border-transparent text-gray-300 hover:border-gray-700 hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Articles</a>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="main-content">
-            <!-- Actu du jour -->
-            <div class="main-article">
-                <section class="mb-10">
-                    <h1 class="text-4xl font-bold mb-6 text-center">Actu du jour</h1>
-                    <div class="bg-gray-700 rounded-lg overflow-hidden article-card mx-auto">
-                        <img src="https://images.unsplash.com/photo-1611599535365-6b0b3ddc43f6?fit=crop&w=600&h=400&q=80" alt="Image de l'actu du jour" class="w-full h-64 object-cover">
-                        <div class="p-6">
-                            <h2 class="text-3xl font-bold mb-2">Titre de l'actu du jour</h2>
-                            <p class="text-gray-300 mb-4">Résumé de l'actu du jour...</p>
-                            <div class="bias-bar">
-                                <div class="bias-segment red" style="width: 10%;">G: 10%</div>
-                                <div class="bias-segment white" style="width: 70%;">C: 70%</div>
-                                <div class="bias-segment blue" style="width: 20%;">D: 20%</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Mini Articles Section -->
-            <div class="side-articles">
-                <div class="mini-articles-container">
-                    <!-- Mini Article 1 -->
-                    <div class="mini-article-card">
-                        <img src="https://images.unsplash.com/photo-1589712125069-2d04a8c19cfc?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                        <div class="mini-article-content">
-                            <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 1</h2> <!-- Smaller font size -->
-                            <div class="bias-bar">
-                                <div class="bias-segment red" style="width: 15%;"></div>
-                                <div class="bias-segment white" style="width: 50%;"></div>
-                                <div class="bias-segment blue" style="width: 35%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mini Article 2 -->
-                    <div class="mini-article-card">
-                        <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                        <div class="mini-article-content">
-                            <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 2</h2> <!-- Smaller font size -->
-                            <div class="bias-bar">
-                                <div class="bias-segment red" style="width: 25%;"></div>
-                                <div class="bias-segment white" style="width: 25%;"></div>
-                                <div class="bias-segment blue" style="width: 50%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mini Article 3 -->
-                    <div class="mini-article-card">
-                        <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                        <div class="mini-article-content">
-                            <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 3</h2> <!-- Smaller font size -->
-                            <div class="bias-bar">
-                                <div class="bias-segment red" style="width: 10%;"></div>
-                                <div class="bias-segment white" style="width: 60%;"></div>
-                                <div class="bias-segment blue" style="width: 30%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mini Article 4 -->
-                    <div class="mini-article-card">
-                        <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                        <div class="mini-article-content">
-                            <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 4</h2> <!-- Smaller font size -->
-                            <div class="bias-bar">
-                                <div class="bias-segment red" style="width: 15%;"></div>
-                                <div class="bias-segment white" style="width: 50%;"></div>
-                                <div class="bias-segment blue" style="width: 35%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mini Article 5 -->
-                    <div class="mini-article-card">
-                        <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                        <div class="mini-article-content">
-                            <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 5</h2> <!-- Smaller font size -->
-                            <div class="bias-bar">
-                                <div class="bias-segment red" style="width: 25%;"></div>
-                                <div class="bias-segment white" style="width: 25%;"></div>
-                                <div class="bias-segment blue" style="width: 50%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mini Article 6 -->
-                    <div class="mini-article-card">
-                        <img src="https://images.unsplash.com/photo-1589712125069-2d04a8c19cfc?fit=crop&w=600&h=400&q=80" alt="Image de l'article">
-                        <div class="mini-article-content">
-                            <h2 class="text-sm font-bold mb-2">Mini Titre de l'article 6</h2> <!-- Smaller font size -->
-                            <div class="bias-bar">
-                                <div class="bias-segment red" style="width: 10%;"></div>
-                                <div class="bias-segment white" style="width: 60%;"></div>
-                                <div class="bias-segment blue" style="width: 30%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Search Form -->
-        <section class="mt-10">
-            <div class="flex justify-center">
-                <form action="" method="POST" role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control">
-                        <div class="label-wrap"><label>Search for something...</label></div>
-                        <div class="icon-wrap">
-                            <svg class="icon" height='200' width='200' fill="#f4f4f4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
-                                <title>Search</title>
-                                <desc>Created with Sketch.</desc>
-                                <g>
-                                    <g transform="translate(-29.000000, -764.000000)">
-                                        <g transform="translate(20.000000, 375.000000)">
-                                            <g transform="translate(0.000000, 381.000000)">
-                                                <g transform="translate(9.000000, 8.000000)">
-                                                    <path d="M41.7,3.3C20.6,3.3,3.4,20,3.4,40.7s17.1,37.4,38.3,37.4c5.9,0,11.5-1.3,16.5-3.7c2.5-1.2,5.5-0.6,7.5,1.3l19.4,19c2.6,2.5,6.7,2.5,9.3,0l0,0c2.7-2.6,2.7-6.9,0-9.6L76.1,67.3c-2.2-2.1-2.7-5.5-1.1-8.1c3.2-5.4,5-11.7,5-18.4C80,20,62.9,3.3,41.7,3.3L41.7,3.3z M41.7,12.1C57.9,12.1,71,24.9,71,40.7S57.9,69.4,41.7,69.4S12.5,56.6,12.5,40.7S25.5,12.1,41.7,12.1L41.7,12.1z"></path>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- Derniers Articles -->
-        <section class="mt-10">
-            <h1 class="text-4xl font-bold mb-10 text-center">Derniers Articles</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Article 1 -->
-                <div class="bg-gray-700 rounded-lg overflow-hidden article-card">
-                    <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?fit=crop&w=600&h=400&q=80" alt="Image de l'article 1" class="w-full h-48 object-cover">
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="main-content">
+        <!-- Actu du jour -->
+        <div class="main-article">
+            <section class="mb-10">
+                <h1 class="text-4xl font-bold mb-6 text-center">Actu du jour</h1>
+                <div class="bg-gray-700 rounded-lg overflow-hidden article-card mx-auto">
+                    <img id="main-article-image" src="https://images.unsplash.com/photo-1611599535365-6b0b3ddc43f6?fit=crop&w=600&h=400&q=80" alt="Image de l'actu du jour" class="w-full h-64 object-cover">
                     <div class="p-6">
-                        <h2 class="text-2xl font-bold mb-2">Titre de l'article 1</h2>
-                        <p class="text-gray-300 mb-4">Résumé de l'article 1...</p>
+                        <h2 id="main-article-title" class="text-3xl font-bold mb-2">Titre de l'actu du jour</h2>
+                        <p id="main-article-summary" class="text-gray-300 mb-4">Résumé de l'actu du jour...</p>
                         <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 5%;">G: 5%</div>
-                            <div class="bias-segment white" style="width: 80%;">C: 80%</div>
-                            <div class="bias-segment blue" style="width: 15%;">D: 15%</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Article 2 -->
-                <div class="bg-gray-700 rounded-lg overflow-hidden article-card">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?fit=crop&w=600&h=400&q=80" alt="Image de l'article 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h2 class="text-2xl font-bold mb-2">Titre de l'article 2</h2>
-                        <p class="text-gray-300 mb-4">Résumé de l'article 2...</p>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 20%;">G: 20%</div>
-                            <div class="bias-segment white" style="width: 60%;">C: 60%</div>
+                            <div class="bias-segment red" style="width: 10%;">G: 10%</div>
+                            <div class="bias-segment white" style="width: 70%;">C: 70%</div>
                             <div class="bias-segment blue" style="width: 20%;">D: 20%</div>
                         </div>
                     </div>
                 </div>
-                <!-- Article 3 -->
-                <div class="bg-gray-700 rounded-lg overflow-hidden article-card">
-                    <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?fit=crop&w=600&h=400&q=80" alt="Image de l'article 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h2 class="text-2xl font-bold mb-2">Titre de l'article 3</h2>
-                        <p class="text-gray-300 mb-4">Résumé de l'article 3...</p>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 10%;">G: 10%</div>
-                            <div class="bias-segment white" style="width: 50%;">C: 50%</div>
-                            <div class="bias-segment blue" style="width: 40%;">D: 40%</div>
+            </section>
+
+            <!-- Search Form -->
+            <section class="mt-6">
+                <div class="flex justify-center">
+                    <form action="" method="POST" role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control">
+                            <div class="label-wrap"><label>Search for something...</label></div>
+                            <div class="icon-wrap">
+                                <svg class="icon" height='200' width='200' fill="#f4f4f4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+                                    <title>Search</title>
+                                    <desc>Created with Sketch.</desc>
+                                    <g>
+                                        <g transform="translate(-29.000000, -764.000000)">
+                                            <g transform="translate(20.000000, 375.000000)">
+                                                <g transform="translate(0.000000, 381.000000)">
+                                                    <g transform="translate(9.000000, 8.000000)">
+                                                        <path d="M41.7,3.3C20.6,3.3,3.4,20,3.4,40.7s17.1,37.4,38.3,37.4c5.9,0,11.5-1.3,16.5-3.7c2.5-1.2,5.5-0.6,7.5,1.3l19.4,19c2.6,2.5,6.7,2.5,9.3,0l0,0c2.7-2.6,2.7-6.9,0-9.6L76.1,67.3c-2.2-2.1-2.7-5.5-1.1-8.1c3.2-5.4,5-11.7,5-18.4C80,20,62.9,3.3,41.7,3.3L41.7,3.3z M41.7,12.1C57.9,12.1,71,24.9,71,40.7S57.9,69.4,41.7,69.4S12.5,56.6,12.5,40.7S25.5,12.1,41.7,12.1L41.7,12.1z"></path>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <!-- Ajoutez d'autres articles si nécessaire -->
+            </section>
+        </div>
+
+        <!-- Separator -->
+        <div class="separator"></div>
+
+        <!-- Mini Articles Section -->
+        <div class="side-articles">
+            <div id="mini-articles-container" class="mini-articles-container">
+                <!-- Les mini-articles seront chargés ici par jQuery -->
             </div>
-        </section>
-    </main>
 
-    <script>
-        $(document).ready(function() {
-            var tl = gsap.timeline();
+            <!-- Countdown Section -->
+            <div class="countdown-container">
+                <h2 class="countdown-title">Compte à rebours</h2>
+                <div class="countdown">
+                    <div class="countdown-event">JO de Paris</div>
+                    <div class="countdown-time" id="paris-olympics-countdown">00:00:00</div>
+                </div>
+                <div class="countdown">
+                    <div class="countdown-event">Élection législative</div>
+                    <div class="countdown-time" id="election-countdown">00:00:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-            $('.icon-wrap').click(function() {
-                if ($(this).hasClass('open')) {
-                    $(this).removeClass('open');
-                    tl.to('.icon-wrap', {duration: 0.3, css: {width: '70px', boxShadow: '0px 6px 6px rgba(255, 255, 255, .28)'}})
-                      .to('.icon-wrap', {duration: 0.3, css: {borderRadius: "50%"}}, '-=0.2');
-                    gsap.to('svg', {duration: 0.3, fill: '#f4f4f4', rotation: 0});
-                    gsap.to('input, label', {duration: 0.3, width: 0});
-                } else {
-                    $(this).addClass('open');
-                    tl.to('.icon-wrap', {duration: 0.7, css: {borderRadius: "20px", width: '400px', boxShadow: 'rgba(255, 255, 255, 0.28) -3px 16px 52px 0px'}, ease: "elastic.out(1, 0.7)"});
-                    gsap.to('svg', {duration: 0.3, fill: '#8c8c8c', rotation: '90deg'});
-                    gsap.to('input', {duration: 0.3, width: '81%'});
-                    gsap.to('label', {duration: 0.3, width: '78%'});
-                }
-            });
-
-            $('input').focus(function() {
-                $('.label-wrap').animate({opacity: 0}, 100);
-            });
-            $('input').blur(function() {
-                if (!$(this).val()) {
-                    $('.label-wrap').animate({opacity: 1}, 1200);
-                } else {
-                    $('.label-wrap').animate({opacity: 0}, 100);
-                }
-            });
-        });
-    </script>
 </body>
 </html>
