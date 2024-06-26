@@ -336,6 +336,7 @@ label {
                 url: `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${apiKey}`,
                 method: 'GET',
                 success: function(data) {
+                    console.log(data);  // Vérifiez les données reçues de l'API
                     displayMainNews(data.articles[0]);
                     displayMiniArticles(data.articles.slice(1, 5));
                     displayLatestArticles(data.articles.slice(5, 9));
@@ -451,4 +452,3 @@ label {
 
 </body>
 </html>
-
