@@ -9,95 +9,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-<script>
-  $(document).ready(function() {
-    var apiKey = '0dd205a802df427cb42c317f6931c67d'; // Remplacez par votre clé API NewsAPI
-    var url = `https://newsapi.org/v2/top-headlines?country=fr&apiKey=${apiKey}`;
-
-    $.get(url, function(data) {
-      var articles = data.articles;
-      if (articles.length > 0) {
-        var mainArticle = articles[0];
-        $('#main-article-title').text(mainArticle.title);
-        $('#main-article-image').attr('src', mainArticle.urlToImage);
-        $('#main-article-summary').text(mainArticle.description);
-
-        var miniArticlesHtml = '';
-        for (var i = 1; i < Math.min(7, articles.length); i++) {
-          var miniArticle = articles[i];
-          miniArticlesHtml += `
-            <div class="mini-article-card">
-              <img src="${miniArticle.urlToImage}" alt="Image de l'article">
-              <div class="mini-article-content">
-                <h2 class="text-sm font-bold mb-2">${miniArticle.title}</h2>
-                <div class="bias-bar">
-                  <div class="bias-segment red" style="width: 10%;"></div>
-                  <div class="bias-segment white" style="width: 60%;"></div>
-                  <div class="bias-segment blue" style="width: 30%;"></div>
-                </div>
-              </div>
-            </div>
-          `;
-        }
-        $('#mini-articles-container').html(miniArticlesHtml);
-      }
-    });
-
-    var tl = gsap.timeline();
-
-    $('.icon-wrap').click(function() {
-      if ($(this).hasClass('open')) {
-        $(this).removeClass('open');
-        tl.to('.icon-wrap', {duration: 0.3, css: {width: '70px', boxShadow: '0px 6px 6px rgba(255, 255, 255, .28)'}})
-          .to('.icon-wrap', {duration: 0.3, css: {borderRadius: "50%"}}, '-=0.2');
-        gsap.to('svg', {duration: 0.3, fill: '#f4f4f4', rotation: 0});
-        gsap.to('input, label', {duration: 0.3, width: 0});
-      } else {
-        $(this).addClass('open');
-        tl.to('.icon-wrap', {duration: 0.7, css: {borderRadius: "20px", width: '400px', boxShadow: 'rgba(255, 255, 255, 0.28) -3px 16px 52px 0px'}, ease: "elastic.out(1, 0.7)"});
-        gsap.to('svg', {duration: 0.3, fill: '#8c8c8c', rotation: '90deg'});
-        gsap.to('input', {duration: 0.3, width: '81%'});
-        gsap.to('label', {duration: 0.3, width: '78%'});
-      }
-    });
-
-    $('input').focus(function() {
-      $('.label-wrap').animate({opacity: 0}, 100);
-    });
-    $('input').blur(function() {
-      if (!$(this).val()) {
-        $('.label-wrap').animate({opacity: 1}, 1200);
-      } else {
-        $('.label-wrap').animate({opacity: 0}, 100);
-      }
-    });
-
-    // Countdown Timer Script
-    function countdown(targetDate, elementId) {
-      const countDownDate = new Date(targetDate).getTime();
-
-      const countdownFunction = setInterval(function() {
-        const now = new Date().getTime();
-        const distance = countDownDate - now;
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById(elementId).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-        if (distance < 0) {
-          clearInterval(countdownFunction);
-          document.getElementById(elementId).innerHTML = "EXPIRED";
-        }
-      }, 1000);
-    }
-
-    countdown("July 26, 2024 00:00:00", "paris-olympics-countdown");
-    countdown("June 30, 2024 00:00:00", "election-countdown");
-  });
-</script>
 <style>
 body {
     font-family: 'Poppins', sans-serif;
@@ -347,17 +258,8 @@ label {
         <div class="main-article">
             <section class="mb-10">
                 <h1 class="text-4xl font-bold mb-6 text-center">Actu du jour</h1>
-                <div class="bg-gray-700 rounded-lg overflow-hidden article-card mx-auto">
-                    <img id="main-article-image" src="https://images.unsplash.com/photo-1611599535365-6b0b3ddc43f6?fit=crop&w=600&h=400&q=80" alt="Image de l'actu du jour" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h2 id="main-article-title" class="text-3xl font-bold mb-2">Titre de l'actu du jour</h2>
-                        <p id="main-article-summary" class="text-gray-300 mb-4">Résumé de l'actu du jour...</p>
-                        <div class="bias-bar">
-                            <div class="bias-segment red" style="width: 10%;">G: 10%</div>
-                            <div class="bias-segment white" style="width: 70%;">C: 70%</div>
-                            <div class="bias-segment blue" style="width: 20%;">D: 20%</div>
-                        </div>
-                    </div>
+                <div class="bg-gray-700 rounded-lg overflow-hidden article-card mx-auto" id="main-news">
+                    <!-- Contenu dynamique ici -->
                 </div>
             </section>
 
@@ -396,8 +298,8 @@ label {
 
         <!-- Mini Articles Section -->
         <div class="side-articles">
-            <div id="mini-articles-container" class="mini-articles-container">
-                <!-- Les mini-articles seront chargés ici par jQuery -->
+            <div class="mini-articles-container" id="mini-articles">
+                <!-- Contenu dynamique ici -->
             </div>
 
             <!-- Countdown Section -->
@@ -414,15 +316,139 @@ label {
             </div>
         </div>
     </div>
+
+    <!-- Derniers Articles -->
+    <section class="latest-articles mt-10">
+        <h1 class="text-4xl font-bold mb-10 text-center">Derniers Articles</h1>
+        <div id="latest-articles">
+            <!-- Contenu dynamique ici -->
+        </div>
+    </section>
 </main>
 
-<!-- Derniers Articles -->
-<section class="latest-articles mt-10">
-    <h1 class="text-4xl font-bold mb-10 text-center">Derniers Articles</h1>
-    <div id="news-section">
-        <!-- Les articles seront chargés ici par jQuery -->
-    </div>
-</section>
+<script>
+    $(document).ready(function() {
+        var apiKey = '0dd205a802df427cb42c317f6931c67d';
+        var country = 'fr';
+
+        function fetchNews() {
+            $.ajax({
+                url: `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${apiKey}`,
+                method: 'GET',
+                success: function(data) {
+                    displayMainNews(data.articles[0]);
+                    displayMiniArticles(data.articles.slice(1, 5));
+                    displayLatestArticles(data.articles.slice(5, 9));
+                },
+                error: function(error) {
+                    console.log('Error fetching news:', error);
+                }
+            });
+        }
+
+        function displayMainNews(article) {
+            $('#main-news').html(`
+                <img src="${article.urlToImage}" alt="Image de l'actu du jour" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-2">${article.title}</h2>
+                    <p class="text-gray-300 mb-4">${article.description}</p>
+                    <div class="bias-bar">
+                        <div class="bias-segment red" style="width: 10%;">G: 10%</div>
+                        <div class="bias-segment white" style="width: 70%;">C: 70%</div>
+                        <div class="bias-segment blue" style="width: 20%;">D: 20%</div>
+                    </div>
+                </div>
+            `);
+        }
+
+        function displayMiniArticles(articles) {
+            var miniArticlesHtml = '';
+            articles.forEach(function(article) {
+                miniArticlesHtml += `
+                    <div class="mini-article-card">
+                        <img src="${article.urlToImage}" alt="Image de l'article">
+                        <div class="mini-article-content">
+                            <h2 class="text-sm font-bold mb-2">${article.title}</h2>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#mini-articles').html(miniArticlesHtml);
+        }
+
+        function displayLatestArticles(articles) {
+            var latestArticlesHtml = '';
+            articles.forEach(function(article) {
+                latestArticlesHtml += `
+                    <div class="latest-article">
+                        <div class="latest-article-content">
+                            <h2 class="latest-article-title">${article.title}</h2>
+                        </div>
+                        <img src="${article.urlToImage}" alt="Image de l'article">
+                    </div>
+                `;
+            });
+            $('#latest-articles').html(latestArticlesHtml);
+        }
+
+        fetchNews();
+
+        var tl = gsap.timeline();
+
+        $('.icon-wrap').click(function() {
+            if ($(this).hasClass('open')) {
+                $(this).removeClass('open');
+                tl.to('.icon-wrap', {duration: 0.3, css: {width: '70px', boxShadow: '0px 6px 6px rgba(255, 255, 255, .28)'}})
+                  .to('.icon-wrap', {duration: 0.3, css: {borderRadius: "50%"}}, '-=0.2');
+                gsap.to('svg', {duration: 0.3, fill: '#f4f4f4', rotation: 0});
+                gsap.to('input, label', {duration: 0.3, width: 0});
+            } else {
+                $(this).addClass('open');
+                tl.to('.icon-wrap', {duration: 0.7, css: {borderRadius: "20px", width: '400px', boxShadow: 'rgba(255, 255, 255, 0.28) -3px 16px 52px 0px'}, ease: "elastic.out(1, 0.7)"});
+                gsap.to('svg', {duration: 0.3, fill: '#8c8c8c', rotation: '90deg'});
+                gsap.to('input', {duration: 0.3, width: '81%'});
+                gsap.to('label', {duration: 0.3, width: '78%'});
+            }
+        });
+
+        $('input').focus(function() {
+            $('.label-wrap').animate({opacity: 0}, 100);
+        });
+        $('input').blur(function() {
+            if (!$(this).val()) {
+                $('.label-wrap').animate({opacity: 1}, 1200);
+            } else {
+                $('.label-wrap').animate({opacity: 0}, 100);
+            }
+        });
+    });
+
+    // Countdown Timer Script
+    function countdown(targetDate, elementId) {
+        const countDownDate = new Date(targetDate).getTime();
+
+        const countdownFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById(elementId).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById(elementId).innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    }
+
+    countdown("July 26, 2024 00:00:00", "paris-olympics-countdown");
+    countdown("June 30, 2024 00:00:00", "election-countdown");
+</script>
 
 </body>
 </html>
+
