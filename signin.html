@@ -183,7 +183,7 @@
 </head>
 <body>
     <div class="login-container">
-        <form action="" class="form-login">
+        <form action="http://localhost/login.php" method="POST" class="form-login">
             <ul class="login-nav">
                 <li class="login-nav__item active">
                     <a href="#">Sign In</a>
@@ -195,11 +195,11 @@
             <label for="login-input-user" class="login__label">
                 Username
             </label>
-            <input id="login-input-user" class="login__input" type="text" />
+            <input id="login-input-user" class="login__input" type="text" name="username" required />
             <label for="login-input-password" class="login__label">
                 Password
             </label>
-            <input id="login-input-password" class="login__input" type="password" />
+            <input id="login-input-password" class="login__input" type="password" name="password" required />
             <button class="login__submit">Sign in</button>
             <a href="#" class="login__forgot">Forgot Password?</a>
         </form>
