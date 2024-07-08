@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Page</title>
+    <title>Sign In Page</title>
     <style>
         body {
-            background-color: #111827;
+            background-color: #e9e9e9;
             font-family: 'Montserrat', sans-serif;
             font-size: 16px;
             line-height: 1.25;
@@ -164,32 +164,44 @@
         .login__submit:hover {
             background-color: rgba(17, 97, 237, 1);
         }
+
+        .login__forgot {
+            display: block;
+            margin-top: 3rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: .75rem;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login__forgot:hover {
+            color: rgb(17, 97, 237);
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <form action="" class="form-login">
             <ul class="login-nav">
-                <li class="login-nav__item">
-                    <a href="signin.html">Sign In</a>
-                </li>
                 <li class="login-nav__item active">
-                    <a href="#">Sign Up</a>
+                    <a href="#">Sign In</a>
+                </li>
+                <li class="login-nav__item">
+                    <a href="signup.html">Sign Up</a>
                 </li>
             </ul>
             <label for="login-input-user" class="login__label">
                 Username
             </label>
             <input id="login-input-user" class="login__input" type="text" />
-            <label for="login-input-email" class="login__label">
-                Email
-            </label>
-            <input id="login-input-email" class="login__input" type="email" />
             <label for="login-input-password" class="login__label">
                 Password
             </label>
             <input id="login-input-password" class="login__input" type="password" />
-            <button class="login__submit">Sign up</button>
+            <button class="login__submit">Sign in</button>
+            <a href="#" class="login__forgot">Forgot Password?</a>
         </form>
     </div>
 </body>
