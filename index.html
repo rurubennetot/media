@@ -7,345 +7,327 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&display=swap');
 
-/* Base styles */
 *,
 *:after,
 *:before {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-	font-family: "DM Sans", sans-serif;
-	font-size: 1rem;
-	line-height: 1.5;
-	background-color: #111827;
-	color: #E5E7EB;
-	padding-bottom: 5rem;
-	margin: 0;
+    font-family: "DM Sans", sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-color: #111827;
+    color: #E5E7EB;
+    padding-bottom: 5rem;
+    margin: 0;
 }
 
 img {
-	display: block;
-	max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
 
 .responsive-wrapper {
-	width: 95%;
-	max-width: 1900px;
-	margin-left: auto;
-	margin-right: auto;
+    width: 95%;
+    max-width: 1900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Header styles */
 .header {
-	padding-right: 1.5rem;
-	padding-left: 1.5rem;
-	padding-top: 3rem;
-	padding-bottom: 4rem;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	color: #E5E7EB;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #E5E7EB;
 }
 
 .header-left {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .header-left img {
-	max-height: 40px;
-	width: auto;
-	margin-right: 10px;
+    max-height: 40px;
+    width: auto;
+    margin-right: 10px;
 }
 
 .header-left .site-name {
-	font-size: 3rem; /* Taille plus grande pour le nom du site */
-	font-weight: 700;
-	color: #E5E7EB;
+    font-size: 3rem; /* Taille plus grande pour le nom du site */
+    font-weight: 700;
+    color: #E5E7EB;
 }
 
 .header-middle {
-	flex-grow: 1;
-	display: flex;
-	justify-content: center;
-	position: relative;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
 }
 
 .header-middle input.search {
-	border: none;
-	border-bottom: 2px solid #E5E7EB;
-	height: 3rem;
-	padding: 0 1.5rem;
-	width: 300px;
-	max-width: 300px;
-	border-radius: 0;
-	font-size: 1.4rem;
-	background: none;
-	color: #E5E7EB;
-	transition: width 0.3s, border-bottom-color 0.3s;
+    border: none;
+    border-bottom: 2px solid #E5E7EB;
+    height: 3rem;
+    padding: 0 1.5rem;
+    width: 300px;
+    max-width: 300px;
+    border-radius: 0;
+    font-size: 1.4rem;
+    background: none;
+    color: #E5E7EB;
+    transition: width 0.3s, border-bottom-color 0.3s;
 }
 
 .header-middle input.search::placeholder {
-	color: #E5E7EB;
-	opacity: 0.7;
+    color: #E5E7EB;
+    opacity: 0.7;
 }
 
 .header-middle input.search:focus {
-	width: 100%;
-	border-bottom-color: #fabea1;
-	outline: none;
+    width: 100%;
+    border-bottom-color: #fabea1;
+    outline: none;
 }
 
 .header-right {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .header-link {
-	color: #E5E7EB;
-	text-decoration: none;
-	margin-left: .75rem;
-	margin-right: .75rem;
-	display: inline-block;
-	font-weight: 500;
+    color: #E5E7EB;
+    text-decoration: none;
+    margin-left: .75rem;
+    margin-right: .75rem;
+    display: inline-block;
+    font-weight: 500;
 }
 
 .header-link--button {
-	background-color: #E5E7EB;
-	color: #11194B;
-	padding: .5rem 1.25rem;
-	border-radius: 4px;
+    background-color: #E5E7EB;
+    color: #11194B;
+    padding: .5rem 1.25rem;
+    border-radius: 4px;
 }
 
-/* Page title styles */
-.page-title {
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	max-width: 1900px;
-	margin: 0 auto;
-	margin-bottom: 3rem; /* Ajout d'une marge en bas */
+nav {
+    position: relative;
+    padding-bottom: 12px;
+    margin-bottom: 2rem; /* Added space between the tab bar and articles */
+    display: flex;
+    justify-content: center;
 }
 
-.page-title h1 {
-	font-size: 2.5rem;
-	font-weight: 700;
-	color: #E5E7EB;
-	text-align: center;
-	margin: 0 2rem;
-	position: relative;
+nav .line {
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    margin: 10px 0 0 0;
+    background: #E5E7EB; /* White color */
 }
 
-.page-title h1 a {
-	color: #E5E7EB;
-	text-decoration: none;
+nav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
 }
 
-.page-title h1 span {
-	position: relative;
+nav ul li {
+    margin: 0 40px 0 0;
+    opacity: .4;
+    transition: all 0.4s ease;
 }
 
-.page-title h1 span:after {
-	content: "";
-	display: block;
-	position: absolute;
-	width: 100%;
-	height: 2px;
-	background-color: #E5E7EB;
-	bottom: -5px; /* Espace entre le texte et la ligne de soulignement */
-	left: 0;
+nav ul li:hover {
+    opacity: .7;
 }
 
-.page-title .section-title {
-	font-size: 1.25rem;
-	color: #E5E7EB;
-	font-weight: 700;
-	margin: 0 1rem;
-	text-decoration: none;
-	border-bottom: 1px solid #E5E7EB;
-	cursor: pointer;
-	transition: color 0.3s, border-bottom-color 0.3s;
+nav ul li.active {
+    opacity: 1;
 }
 
-.page-title .section-title:hover {
-	color: #fabea1;
-	border-bottom-color: #fabea1;
+nav ul li:last-child {
+    margin-right: 0;
 }
 
-/* Magazine layout styles */
+nav ul li a {
+    text-decoration: none;
+    color: #E5E7EB; /* Match with theme color */
+    text-transform: uppercase;
+    display: block;
+    font-weight: 600;
+    letter-spacing: .2em;
+    font-size: 1.25rem; /* Larger text size */
+}
+
 .magazine-layout {
-	margin-top: 8rem; /* Augmentation de la marge pour créer un espace */
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-gap: 2rem;
-	max-width: 1900px;
-	margin: 0 auto;
-	transition: opacity 0.5s;
+    margin-top: 8rem; /* Augmentation de la marge pour créer un espace */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+    max-width: 1900px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
 }
 
 .magazine-column {
-	padding: 0 1.5rem;
-	border-left: 1px solid #ccc;
+    padding: 0 1.5rem;
+    border-left: 1px solid #ccc;
 }
 
 .magazine-column:first-child {
-	border-left: none;
+    border-left: none;
 }
 
 .article + .article {
-	padding-top: 2rem;
-	margin-top: 2rem;
-	border-top: 1px solid #ccc;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid #ccc;
 }
 
 .article-img + * {
-	margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .article-link {
-	color: inherit;
-	text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 .article-title {
-	font-family: "Fraunces", serif;
-	font-weight: 900;
-	line-height: 1.25;
-	color: #E5E7EB;
+    font-family: "Fraunces", serif;
+    font-weight: 900;
+    line-height: 1.25;
+    color: #E5E7EB;
 }
 
 .article-title--large {
-	font-size: 2rem;
-	margin-bottom: 1rem;
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
 .article-title--medium {
-	font-size: 1.5rem;
-	margin-bottom: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .article-title--small {
-	font-size: 1.25rem;
-	margin-bottom: 1rem;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .article-excerpt,
 .article-creditation {
-	font-size: 1rem;
-	line-height: 1.4;
-	color: #E5E7EB;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #E5E7EB;
 }
 
 .article-excerpt p + p {
-	margin-top: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .article-author {
-	display: flex;
-	flex-wrap: wrap;
-	margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
 }
 
 .article-author-img {
-	width: 3rem;
-	height: 3rem;
-	border-radius: 12px;
-	background-color: #323232;
-	overflow: hidden;
-	background-blend-mode: multiply;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 12px;
+    background-color: #323232;
+    overflow: hidden;
+    background-blend-mode: multiply;
 }
 
 .article-author-img + .article-author-info {
-	margin-left: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .article-author-info {
-	line-height: 1.375;
-	color: #E5E7EB;
+    line-height: 1.375;
+    color: #E5E7EB;
 }
 
 .article-author-info dl {
-	margin-top: 0.25em;
+    margin-top: 0.25em;
 }
 
 .article-author-info dt {
-	font-weight: 600;
+    font-weight: 600;
 }
 
 .article-author-info dd {
-	font-size: 0.875em;
+    font-size: 0.875em;
 }
 
 .article-category {
-	font-weight: 500;
-	margin-bottom: 1rem;
-	display: block;
-	color: #E5E7EB;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: block;
+    color: #E5E7EB;
 }
 
 .article-category svg {
-	max-width: 1.5rem;
-	margin-right: .5rem;
-	vertical-align: middle;
+    max-width: 1.5rem;
+    margin-right: .5rem;
+    vertical-align: middle;
 }
 
-/* Main article styles */
-.main-article {
-	display: none;
-	margin: 2rem 0;
-	padding: 2rem;
-	background-color: #1f2937;
-	border-radius: 8px;
-	opacity: 0;
-	transition: opacity 0.5s, transform 0.5s;
+.political-bias-bar {
+    display: flex;
+    align-items: center;
+    height: 10px;
+    background-color: #DC2626; /* Red for left bias */
+    margin: 10px 0;
+    border-radius: 2px;
+    overflow: hidden;
 }
 
-.main-article h2 {
-	font-size: 3rem;
-	font-weight: 900;
-	color: #fabea1;
+.political-bias-bar .center {
+    background-color: #FFFFFF; /* White for center bias */
+    height: 100%;
 }
 
-.main-article p {
-	font-size: 1.25rem;
-	line-height: 1.75;
-	color: #e5e7eb;
+.political-bias-bar .right {
+    background-color: #3B82F6; /* Blue for right bias */
+    height: 100%;
 }
 
-.main-article img {
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
-	margin-top: 1rem;
+:focus {
+    outline: 0;
 }
 
-/* Hidden and visible classes */
 .hidden {
-	display: none;
-}
-
-.visible {
-	display: block;
-	opacity: 1;
-	transform: translateY(0);
+    display: none;
 }
 
 .transition {
-	opacity: 0;
-	transform: translateY(-20px);
-	transition: opacity 0.5s, transform 0.5s;
+    transition: all 0.3s ease;
 }
 
-/* Focus styles */
-:focus {
-	outline: 0;
+.single-article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background-color: #1a1a2e;
+    border-radius: 8px;
 }
 </style>
 </head>
@@ -365,22 +347,25 @@ img {
 </header>
 
 <main class="responsive-wrapper">
-    <div class="page-title">
-        <a href="javascript:void(0);" class="section-title" id="latest-articles-link">Derniers articles</a>
-        <h1 id="main-title"><a href="javascript:void(0);" id="current-title"><span>Actu du jour</span></a></h1>
-        <a href="economie.html" class="section-title">Économie</a>
-    </div>
-    <div id="main-article" class="main-article transition">
-        <h2>Titre de l'article principal</h2>
-        <img src="https://placehold.co/1200x600" alt="Image principale">
-        <p>Contenu de l'article principal...</p>
-    </div>
-    <div id="magazine-layout" class="magazine-layout visible">
+    <nav>
+        <ul>
+            <li><a href="#" id="derniers-articles-link">Derniers articles</a></li>
+            <li class="active"><a href="#" id="actu-du-jour-link">Actu du jour</a></li>
+            <li><a href="#" id="economie-link">Économie</a></li>
+        </ul>
+        <div class="line"></div>
+    </nav>
+
+    <div id="derniers-articles" class="magazine-layout hidden">
         <div class="magazine-column">
             <article class="article">
                 <h2 class="article-title article-title--large">
                     <a href="#" class="article-link">The First Signs of Alcoholic Liver Damage Are Not in the Liver</a>
                 </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 30%;"></div>
+                    <div class="right" style="width: 20%;"></div>
+                </div>
                 <div class="article-excerpt">
                     <p>The combination of my father's death and my personal background lit a fire in me to know more</p>
                     <p>He was admitted to the hospital on June 24, 2016.</p>
@@ -401,6 +386,10 @@ img {
                 <h2 class="article-title article-title--small">
                     <a href="#" class="article-link">The Founder's Guide to Actually Understanding Users Nowadays</a>
                 </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 50%;"></div>
+                    <div class="right" style="width: 20%;"></div>
+                </div>
                 <div class="article-creditation">
                     <p>By Johnathan O'Connell, Andrew Van Dam, Aaron Gregg and Amy Brittain</p>
                 </div>
@@ -414,6 +403,10 @@ img {
                 <h2 class="article-title article-title--medium">
                     <a href="#" class="article-link">How 7 Lines of Code Turned Into a $36 Billion Empire</a>
                 </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 10%;"></div>
+                    <div class="right" style="width: 70%;"></div>
+                </div>
                 <div class="article-excerpt">
                     <p>Yeah, it's safe to say these guys have a great sense of humor, which isn't really surprising for us considering their seemingly absurd solution to online payments...</p>
                 </div>
@@ -438,6 +431,10 @@ img {
                 <h2 class="article-title article-title--medium">
                     <a href="#" class="article-link">To Become Happier, Ask Yourself These Two Questions Every Night</a>
                 </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 40%;"></div>
+                    <div class="right" style="width: 10%;"></div>
+                </div>
                 <div class="article-creditation">
                     <p>By Jonathan O'Connell</p>
                 </div>
@@ -449,6 +446,10 @@ img {
                 <h2 class="article-title article-title--small">
                     <a href="#" class="article-link">10 Things I Stole From People Smarter Than Me</a>
                 </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 60%;"></div>
+                    <div class="right" style="width: 10%;"></div>
+                </div>
                 <div class="article-creditation">
                     <p>By Jonathan O'Connell</p>
                 </div>
@@ -459,6 +460,10 @@ img {
                 <h2 class="article-title article-title--large">
                     <a href="#" class="article-link">Traveller Visiting Ice Cave With Amazing Eye-Catching Scenes</a>
                 </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 40%;"></div>
+                    <div class="right" style="width: 50%;"></div>
+                </div>
                 <div class="article-excerpt">
                     <p>Slack has become indispensable for many businesses operating remotely during the pandemic. Here's what the acquisition could mean for users...</p>
                 </div>
@@ -478,8 +483,41 @@ img {
                 <h2 class="article-title article-title--medium">
                     <a href="#" class="article-link">Things to Do After 6 P.M Will Enrich Your Life</a>
                 </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 10%;"></div>
+                    <div class="right" style="width: 70%;"></div>
+                </div>
                 <div class="article-creditation">
                     <p>Apple Podcasts, Google Podcasts, Stitcher</p>
+                </div>
+                <div class="article-author">
+                    <div class="article-author-img">
+                        <img src="https://placehold.co/40x40" alt="David Sherof" />
+                    </div>
+                    <div class="article-author-info">
+                        <dl>
+                            <dt>David Sherof</dt>
+                            <dd>Reporter</dd>
+                        </dl>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <div id="actu-du-jour" class="magazine-layout">
+        <div class="magazine-column col-span-4 single-article">
+            <article class="article">
+                <h2 class="article-title article-title--large">
+                    <a href="#" class="article-link">The First Signs of Alcoholic Liver Damage Are Not in the Liver</a>
+                </h2>
+                <div class="political-bias-bar">
+                    <div class="center" style="width: 30%;"></div>
+                    <div class="right" style="width: 20%;"></div>
+                </div>
+                <div class="article-excerpt">
+                    <p>The combination of my father's death and my personal background lit a fire in me to know more</p>
+                    <p>He was admitted to the hospital on June 24, 2016.</p>
                 </div>
                 <div class="article-author">
                     <div class="article-author-img">
@@ -502,51 +540,81 @@ img {
 </footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    /* Function to toggle the view between main article and magazine layout */
-    function toggleView(showMainArticle) {
-        var mainArticle = document.getElementById('main-article');
-        var magazineLayout = document.getElementById('magazine-layout');
-        var mainTitle = document.getElementById('main-title');
-        var latestArticlesLink = document.getElementById('latest-articles-link');
+document.addEventListener('DOMContentLoaded', () => {
+    var nav = $('nav');
+    var line = $('<div />').addClass('line');
 
-        if (showMainArticle) {
-            mainArticle.classList.add('visible');
-            mainArticle.classList.remove('hidden');
-            magazineLayout.classList.add('hidden');
-            magazineLayout.classList.remove('visible');
-            setTimeout(function () {
-                mainArticle.classList.remove('transition');
-            }, 10);
-            mainTitle.innerHTML = '<a href="javascript:void(0);" id="current-title"><span>Derniers articles</span></a>';
-            latestArticlesLink.innerHTML = 'Actu du jour';
-            latestArticlesLink.id = 'current-title';
-        } else {
-            mainArticle.classList.add('transition');
-            setTimeout(function () {
-                mainArticle.classList.remove('visible');
-                mainArticle.classList.add('hidden');
-                magazineLayout.classList.remove('hidden');
-                magazineLayout.classList.add('visible');
-            }, 500);
-            mainTitle.innerHTML = '<a href="javascript:void(0);" id="current-title"><span>Actu du jour</span></a>';
-            latestArticlesLink.innerHTML = 'Derniers articles';
-            latestArticlesLink.id = 'latest-articles-link';
-        }
+    line.appendTo(nav);
 
-        document.getElementById('current-title').addEventListener('click', function () {
-            toggleView(!showMainArticle);
+    var active = nav.find('.active');
+    var pos = 0;
+    var wid = 0;
+
+    if(active.length) {
+        pos = active.position().left;
+        wid = active.width();
+        line.css({
+            left: pos,
+            width: wid
         });
     }
 
-    /* Event listener for the "Derniers articles" link */
-    document.getElementById('latest-articles-link').addEventListener('click', function () {
-        toggleView(true);
+    nav.find('ul li a').click(function(e) {
+        e.preventDefault();
+        if(!$(this).parent().hasClass('active') && !nav.hasClass('animate')) {
+
+            nav.addClass('animate');
+
+            var _this = $(this);
+
+            nav.find('ul li').removeClass('active');
+
+            var position = _this.parent().position();
+            var width = _this.parent().width();
+
+            if(position.left >= pos) {
+                line.animate({
+                    width: ((position.left - pos) + width)
+                }, 300, function() {
+                    line.animate({
+                        width: width,
+                        left: position.left
+                    }, 150, function() {
+                        nav.removeClass('animate');
+                    });
+                    _this.parent().addClass('active');
+                });
+            } else {
+                line.animate({
+                    left: position.left,
+                    width: ((pos - position.left) + wid)
+                }, 300, function() {
+                    line.animate({
+                        width: width
+                    }, 150, function() {
+                        nav.removeClass('animate');
+                    });
+                    _this.parent().addClass('active');
+                });
+            }
+
+            pos = position.left;
+            wid = width;
+        }
+
+        if (_this.attr('id') === 'derniers-articles-link') {
+            $('#actu-du-jour').addClass('hidden');
+            $('#derniers-articles').removeClass('hidden');
+        } else if (_this.attr('id') === 'actu-du-jour-link') {
+            $('#actu-du-jour').removeClass('hidden');
+            $('#derniers-articles').addClass('hidden');
+        }
     });
+
+    // Initially show "Actu du jour" content
+    $('#derniers-articles').addClass('hidden');
+    $('#actu-du-jour').removeClass('hidden');
 });
 </script>
-
 </body>
-</html>
-
 </html>
