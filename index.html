@@ -460,7 +460,7 @@
                     <div class="political-bias-bar">
                         <div class="bias-section left" style="width: 30%;">G 30%</div>
                         <div class="bias-section center" style="width: 50%;">C 50%</</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                        <div class="bias-section right" style="width: 20%;">D 20%</</div>
                     </div>
                     <div class="article-excerpt">
                         <p>The combination of my father's death and my personal background lit a fire in me to know more</p>
@@ -797,6 +797,7 @@
             $('#economie').addClass('hidden');
 
             async function fetchMarketPrices() {
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
                 const urls = {
                     sp500: 'https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC',
                     cac40: 'https://query1.finance.yahoo.com/v8/finance/chart/%5EFCHI',
@@ -806,10 +807,10 @@
 
                 try {
                     const [sp500Data, cac40Data, btcusdData, eurusdData] = await Promise.all([
-                        fetch(urls.sp500).then(response => response.json()),
-                        fetch(urls.cac40).then(response => response.json()),
-                        fetch(urls.btcusd).then(response => response.json()),
-                        fetch(urls.eurusd).then(response => response.json())
+                        fetch(proxyUrl + urls.sp500).then(response => response.json()),
+                        fetch(proxyUrl + urls.cac40).then(response => response.json()),
+                        fetch(proxyUrl + urls.btcusd).then(response => response.json()),
+                        fetch(proxyUrl + urls.eurusd).then(response => response.json())
                     ]);
 
                     document.getElementById('sp500-price').innerText = sp500Data.chart.result[0].meta.regularMarketPrice.toFixed(2);
