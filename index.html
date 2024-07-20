@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -212,7 +212,6 @@
 
     <script>
         async function fetchMarketPrices() {
-            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
             const urls = {
                 sp500: 'https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC',
                 cac40: 'https://query1.finance.yahoo.com/v8/finance/chart/%5EFCHI',
@@ -224,10 +223,10 @@
 
             try {
                 const [sp500Data, cac40Data, btcusdData, eurusdData, ethusdData, solusdData] = await Promise.all([
-                    fetch(proxyUrl + urls.sp500).then(response => response.json()),
-                    fetch(proxyUrl + urls.cac40).then(response => response.json()),
-                    fetch(proxyUrl + urls.btcusd).then(response => response.json()),
-                    fetch(proxyUrl + urls.eurusd).then(response => response.json()),
+                    fetch(urls.sp500).then(response => response.json()),
+                    fetch(urls.cac40).then(response => response.json()),
+                    fetch(urls.btcusd).then(response => response.json()),
+                    fetch(urls.eurusd).then(response => response.json()),
                     fetch(urls.ethusd).then(response => response.json()),
                     fetch(urls.solusd).then(response => response.json())
                 ]);
