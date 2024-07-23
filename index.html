@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perspectiv</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@500;600;700&family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet"> <!-- Polices originales ajoutées -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Roboto:wght@700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap'); /* Polices originales */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap');
 
         *,
         *:after,
@@ -322,16 +322,16 @@
         }
 
         .vertical-separator {
-            width: 1px;
+            width: 2px;
             background-color: #E5E7EB;
             height: 100%;
         }
 
         .horizontal-separator {
-            width: 140%; /* Allongement des séparations horizontales à gauche et à droite */
-            height: 1px;
+            width: 140%;
+            height: 2px;
             background-color: #E5E7EB;
-            margin: 0.5rem -20%; /* Réduction de l'espace entre l'image et la séparation et allongement vers la gauche */
+            margin: 2rem -20%;
         }
 
         .section-title {
@@ -453,6 +453,7 @@
         .political-bias-bar .right {
             background-color: #193580;
         }
+
         :focus {
             outline: 0;
         }
@@ -466,17 +467,18 @@
         }
 
         .single-article {
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-            background-color: #111827;
-            border-radius: 8px;
-            margin: 0 auto;
-            width: 100%;
-            margin-top: 1rem;
-            opacity: 0;
             position: absolute;
-            transition: opacity 1s;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
+        }
+
+        .single-article.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .single-article img {
@@ -505,16 +507,16 @@
 
         .small-article {
             width: 80%;
-            background-color: #1a1a2e;
+            background-color: #111827; /* Same as body background */
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
         }
-        
+
         .small-article img {
             width: 100%;
             height: auto;
-            margin-bottom: 0.25rem; /* Réduction de l'espace entre le bas de l'image et la séparation horizontale */
+            margin-bottom: 1rem;
         }
 
         .small-article .article-title {
@@ -523,13 +525,17 @@
             color: #E5E7EB;
         }
 
-        /* Styles pour les nouveaux titres */
         .section-title--blindspot {
             font-family: 'Playfair Display', serif;
         }
 
         .section-title--france {
             font-family: 'Raleway', sans-serif;
+        }
+
+        .article-container {
+            position: relative;
+            height: 100vh;
         }
     </style>
 </head>
@@ -605,8 +611,8 @@
                 </article>
             </div>
             <div class="vertical-separator"></div>
-            <div class="magazine-column">
-                <article class="single-article">
+            <div class="magazine-column article-container">
+                <article class="single-article active">
                     <figure>
                         <img src="https://placehold.co/1000x450" alt="Image de l'article" />
                     </figure>
@@ -640,29 +646,122 @@
                 </article>
                 <article class="single-article">
                     <figure>
-                        <img src="https://placehold.co/1000x450" alt="Image de l'article" />
+                        <img src="https://placehold.co/1000x450" alt="Second article image" />
                     </figure>
                     <h2 class="article-title article-title--large">
                         <a href="#" class="article-link">Second Article Title</a>
                     </h2>
                     <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 30%;">G 30%</div>
+                        <div class="bias-section left" style="width: 25%;">G 25%</div>
                         <div class="bias-section center" style="width: 50%;">C 50%</div>
+                        <div class="bias-section right" style="width: 25%;">D 25%</div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>Summary of the second article.</p>
+                            </div>
+                            <div class="article-author">
+                                <div class="article-author-img">
+                                    <img src="https://placehold.co/40x40" alt="Author of second article" />
+                                </div>
+                                <div class="article-author-info">
+                                    <dl>
+                                        <dt>Author Name</dt>
+                                        <dd>Position</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Third article image" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Third Article Title</a>
+                    </h2>
+                    <div class="political-bias-bar">
+                        <div class="bias-section left" style="width: 20%;">G 20%</div>
+                        <div class="bias-section center" style="width: 60%;">C 60%</div>
                         <div class="bias-section right" style="width: 20%;">D 20%</div>
                     </div>
                     <div class="content">
                         <div class="text">
                             <div class="article-excerpt">
-                                <p>Excerpt of the second article.</p>
+                                <p>Summary of the third article.</p>
                             </div>
                             <div class="article-author">
                                 <div class="article-author-img">
-                                    <img src="https://placehold.co/40x40" alt="Author Name" />
+                                    <img src="https://placehold.co/40x40" alt="Author of third article" />
                                 </div>
                                 <div class="article-author-info">
                                     <dl>
                                         <dt>Author Name</dt>
-                                        <dd>Reporter</dd>
+                                        <dd>Position</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Fourth article image" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Fourth Article Title</a>
+                    </h2>
+                    <div class="political-bias-bar">
+                        <div class="bias-section left" style="width: 35%;">G 35%</div>
+                        <div class="bias-section center" style="width: 30%;">C 30%</div>
+                        <div class="bias-section right" style="width: 35%;">D 35%</div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>Summary of the fourth article.</p>
+                            </div>
+                            <div class="article-author">
+                                <div class="article-author-img">
+                                    <img src="https://placehold.co/40x40" alt="Author of fourth article" />
+                                </div>
+                                <div class="article-author-info">
+                                    <dl>
+                                        <dt>Author Name</dt>
+                                        <dd>Position</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Fifth article image" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Fifth Article Title</a>
+                    </h2>
+                    <div class="political-bias-bar">
+                        <div class="bias-section left" style="width: 10%;">G 10%</div>
+                        <div class="bias-section center" style="width: 70%;">C 70%</div>
+                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>Summary of the fifth article.</p>
+                            </div>
+                            <div class="article-author">
+                                <div class="article-author-img">
+                                    <img src="https://placehold.co/40x40" alt="Author of fifth article" />
+                                </div>
+                                <div class="article-author-info">
+                                    <dl>
+                                        <dt>Author Name</dt>
+                                        <dd>Position</dd>
                                     </dl>
                                 </div>
                             </div>
@@ -754,21 +853,17 @@
             return false;
         }
 
-        $(document).ready(function() {
-            var articles = $(".single-article");
-            var index = 0;
+        // Article rotation logic with fade transition
+        var articles = document.querySelectorAll('.single-article');
+        var currentArticle = 0;
 
-            function showNextArticle() {
-                articles.eq(index).fadeOut(1000, function() {
-                    index = (index + 1) % articles.length;
-                    articles.eq(index).fadeIn(1000);
-                });
-            }
+        function showNextArticle() {
+            articles[currentArticle].classList.remove('active');
+            currentArticle = (currentArticle + 1) % articles.length;
+            articles[currentArticle].classList.add('active');
+        }
 
-            articles.hide();
-            articles.eq(index).show();
-            setInterval(showNextArticle, 15000);
-        });
+        setInterval(showNextArticle, 20000); // Change article every 20 seconds
     </script>
 </body>
 </html>
