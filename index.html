@@ -34,7 +34,9 @@
 
         .responsive-wrapper {
             width: 100%;
+            max-width: 1900px;
             margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .header {
@@ -300,7 +302,7 @@
         .magazine-layout {
             margin-top: 8rem;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1fr 2fr 1fr;
             grid-gap: 2rem;
             max-width: 1900px;
             margin: 0 auto;
@@ -308,27 +310,20 @@
         }
 
         .magazine-column {
-            padding: 0 1.5rem;
-            border-left: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .magazine-column:first-child {
-            border-left: none;
+        .magazine-column article {
+            margin-bottom: 2rem;
         }
 
-        .article + .article {
-            padding-top: 2rem;
-            margin-top: 2rem;
-            border-top: 1px solid #ccc;
-        }
-
-        .article-img + * {
-            margin-top: 1rem;
-        }
-
-        .article-link {
-            color: inherit;
-            text-decoration: none;
+        .vertical-separator {
+            width: 1px;
+            background-color: #E5E7EB;
+            height: 100%;
+            margin: 0 2rem;
         }
 
         .article-title {
@@ -490,20 +485,18 @@
             display: none;
         }
 
-        /* Vertical separator */
-        .vertical-separator {
-            border-left: 1px solid #E5E7EB;
-            margin: 0 2rem;
-        }
-        
         .small-article {
-            flex: 1;
-            margin-top: 2rem;
+            width: 100%;
+            background-color: #1a1a2e;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
         }
         
         .small-article img {
-            max-width: 100%;
+            width: 100%;
             height: auto;
+            margin-bottom: 1rem;
         }
 
         .small-article .article-title {
@@ -553,8 +546,36 @@
 
         <!-- Actu du Jour Section -->
         <div id="actu-du-jour" class="magazine-layout">
-            <div class="magazine-column col-span-4 single-article">
-                <article class="article">
+            <div class="magazine-column">
+                <article class="small-article">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 1</a>
+                    </h3>
+                    <div class="political-bias-bar">
+                        <div class="bias-section left" style="width: 30%;">G 30%</div>
+                        <div class="bias-section center" style="width: 50%;">C 50%</div>
+                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    </div>
+                </article>
+                <article class="small-article">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 2</a>
+                    </h3>
+                    <div class="political-bias-bar">
+                        <div class="bias-section left" style="width: 30%;">G 30%</div>
+                        <div class="bias-section center" style="width: 50%;">C 50%</div>
+                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    </div>
+                </article>
+            </div>
+            <div class="magazine-column">
+                <article class="single-article">
                     <figure>
                         <img src="https://placehold.co/1000x450" alt="Image de l'article" />
                     </figure>
@@ -587,42 +608,32 @@
                     </div>
                 </article>
             </div>
-            <div class="magazine-column small-article">
-                <div class="vertical-separator"></div>
-                <article class="article">
-                    <figure>
-                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
-                    </figure>
-                    <h3 class="article-title article-title--small">
-                        <a href="#" class="article-link">Small Article Title 1</a>
-                    </h3>
-                </article>
-                <article class="article">
-                    <figure>
-                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
-                    </figure>
-                    <h3 class="article-title article-title--small">
-                        <a href="#" class="article-link">Small Article Title 2</a>
-                    </h3>
-                </article>
-            </div>
-            <div class="magazine-column small-article">
-                <div class="vertical-separator"></div>
-                <article class="article">
+            <div class="magazine-column">
+                <article class="small-article">
                     <figure>
                         <img src="https://placehold.co/300x200" alt="Image de l'article" />
                     </figure>
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 3</a>
                     </h3>
+                    <div class="political-bias-bar">
+                        <div class="bias-section left" style="width: 30%;">G 30%</div>
+                        <div class="bias-section center" style="width: 50%;">C 50%</div>
+                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    </div>
                 </article>
-                <article class="article">
+                <article class="small-article">
                     <figure>
                         <img src="https://placehold.co/300x200" alt="Image de l'article" />
                     </figure>
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 4</a>
                     </h3>
+                    <div class="political-bias-bar">
+                        <div class="bias-section left" style="width: 30%;">G 30%</div>
+                        <div class="bias-section center" style="width: 50%;">C 50%</div>
+                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    </div>
                 </article>
             </div>
         </div>
