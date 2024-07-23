@@ -25,9 +25,6 @@
             color: #E5E7EB;
             padding-bottom: 5rem;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
         img {
@@ -36,8 +33,7 @@
         }
 
         .responsive-wrapper {
-            width: 95%;
-            max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -300,6 +296,7 @@
             text-align: center;
             color: #888;
         }
+
         .magazine-layout {
             margin-top: 8rem;
             display: grid;
@@ -309,6 +306,7 @@
             margin: 0 auto;
             transition: all 0.3s ease;
         }
+
         .magazine-column {
             padding: 0 1.5rem;
             border-left: 1px solid #ccc;
@@ -464,15 +462,13 @@
             background-color: #111827;
             border-radius: 8px;
             margin: 0 auto;
-            max-width: 80%;
+            width: 100%;
             margin-top: 2rem;
         }
 
         .single-article img {
             max-width: 100%;
             height: auto;
-            width: 1000px;
-            height: 450px;
         }
 
         .single-article h2 {
@@ -492,6 +488,28 @@
 
         .single-article .content .extra-info {
             display: none;
+        }
+
+        /* Vertical separator */
+        .vertical-separator {
+            border-left: 1px solid #E5E7EB;
+            margin: 0 2rem;
+        }
+        
+        .small-article {
+            flex: 1;
+            margin-top: 2rem;
+        }
+        
+        .small-article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .small-article .article-title {
+            font-size: 1.25rem;
+            margin-top: 0.5rem;
+            color: #E5E7EB;
         }
     </style>
 </head>
@@ -569,9 +587,45 @@
                     </div>
                 </article>
             </div>
+            <div class="magazine-column small-article">
+                <div class="vertical-separator"></div>
+                <article class="article">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 1</a>
+                    </h3>
+                </article>
+                <article class="article">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 2</a>
+                    </h3>
+                </article>
+            </div>
+            <div class="magazine-column small-article">
+                <div class="vertical-separator"></div>
+                <article class="article">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 3</a>
+                    </h3>
+                </article>
+                <article class="article">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 4</a>
+                    </h3>
+                </article>
+            </div>
         </div>
-
-        <!-- Contenu vide -->
     </main>
 
     <!-- Footer Section -->
