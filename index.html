@@ -423,35 +423,32 @@
             vertical-align: middle;
         }
 
-        .political-bias-bar {
+         .political-bar {
             display: flex;
-            align-items: center;
-            height: 18px;
-            margin: 10px 0;
-            border-radius: 2px;
-            overflow: hidden;
+            height: 20px;
+            margin-top: 1.5rem;
         }
-
-        .political-bias-bar .bias-section {
+        .political-bar .section {
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #111827;
+            color: #fff;
             font-weight: bold;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
         }
-
-        .political-bias-bar .left {
+        .political-bar .section.red {
             background-color: #7a1f1f;
         }
-
-        .political-bias-bar .center {
+        .political-bar .section.white {
             background-color: #e4e7ed;
-            color: #111827;
+            color: #000;
         }
-
-        .political-bias-bar .right {
+        .political-bar .section.blue {
             background-color: #193580;
+        }
+        .political-bar .section span {
+            position: absolute;
         }
 
         :focus {
@@ -588,10 +585,16 @@
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 1</a>
                     </h3>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 30%;">G 30%</div>
-                        <div class="bias-section center" style="width: 50%;">C 50%</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="horizontal-separator"></div>
                 </article>
@@ -602,10 +605,16 @@
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 2</a>
                     </h3>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 30%;">G 30%</div>
-                        <div class="bias-section center" style="width: 50%;">C 50%</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="horizontal-separator"></div>
                 </article>
@@ -619,10 +628,16 @@
                     <h2 class="article-title article-title--large">
                         <a href="#" class="article-link">The First Signs of Alcoholic Liver Damage Are Not in the Liver</a>
                     </h2>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 30%;">G 30%</div>
-                        <div class="bias-section center" style="width: 50%;">C 50%</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="content">
                         <div class="text">
@@ -651,10 +666,16 @@
                     <h2 class="article-title article-title--large">
                         <a href="#" class="article-link">Second Article Title</a>
                     </h2>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 25%;">G 25%</div>
-                        <div class="bias-section center" style="width: 50%;">C 50%</div>
-                        <div class="bias-section right" style="width: 25%;">D 25%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="content">
                         <div class="text">
@@ -682,10 +703,16 @@
                     <h2 class="article-title article-title--large">
                         <a href="#" class="article-link">Third Article Title</a>
                     </h2>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 20%;">G 20%</div>
-                        <div class="bias-section center" style="width: 60%;">C 60%</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="content">
                         <div class="text">
@@ -713,10 +740,16 @@
                     <h2 class="article-title article-title--large">
                         <a href="#" class="article-link">Fourth Article Title</a>
                     </h2>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 35%;">G 35%</div>
-                        <div class="bias-section center" style="width: 30%;">C 30%</div>
-                        <div class="bias-section right" style="width: 35%;">D 35%</div>
+                     <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="content">
                         <div class="text">
@@ -744,10 +777,16 @@
                     <h2 class="article-title article-title--large">
                         <a href="#" class="article-link">Fifth Article Title</a>
                     </h2>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 10%;">G 10%</div>
-                        <div class="bias-section center" style="width: 70%;">C 70%</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="content">
                         <div class="text">
@@ -779,10 +818,16 @@
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 3</a>
                     </h3>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 30%;">G 30%</div>
-                        <div class="bias-section center" style="width: 50%;">C 50%</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="horizontal-separator"></div>
                 </article>
@@ -793,10 +838,16 @@
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 4</a>
                     </h3>
-                    <div class="political-bias-bar">
-                        <div class="bias-section left" style="width: 30%;">G 30%</div>
-                        <div class="bias-section center" style="width: 50%;">C 50%</div>
-                        <div class="bias-section right" style="width: 20%;">D 20%</div>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
                     </div>
                     <div class="horizontal-separator"></div>
                 </article>
