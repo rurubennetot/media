@@ -9,26 +9,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap');
         body {
             background-color: #111827;
             color: #fff;
             font-family: 'Arial', sans-serif;
+            padding: 2rem;
         }
-        .header-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
+        .header-title,
         .key-figures-title {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Playfair Display', serif;
             font-size: 3rem;
             font-weight: bold;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
         .article-title {
@@ -44,28 +37,28 @@
         }
         .separator {
             border-bottom: 1px solid #fff;
-            margin: 8px 0;
+            margin: 16px 0;
         }
         .vertical-separator {
             border-left: 2px solid #fff;
-            margin: 0 16px;
+            margin: 0 32px;
         }
         .stock-container {
             display: flex;
             justify-content: space-between;
-            padding: 16px;
-            margin-top: 8px;
+            padding: 32px;
+            margin-top: 16px;
             text-align: center;
         }
         .stock-section {
             flex: 1;
-            margin-right: 16px;
+            margin-right: 32px;
         }
         .stock-section:last-child {
             margin-right: 0;
         }
         .stock-item {
-            margin: 8px 0;
+            margin: 16px 0;
             font-size: 1.1rem;
         }
         .stock-item .name {
@@ -91,7 +84,7 @@
         .political-bar {
             display: flex;
             height: 20px;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
         .political-bar .section {
             position: relative;
@@ -115,7 +108,6 @@
         .political-bar .section span {
             position: absolute;
         }
-
         .header {
             padding: 3rem 1.5rem 4rem;
             display: flex;
@@ -123,31 +115,26 @@
             align-items: center;
             width: 100%;
         }
-
         .header-left {
             display: flex;
             align-items: center;
         }
-
         .header-left img {
             max-height: 40px;
             width: auto;
             margin-right: 10px;
         }
-
         .header-left .site-name {
             font-size: 3rem;
             font-weight: 700;
             color: #E5E7EB;
         }
-
         .header-middle {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             position: relative;
         }
-
         .header-middle input.search {
             border: none;
             border-bottom: 2px solid #E5E7EB;
@@ -161,38 +148,32 @@
             color: #E5E7EB;
             transition: width 0.3s, border-bottom-color 0.3s;
         }
-
         .header-middle input.search::placeholder {
             color: #E5E7EB;
             opacity: 0.7;
         }
-
         .header-middle input.search:focus {
             width: 100%;
             border-bottom-color: #fabea1;
             outline: none;
         }
-
         .header-right {
             display: flex;
             align-items: center;
         }
-
         .header-link {
             color: #E5E7EB;
             text-decoration: none;
-            margin: 0 .75rem;
+            margin: 0 1rem;
             display: inline-block;
             font-weight: 500;
         }
-
         .header-link--button {
             background-color: #E5E7EB;
             color: #11194B;
-            padding: .5rem 1.25rem;
+            padding: .75rem 1.5rem;
             border-radius: 4px;
         }
-
         nav {
             position: relative;
             padding-bottom: 12px;
@@ -203,7 +184,6 @@
             flex-direction: column;
             width: 100%;
         }
-
         nav .line {
             height: 2px;
             background: #E5E7EB;
@@ -213,7 +193,6 @@
             left: 50%;
             transform: translateX(-50%);
         }
-
         nav ul {
             padding: 0;
             margin: 0;
@@ -222,11 +201,9 @@
             justify-content: center;
             align-items: center;
         }
-
         nav ul li {
             margin: 0 30px;
         }
-
         nav ul li a {
             text-decoration: none;
             color: #E5E7EB;
@@ -237,14 +214,12 @@
             font-size: 1.35rem;
             position: relative;
         }
-
         #toggle {
             display: block;
             width: 28px;
             height: 30px;
             margin: 0 auto 10px;
         }
-
         #toggle span:after,
         #toggle span:before {
             content: "";
@@ -252,16 +227,13 @@
             left: 0;
             top: -9px;
         }
-
         #toggle span:after {
             top: 9px;
         }
-
         #toggle span {
             position: relative;
             display: block;
         }
-
         #toggle span,
         #toggle span:after,
         #toggle span:before {
@@ -272,26 +244,19 @@
             backface-visibility: hidden;
             border-radius: 2px;
         }
-
-        /* on activation */
         #toggle.on span {
             background-color: transparent;
         }
-
         #toggle.on span:before {
             transform: rotate(45deg) translate(5px, 5px);
         }
-
         #toggle.on span:after {
             transform: rotate(-45deg) translate(7px, -8px);
         }
-
         #toggle.on + #menu {
             opacity: 1;
             visibility: visible;
         }
-
-        /* menu appearance */
         #menu {
             position: absolute;
             top: 30px;
@@ -308,7 +273,6 @@
             transition: opacity .4s;
             z-index: 10;
         }
-
         #menu ul {
             margin: 0;
             padding: 0;
@@ -317,11 +281,9 @@
             justify-content: center;
             align-items: center;
         }
-
         #menu ul li {
             margin: 0 30px;
         }
-
         #menu ul li a {
             padding: 5px 10px;
             color: #E5E7EB;
@@ -329,36 +291,30 @@
             transition: all .2s;
             border: 2px solid transparent;
         }
-
         #menu ul li a:hover,
         #menu ul li a:focus {
             border: 2px solid #fff;
         }
-
         #menu ul {
             display: flex;
             justify-content: center;
         }
-
         #menu ul li {
             flex: 1;
             text-align: center;
         }
-
         #menu ul li:nth-child(3) a {
             font-size: 1.75rem;
         }
-
         #menu ul li:nth-child(4) a {
             min-width: 180px;
         }
-
         #menu ul li:not(:nth-child(3)) a {
             font-size: 1.1rem;
         }
     </style>
 </head>
-<body class="p-4">
+<body>
     <!-- Header Section -->
     <header class="header responsive-wrapper">
         <div class="header-left">
@@ -369,7 +325,7 @@
             <input type="search" class="search" placeholder="Rechercher...">
         </div>
         <div class="header-right">
-            <a href="#" class="header-link header-link--button">Get 1 year for $50 USD</a>
+            <a href="#" class="header-link header-link--button">NewsLetter</a>
             <a href="#" class="header-link">Login</a>
         </div>
     </header>
@@ -398,16 +354,16 @@
 
         <!-- Main Content Section -->
         <main class="flex">
-            <section class="w-2/3 pr-4">
-                <div class="mb-8">
+            <section class="w-2/3 pr-8">
+                <div class="mb-16">
                     <h2 class="header-title">Impact Solide</h2>
-                    <div class="bg-gray-200 flex items-center justify-center mb-4" style="height: 400px;">
+                    <div class="bg-gray-200 flex items-center justify-center mb-8" style="height: 400px;">
                         <span class="text-black text-xl">800 X 400</span>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-8">
                         <span class="font-bold text-2xl article-title">Titre</span>
                     </div>
-                    <div class="political-bar mb-4">
+                    <div class="political-bar mb-8">
                         <div class="section red" style="width: 30%;">
                             <span>G 30%</span>
                         </div>
@@ -418,9 +374,9 @@
                             <span>D 20%</span>
                         </div>
                     </div>
-                    <p class="text-sm mb-4">Résumé: This is a brief summary of the main article to provide readers with an overview of the content.</p>
-                    <div class="separator mb-8"></div>
-                    <div class="stock-container mb-8">
+                    <p class="text-sm mb-8">Résumé: This is a brief summary of the main article to provide readers with an overview of the content.</p>
+                    <div class="separator mb-16"></div>
+                    <div class="stock-container mb-16">
                         <div class="stock-section">
                             <div class="stock-item">
                                 <span class="name">BTCUSD</span> = <span class="value" id="btcusd-price">Loading...</span> <span class="change" id="btcusd-change">...</span>
@@ -447,11 +403,9 @@
                     </div>
                 </div>
             </section>
-
             <div class="vertical-separator h-auto"></div>
-
-            <aside class="w-1/3 pl-4">
-                <div class="mb-8">
+            <aside class="w-1/3 pl-8">
+                <div class="mb-16">
                     <h2 class="key-figures-title">Les Chiffres</h2>
                     <div class="key-figure-section">
                         <p class="key-figure">Du jour : 321 ...</p>
@@ -463,12 +417,12 @@
                         <p class="key-figure">Du mois : 40223 ...</p>
                     </div>
                 </div>
-                <div class="separator mb-8" style="margin-bottom: 24px;"></div>
-                <div class="bg-gray-200 flex items-center justify-center mb-8" style="height: 400px; margin-bottom: 24px;">
+                <div class="separator mb-16"></div>
+                <div class="bg-gray-200 flex items-center justify-center mb-16" style="height: 400px;">
                     <span class="text-black text-xl">600 X 400</span>
                 </div>
-                <h2 class="font-bold text-lg text-center mb-4 article-title">The First Signs of Alcoholic Liver Damage Are Not in the Liver</h2>
-                <div class="political-bar mb-4">
+                <h2 class="font-bold text-lg text-center mb-8 article-title">The First Signs of Alcoholic Liver Damage Are Not in the Liver</h2>
+                <div class="political-bar mb-8">
                     <div class="section red" style="width: 30%;">
                         <span>G 30%</span>
                     </div>
@@ -479,10 +433,10 @@
                         <span>D 20%</span>
                     </div>
                 </div>
-                <p class="text-sm mb-4">The combination of my father's death and my personal background lit a fire in me to know more.</p>
-                <p class="text-sm mb-4">He was admitted to the hospital on June 24, 2016.</p>
-                <div class="flex items-center mb-4">
-                    <img src="https://placehold.co/40x40" alt="Profile picture of David Sherof" class="w-10 h-10 rounded-full mr-2">
+                <p class="text-sm mb-8">The combination of my father's death and my personal background lit a fire in me to know more.</p>
+                <p class="text-sm mb-8">He was admitted to the hospital on June 24, 2016.</p>
+                <div class="flex items-center mb-8">
+                    <img src="https://placehold.co/40x40" alt="Profile picture of David Sherof" class="w-10 h-10 rounded-full mr-4">
                     <div>
                         <p class="text-sm">David Sherof</p>
                         <p class="text-xs text-gray-400">Reporter</p>
@@ -491,7 +445,6 @@
             </aside>
         </main>
     </main>
-
     <script>
         async function fetchMarketPrices() {
             const proxy = 'https://api.allorigins.win/get?url=';
@@ -508,7 +461,7 @@
                 const [sp500Data, cac40Data, btcusdData, eurusdData, ethusdData, solusdData] = await Promise.all([
                     fetch(urls.sp500).then(response => response.json()).then(data => JSON.parse(data.contents)),
                     fetch(urls.cac40).then(response => response.json()).then(data => JSON.parse(data.contents)),
-                    fetch(urls.btcusd).then(response => response.json()).then data => JSON.parse(data.contents)),
+                    fetch(urls.btcusd).then(response => response.json()).then(data => JSON.parse(data.contents)),
                     fetch(urls.eurusd).then(response => response.json()).then(data => JSON.parse(data.contents)),
                     fetch(urls.ethusd).then(response => response.json()),
                     fetch(urls.solusd).then(response => response.json())
@@ -550,6 +503,47 @@
         }
 
         document.addEventListener('DOMContentLoaded', fetchMarketPrices);
+
+        var theToggle = document.getElementById('toggle');
+
+        // hasClass
+        function hasClass(elem, className) {
+            return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+        }
+        // addClass
+        function addClass(elem, className) {
+            if (!hasClass(elem, className)) {
+                elem.className += ' ' + className;
+            }
+        }
+        // removeClass
+        function removeClass(elem, className) {
+            var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+            if (hasClass(elem, className)) {
+                while (newClass.indexOf(' ' + className + ' ') >= 0) {
+                    newClass = newClass.replace(' ' + className + ' ', ' ');
+                }
+                elem.className = newClass.replace(/^\s+|\s+$/g, '');
+            }
+        }
+        // toggleClass
+        function toggleClass(elem, className) {
+            var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, " ") + ' ';
+            if (hasClass(elem, className)) {
+                while (newClass.indexOf(" " + className + " ") >= 0) {
+                    newClass = newClass.replace(" " + className + " ", " ");
+                }
+                elem.className = newClass.replace(/^\s+|\s+$/g, '');
+            } else {
+                elem.className += ' ' + className;
+            }
+        }
+
+        theToggle.onclick = function() {
+            toggleClass(this, 'on');
+            toggleClass(document.getElementById('menu'), 'on');
+            return false;
+        }
     </script>
 </body>
 </html>
