@@ -318,7 +318,7 @@
         }
 
         .magazine-column article {
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem; /* Adjusted the margin */
         }
 
         .vertical-separator {
@@ -328,10 +328,10 @@
         }
 
         .horizontal-separator {
-            width: 140%;
-            height: 2px;
+            width: 80%;
+            height: 1px;
             background-color: #E5E7EB;
-            margin: 2rem -20%;
+            margin: 0.25rem auto; /* Reduced space between political bars and separators */
         }
 
         .section-title {
@@ -423,10 +423,10 @@
             vertical-align: middle;
         }
 
-         .political-bar {
+        .political-bar {
             display: flex;
             height: 20px;
-            margin-top: 1.5rem;
+            margin-top: 0.5rem; /* Reduced space between political bars and separators */
         }
         .political-bar .section {
             position: relative;
@@ -508,6 +508,19 @@
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .small-article.blue {
+            background-color: rgba(60, 58, 142, 0.1); /* Subtle blue background */
+        }
+
+        .small-article.red {
+            background-color: rgba(158, 57, 57, 0.1); /* Subtle red background */
+        }
+
+        .small-article.white {
+            background-color: rgba(228, 231, 237, 0.1); /* Subtle white background */
         }
 
         .small-article img {
@@ -578,7 +591,7 @@
         <div id="actu-du-jour" class="magazine-layout">
             <div class="magazine-column">
                 <h2 class="section-title section-title--blindspot">•BlindSpot•</h2>
-                <article class="small-article">
+                <article class="small-article blue">
                     <figure>
                         <img src="https://placehold.co/300x200" alt="Image de l'article" />
                     </figure>
@@ -587,36 +600,66 @@
                     </h3>
                     <div class="political-bar mb-8">
                         <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
+                            <span>30%</span>
                         </div>
-                        <div class="section white" style="width: 50%;">
-                            <span>C 50%</span>
+                        <div class="section white" style="width: 20%;">
+                            <span>20%</span>
                         </div>
-                        <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
+                        <div class="section blue" style="width: 50%;">
+                            <span>D 50%</span>
                         </div>
                     </div>
-                    <div class="horizontal-separator"></div>
                 </article>
-                <article class="small-article">
-                    <figure>
-                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
-                    </figure>
+                <div class="horizontal-separator"></div>
+                <article class="small-article red">
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 2</a>
                     </h3>
                     <div class="political-bar mb-8">
-                        <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
+                        <div class="section red" style="width: 60%;">
+                            <span>G 60%</span>
                         </div>
-                        <div class="section white" style="width: 50%;">
-                            <span>C 50%</span>
+                        <div class="section white" style="width: 20%;">
+                            <span>20%</span>
                         </div>
                         <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
+                            <span>20%</span>
                         </div>
                     </div>
-                    <div class="horizontal-separator"></div>
+                </article>
+                <div class="horizontal-separator"></div>
+                <article class="small-article white">
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 5</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 10%;">
+                            <span>10%</span>
+                        </div>
+                        <div class="section white" style="width: 70%;">
+                            <span>C 70%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
+                <div class="horizontal-separator"></div>
+                <article class="small-article blue">
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 6</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 25%;">
+                            <span>25%</span>
+                        </div>
+                        <div class="section white" style="width: 25%;">
+                            <span>25%</span>
+                        </div>
+                        <div class="section blue" style="width: 50%;">
+                            <span>D 50%</span>
+                        </div>
+                    </div>
                 </article>
             </div>
             <div class="vertical-separator"></div>
@@ -820,36 +863,66 @@
                     </h3>
                     <div class="political-bar mb-8">
                         <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
+                            <span>30%</span>
                         </div>
                         <div class="section white" style="width: 50%;">
                             <span>C 50%</span>
                         </div>
                         <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
+                            <span>20%</span>
                         </div>
                     </div>
-                    <div class="horizontal-separator"></div>
                 </article>
+                <div class="horizontal-separator"></div>
                 <article class="small-article">
-                    <figure>
-                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
-                    </figure>
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 4</a>
                     </h3>
                     <div class="political-bar mb-8">
                         <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
+                            <span>30%</span>
                         </div>
                         <div class="section white" style="width: 50%;">
                             <span>C 50%</span>
                         </div>
                         <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
+                            <span>20%</span>
                         </div>
                     </div>
-                    <div class="horizontal-separator"></div>
+                </article>
+                <div class="horizontal-separator"></div>
+                <article class="small-article">
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 7</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
+                <div class="horizontal-separator"></div>
+                <article class="small-article">
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 8</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
                 </article>
             </div>
         </div>
