@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perspectiv - Newsletters</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@500;600;700&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Roboto:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap');
+
+        *,
+        *:after,
+        *:before {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            background-color: #111827;
+            color: #E5E7EB;
+            padding-bottom: 5rem;
+            margin: 0;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .responsive-wrapper {
+            width: 100%;
+            max-width: 1900px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            padding: 3rem 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left img {
+            max-height: 40px;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .header-left .site-name {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #E5E7EB;
+        }
+
+        .header-middle {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header-middle input.search {
+            border: none;
+            border-bottom: 2px solid #E5E7EB;
+            height: 3rem;
+            padding: 0 1.5rem;
+            width: 300px;
+            max-width: 300px;
+            border-radius: 0;
+            font-size: 1.4rem;
+            background: none;
+            color: #E5E7EB;
+            transition: width 0.3s, border-bottom-color 0.3s;
+        }
+
+        .header-middle input.search::placeholder {
+            color: #E5E7EB;
+            opacity: 0.7;
+        }
+
+        .header-middle input.search:focus {
+            width: 100%;
+            border-bottom-color: #fabea1;
+            outline: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-link {
+            color: #E5E7EB;
+            text-decoration: none;
+            margin: 0 .75rem;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .header-link--button {
+            background-color: #E5E7EB;
+            color: #11194B;
+            padding: .5rem 1.25rem;
+            border-radius: 4px;
+        }
+
+        nav {
+            position: relative;
+            padding-bottom: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        nav .line {
+            height: 2px;
+            background: #E5E7EB;
+            width: 120px;
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        nav ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin: 0 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #E5E7EB;
+            text-transform: uppercase;
+            display: block;
+            font-weight: 600;
+            letter-spacing: .2em;
+            font-size: 1.35rem;
+            position: relative;
+        }
+
+        #toggle {
+            display: block;
+            width: 28px;
+            height: 30px;
+            margin: 0 auto 10px;
+        }
+
+        #toggle span:after,
+        #toggle span:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: -9px;
+        }
+
+        #toggle span:after {
+            top: 9px;
+        }
+
+        #toggle span {
+            position: relative;
+            display: block;
+        }
+
+        #toggle span,
+        #toggle span:after,
+        #toggle span:before {
+            width: 100%;
+            height: 5px;
+            background-color: #E5E7EB;
+            transition: all 0.3s;
+            backface-visibility: hidden;
+            border-radius: 2px;
+        }
+
+        #toggle.on span {
+            background-color: transparent;
+        }
+
+        #toggle.on span:before {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        #toggle.on span:after {
+            transform: rotate(-45deg) translate(7px, -8px);
+        }
+
+        #toggle.on + #menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #menu {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            background: #111827;
+            color: #999;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 4px;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .4s;
+            z-index: 10;
+        }
+
+        #menu ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #menu ul li {
+            margin: 0 30px;
+        }
+
+        #menu ul li a {
+            padding: 5px 10px;
+            color: #E5E7EB;
+            text-decoration: none;
+            transition: all .2s;
+            border: 2px solid transparent;
+        }
+
+        #menu ul li a:hover,
+        #menu ul li a:focus {
+            border: 2px solid #fff;
+        }
+
+        .newsletter-item {
+            cursor: pointer;
+            background-color: #1F2937;
+            border: 1px solid #E5E7EB;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #E5E7EB;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .newsletter-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .selected {
+            border: 2px solid #3B82F6;
+        }
+
+        .newsletter-category {
+            margin-top: 2rem;
+        }
+
+        .newsletter-category h2 {
+            margin-bottom: 1rem;
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .newsletter-category .grid {
+            gap: 1rem;
+        }
+
+        .selected-newsletters {
+            margin-top: 1rem;
+            color: #3B82F6;
+            font-weight: 600;
+        }
+
+        .email-subscription {
+            margin-top: 2rem;
+            background-color: #1F2937;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .email-subscription input[type="email"] {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #374151;
+            color: #E5E7EB;
+        }
+
+        .email-subscription button {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #3B82F6;
+            color: #E5E7EB;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .email-subscription button:hover {
+            background-color: #2563EB;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header class="header responsive-wrapper">
+        <div class="header-left">
+            <img src="https://placehold.co/100x40" alt="Logo de Perspectiv">
+            <span class="site-name">Perspectiv</span>
+        </div>
+        <div class="header-middle">
+            <input type="search" class="search" placeholder="Rechercher...">
+        </div>
+        <div class="header-right">
+            <a href="#" class="header-link header-link--button">NewsLetter</a>
+            <a href="#" class="header-link">Login</a>
+        </div>
+    </header>
+
+    <!-- Navigation Section -->
+    <main class="responsive-wrapper">
+        <!-- Slidebar Section -->
+        <nav>
+            <div class="slidebar">
+                <a href="#menu" id="toggle"><span></span></a>
+                <div id="menu">
+                    <ul>
+                        <li><a href="economie.html">Economie</a></li>
+                        <li><a href="politique.html">Politique</a></li>
+                        <li><a href="profil.html">Profil</a></li>
+                        <li class="active"><a href="geopolitique.html" id="actu-du-jour-link">Géo-politique</a></li>
+                        <li><a href="apropos.html">A propos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <ul>
+                <li class="active"><a href="#" id="actu-du-jour-link">NewsLetter</a></li>
+            </ul>
+            <div class="line"></div>
+        </nav>
+
+        <!-- Newsletters and Alerts Section -->
+        <div class="container mx-auto px-4 py-8">
+            <div class="email-subscription text-center mb-8">
+                <input type="email" placeholder="Enter your email address" class="w-full max-w-md mx-auto p-2 rounded bg-gray-700 text-white">
+                <button class="w-full max-w-md mx-auto mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-700">Subscribe</button>
+                <div class="selected-newsletters mt-4" id="selected-newsletters">Selected Newsletters: None</div>
+            </div>
+
+            <div class="newsletter-category">
+                <h2>Top Picks</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="newsletter-item" data-id="1">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 1</h3>
+                    </div>
+                    <div class="newsletter-item selected" data-id="2">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 2</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="newsletter-category">
+                <h2>Politics and Policy</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="newsletter-item" data-id="3">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 3</h3>
+                    </div>
+                    <div class="newsletter-item" data-id="4">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 4</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="newsletter-category">
+                <h2>Technology</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="newsletter-item" data-id="5">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 5</h3>
+                    </div>
+                    <div class="newsletter-item" data-id="6">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 6</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="newsletter-category">
+                <h2>Sports</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="newsletter-item" data-id="7">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 7</h3>
+                    </div>
+                    <div class="newsletter-item" data-id="8">
+                        <h3 class="text-white text-lg font-semibold">Newsletter Title 8</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        var theToggle = document.getElementById('toggle');
+
+        function hasClass(elem, className) {
+            return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+        }
+
+        function addClass(elem, className) {
+            if (!hasClass(elem, className)) {
+                elem.className += ' ' + className;
+            }
+        }
+
+        function removeClass(elem, className) {
+            var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+            if (hasClass(elem, className)) {
+                while (newClass.indexOf(' ' + className + ' ') >= 0) {
+                    newClass = newClass.replace(' ' + className + ' ', ' ');
+                }
+                elem.className = newClass.replace(/^\s+|\s+$/g, '');
+            }
+        }
+
+        function toggleClass(elem, className) {
+            var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, " ") + ' ';
+            if (hasClass(elem, className)) {
+                while (newClass.indexOf(" " + className + " ") >= 0) {
+                    newClass = newClass.replace(" " + className + " ", " ");
+                }
+                elem.className = newClass.replace(/^\s+|\s+$/g, '');
+            } else {
+                elem.className += ' ' + className;
+            }
+        }
+
+        theToggle.onclick = function () {
+            toggleClass(this, 'on');
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const newsletterItems = document.querySelectorAll('.newsletter-item');
+            const selectedNewsletters = document.getElementById('selected-newsletters');
+
+            newsletterItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    if (item.classList.contains('selected')) {
+                        item.classList.remove('selected');
+                    } else {
+                        item.classList.add('selected');
+                    }
+                    updateSelectedNewsletters();
+                });
+            });
+
+            function updateSelectedNewsletters() {
+                const selected = document.querySelectorAll('.newsletter-item.selected');
+                const selectedTitles = Array.from(selected).map(item => item.querySelector('h3').innerText).join(', ');
+                selectedNewsletters.innerText = selectedTitles ? 'Selected Newsletters: ' + selectedTitles : 'Selected Newsletters: None';
+            }
+
+            updateSelectedNewsletters();
+        });
+    </script>
+</body>
+
+</html>
