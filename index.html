@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Roboto:wght@700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap');
@@ -18,15 +17,14 @@
         *:before {
             box-sizing: border-box;
         }
-
         body {
             font-family: "DM Sans", sans-serif;
             font-size: 1rem;
             line-height: 1.5;
             background-color: #111827;
-            color: #E5E7EB;
-            padding-bottom: 5rem;
+            color: #FFFFFF;
             margin: 0;
+            padding: 0; /* Ajout de padding 0 */
         }
 
         img {
@@ -34,68 +32,58 @@
             max-width: 100%;
         }
 
-        .responsive-wrapper {
-            width: 100%;
-            max-width: 1900px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
         .header {
-            padding: 3rem 1.5rem 4rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            background-color: #111827;
+            border-bottom: 1px solid #E5E7EB;
+            margin: 0;
         }
 
         .header-left {
             display: flex;
             align-items: center;
+            flex-grow: 1;
         }
 
         .header-left img {
             max-height: 40px;
             width: auto;
-            margin-right: 10px;
+            margin-right: 20px;
         }
 
         .header-left .site-name {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            color: #E5E7EB;
+            color: #FFFFFF;
+            margin-right: 20px;
         }
 
-        .header-middle {
-            flex-grow: 1;
+        .header-left .categories {
             display: flex;
-            justify-content: center;
-            position: relative;
+            gap: 1rem;
+            align-items: center;
         }
 
-        .header-middle input.search {
-            border: none;
-            border-bottom: 2px solid #E5E7EB;
-            height: 3rem;
-            padding: 0 1.5rem;
-            width: 300px;
-            max-width: 300px;
-            border-radius: 0;
-            font-size: 1.4rem;
-            background: none;
-            color: #E5E7EB;
-            transition: width 0.3s, border-bottom-color 0.3s;
+        .header-left .categories a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-bottom: 2px solid transparent;
         }
 
-        .header-middle input.search::placeholder {
-            color: #E5E7EB;
-            opacity: 0.7;
+        .header-left .categories a:hover,
+        .header-left .categories a.active {
+            border-bottom: 2px solid #FFFFFF;
         }
-
-        .header-middle input.search:focus {
-            width: 100%;
-            border-bottom-color: #fabea1;
-            outline: none;
+        
+        .header, .sub-categories {
+            display: flex;
+            align-items: center;
         }
 
         .header-right {
@@ -103,72 +91,57 @@
             align-items: center;
         }
 
-        .header-link {
-            color: #E5E7EB;
+        .header-right a {
+            color: #FFFFFF;
             text-decoration: none;
-            margin: 0 .75rem;
-            display: inline-block;
+            margin-left: 1rem;
             font-weight: 500;
-        }
-
-        .header-link--button {
-            background-color: #E5E7EB;
-            color: #11194B;
-            padding: .5rem 1.25rem;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
+            border: 1px solid #FFFFFF;
         }
 
-        nav {
-            position: relative;
-            padding-bottom: 12px;
-            margin-bottom: 2rem;
+        .header-right a.header-link--button {
+            background-color: #FFFFFF;
+            color: #111827;
+            border: none;
+        }
+
+        .sub-categories {
+            background-color: #111827;
+            padding: 0.75rem 1.5rem;
             display: flex;
             justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            width: 100%;
+            gap: 1rem;
+            color: #FFFFFF;
         }
 
-        nav .line {
-            height: 2px;
-            background: #E5E7EB;
-            width: 120px;
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        nav ul {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        nav ul li {
-            margin: 0 30px;
-        }
-
-        nav ul li a {
+        .sub-categories a {
+            padding: 0.75rem 2rem;
+            background-color: #1F2937;
+            color: #FFFFFF;
             text-decoration: none;
-            color: #E5E7EB;
-            text-transform: uppercase;
-            display: block;
-            font-weight: 600;
-            letter-spacing: .2em;
-            font-size: 1.35rem;
-            position: relative;
+            border-radius: 10px;
+            font-size: 1rem;
+            white-space: nowrap;
         }
 
-        .hidden {
-            display: none;
+        .sub-categories a:hover {
+            background-color: #374151;
         }
 
-        .transition {
-            transition: all 0.3s ease;
+        .small-horizontal-separator {
+            width: 100px;
+            height: 2px;
+            background-color: #E5E7EB;
+            margin: 1rem auto;
+        }
+
+        .small-horizontal-separator1 {
+            width: 100px;
+            height: 2px;
+            background-color: #E5E7EB;
+            margin: 2rem auto; /* Updated margin */
         }
 
         .economie-section {
@@ -178,127 +151,6 @@
             margin: 2rem auto;
             max-width: 80%;
             color: #E5E7EB;
-        }
-
-        /* Slidebar Styles */
-        #toggle {
-            display: block;
-            width: 28px;
-            height: 30px;
-            margin: 0 auto 10px;
-        }
-
-        #toggle span:after,
-        #toggle span:before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: -9px;
-        }
-        #toggle span:after{
-            top: 9px;
-        }
-        #toggle span {
-            position: relative;
-            display: block;
-        }
-
-        #toggle span,
-        #toggle span:after,
-        #toggle span:before {
-            width: 100%;
-            height: 5px;
-            background-color: #E5E7EB;
-            transition: all 0.3s;
-            backface-visibility: hidden;
-            border-radius: 2px;
-        }
-
-        /* on activation */
-        #toggle.on span {
-            background-color: transparent;
-        }
-        #toggle.on span:before {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        #toggle.on span:after {
-            transform: rotate(-45deg) translate(7px, -8px);
-        }
-        #toggle.on + #menu {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* menu appearance */
-        #menu {
-            position: absolute;
-            top: 30px;
-            left: 0;
-            width: 100%;
-            background: #111827;
-            color: #999;
-            padding: 10px 0;
-            text-align: center;
-            border-radius: 4px;
-            box-shadow: 0 1px 8px rgba(0,0,0,0.05);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity .4s;
-            z-index: 10;
-        }
-        #menu ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #menu ul li {
-            margin: 0 30px;
-        }
-        #menu ul li a {
-            padding: 5px 10px;
-            color: #E5E7EB;
-            text-decoration: none;
-            transition: all .2s;
-            border: 2px solid transparent;
-        }
-        #menu ul li a:hover,
-        #menu ul li a:focus {
-            border: 2px solid #fff;
-        }
-
-        /* Center the menu items around "Actu du jour" */
-        #menu ul {
-            display: flex;
-            justify-content: center;
-        }
-        #menu ul li {
-            flex: 1;
-            text-align: center;
-        }
-
-        /* Profil font size */
-        #menu ul li:nth-child(3) a {
-            font-size: 1.75rem;
-        }
-
-        /* Stretch menu for Geo-politique */
-        #menu ul li:nth-child(4) a {
-            min-width: 180px;
-        }
-
-        /* Smaller font size for other items */
-        #menu ul li:not(:nth-child(3)) a {
-            font-size: 1.1rem;
-        }
-
-        /* demo styles */
-        p, p a {
-            font-size: 12px;
-            text-align: center;
-            color: #888;
         }
 
         .magazine-layout {
@@ -315,29 +167,58 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            min-height: 550px;
         }
 
         .magazine-column article {
-            margin-bottom: 0.5rem; /* Adjusted the margin */
+            margin-bottom: 0.5rem;
+            padding: 1rem;
+        }
+
+        .magazine-column article.left {
+            border: 2px solid #E5E7EB;
+            background-color: #1F2937;
+            text-align: center;
+        }
+
+        .magazine-column article.left img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 0;
+        }
+
+        .magazine-column article.left .article-title {
+            padding: 1rem;
+            background-color: #111827;
+            margin: 0;
         }
 
         .vertical-separator {
             width: 2px;
             background-color: #E5E7EB;
             height: 100%;
+            margin: 2rem 0;
         }
 
         .horizontal-separator {
-            width: 80%;
-            height: 1px;
+            width: 100%;
+            height: 2px;
             background-color: #E5E7EB;
-            margin: 0.25rem auto; /* Reduced space between political bars and separators */
+            margin: 1.5rem 0;
+        }
+
+        .horizontal-separator1 {
+            width: 100%;
+            height: 2px;
+            background-color: #E5E7EB;
+            margin: 35rem 0 -30rem 0; /* Maintains position at 35rem and reduces space below */
         }
 
         .section-title {
             font-size: 2rem;
             font-weight: 700;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Playfair Display', serif;
             margin-bottom: 1rem;
         }
 
@@ -345,12 +226,12 @@
             font-family: "Fraunces", serif;
             font-weight: 600;
             line-height: 1.25;
-            color: #E5E7EB;
+            color: #FFFFFF;
         }
 
         .article-title--large {
             font-size: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .article-title--medium {
@@ -367,7 +248,7 @@
         .article-creditation {
             font-size: 1rem;
             line-height: 1.4;
-            color: #E5E7EB;
+            color: #FFFFFF;
         }
 
         .article-excerpt p + p {
@@ -395,7 +276,7 @@
 
         .article-author-info {
             line-height: 1.375;
-            color: #E5E7EB;
+            color: #FFFFFF;
         }
 
         .article-author-info dl {
@@ -414,7 +295,7 @@
             font-weight: 500;
             margin-bottom: 1rem;
             display: block;
-            color: #E5E7EB;
+            color: #FFFFFF;
         }
 
         .article-category svg {
@@ -426,8 +307,9 @@
         .political-bar {
             display: flex;
             height: 20px;
-            margin-top: 0.5rem; /* Reduced space between political bars and separators */
+            margin-top: 0.5rem;
         }
+
         .political-bar .section {
             position: relative;
             display: flex;
@@ -437,16 +319,20 @@
             font-weight: bold;
             font-size: 0.75rem;
         }
+
         .political-bar .section.red {
             background-color: #9E3939;
         }
+
         .political-bar .section.white {
             background-color: #e4e7ed;
             color: #000;
         }
+
         .political-bar .section.blue {
             background-color: #3C3A8E;
         }
+
         .political-bar .section span {
             position: absolute;
         }
@@ -471,6 +357,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
+            margin-bottom: 0.5rem;
         }
 
         .single-article.active {
@@ -485,7 +372,7 @@
 
         .single-article h2 {
             margin-top: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .single-article .content {
@@ -498,41 +385,30 @@
             margin-right: 1rem;
         }
 
-        .single-article .content .extra-info {
-            display: none;
-        }
-
         .small-article {
-            width: 80%;
-            background-color: #111827; /* Same as body background */
-            padding: 1rem;
+            width: 100%;
+            background-color: #111827;
+            padding: 2rem;
             border-radius: 8px;
             margin-bottom: 1rem;
             position: relative;
         }
 
-        .small-article.blue {
-            background-color: rgba(60, 58, 142, 0.1); /* Subtle blue background */
-        }
-
-        .small-article.red {
-            background-color: rgba(158, 57, 57, 0.1); /* Subtle red background */
-        }
-
-        .small-article.white {
-            background-color: rgba(228, 231, 237, 0.1); /* Subtle white background */
+        .small-article.left {
+            border: 2px solid #E5E7EB;
+            background: #1F2937;
         }
 
         .small-article img {
             width: 100%;
             height: auto;
-            margin-bottom: 1rem;
+            margin-bottom: 0;
         }
 
         .small-article .article-title {
-            font-size: 1.25rem;
+            font-size: 1.75rem;
             margin-top: 0.5rem;
-            color: #E5E7EB;
+            color: #FFFFFF;
         }
 
         .section-title--blindspot {
@@ -540,60 +416,75 @@
         }
 
         .section-title--france {
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Playfair Display', serif;
         }
 
         .article-container {
             position: relative;
-            height: 100vh;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .small-articles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .footer {
+            text-align: center;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background-color: #111827;
+            color: #FFFFFF;
         }
     </style>
 </head>
 <body>
     <!-- Header Section -->
-    <header class="header responsive-wrapper">
+    <header class="header">
         <div class="header-left">
-            <img src="https://placehold.co/100x40" alt="Logo de Perspectiv">
+            <img src="https://i.imgur.com/JDZe0Ml.png" alt="Logo de Perspectiv">
             <span class="site-name">Perspectiv</span>
-        </div>
-        <div class="header-middle">
-            <input type="search" class="search" placeholder="Rechercher...">
+            <div class="categories">
+                <a href="economie.html" class="active">Economie</a>
+                <a href="politique.html">Politique</a>
+                <a href="profil.html">Profil</a>
+                <a href="geopolitique.html">Géo-politique</a>
+            </div>
         </div>
         <div class="header-right">
-            <a href="newsletter.html" class="header-link header-link--button">NewsLetter</a>
+            <a href="newsletter.html" class="header-link header-link--button">Newsletters</a>
             <a href="signup.html" class="header-link">Login</a>
         </div>
     </header>
 
-    <!-- Navigation Section -->
-    <main class="responsive-wrapper">
-        <!-- Slidebar Section -->
-        <nav>
-            <div class="slidebar">
-                <a href="#menu" id="toggle"><span></span></a>
-                <div id="menu">
-                    <ul>
-                        <li><a href="economie.html">Economie</a></li>
-                        <li><a href="politique.html">Politique</a></li>
-                        <li><a href="profil.html">Profil</a></li>
-                        <li class="active"><a href="geopolitique.html" id="actu-du-jour-link">Géo-politique</a></li>
-                        <li><a href="apropos.html">A propos</a></li>
-                    </ul>
-                </div>
-            </div>
-            <ul>
-                <li class="active"><a href="#" id="actu-du-jour-link">Actu du jour</a></li>
-            </ul>
-            <div class="line"></div>
-        </nav>
+    <!-- Small horizontal separator above sub-categories -->
+    <div class="small-horizontal-separator"></div>
 
-        <!-- Actu du Jour Section -->
+    <!-- Sub Categories -->
+    <div class="sub-categories">
+        <a href="#">Tendance Actuelle 1</a>
+        <a href="#">Tendance Actuelle 2</a>
+        <a href="#">Tendance Actuelle 3</a>
+        <a href="#">Tendance Actuelle 4</a>
+    </div>
+     
+    <!-- Small horizontal separator below sub-categories -->
+    <div class="small-horizontal-separator1"></div>
+
+    <!-- Main Content -->
+    <main class="responsive-wrapper">
         <div id="actu-du-jour" class="magazine-layout">
             <div class="magazine-column">
                 <h2 class="section-title section-title--blindspot">•BlindSpot•</h2>
-                <article class="small-article blue">
+                <article class="small-article left">
                     <figure>
-                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 1" />
                     </figure>
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 1</a>
@@ -610,8 +501,10 @@
                         </div>
                     </div>
                 </article>
-                <div class="horizontal-separator"></div>
-                <article class="small-article red">
+                <article class="small-article left">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 2" />
+                    </figure>
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 2</a>
                     </h3>
@@ -627,8 +520,10 @@
                         </div>
                     </div>
                 </article>
-                <div class="horizontal-separator"></div>
-                <article class="small-article white">
+                <article class="small-article left">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 3" />
+                    </figure>
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 5</a>
                     </h3>
@@ -644,32 +539,17 @@
                         </div>
                     </div>
                 </article>
+                <!-- Ajout de la séparation horizontale après 3 articles à gauche -->
                 <div class="horizontal-separator"></div>
-                <article class="small-article blue">
-                    <h3 class="article-title article-title--small">
-                        <a href="#" class="article-link">Small Article Title 6</a>
-                    </h3>
-                    <div class="political-bar mb-8">
-                        <div class="section red" style="width: 25%;">
-                            <span>25%</span>
-                        </div>
-                        <div class="section white" style="width: 25%;">
-                            <span>25%</span>
-                        </div>
-                        <div class="section blue" style="width: 50%;">
-                            <span>D 50%</span>
-                        </div>
-                    </div>
-                </article>
             </div>
             <div class="vertical-separator"></div>
             <div class="magazine-column article-container">
                 <article class="single-article active">
                     <figure>
-                        <img src="https://placehold.co/1000x450" alt="Image de l'article" />
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 1" />
                     </figure>
                     <h2 class="article-title article-title--large">
-                        <a href="#" class="article-link">The First Signs of Alcoholic Liver Damage Are Not in the Liver</a>
+                        <a href="#" class="article-link">Article 1 - The First Signs of Alcoholic Liver Damage</a>
                     </h2>
                     <div class="political-bar mb-8">
                         <div class="section red" style="width: 30%;">
@@ -685,178 +565,101 @@
                     <div class="content">
                         <div class="text">
                             <div class="article-excerpt">
-                                <p>The combination of my father's death and my personal background lit a fire in me to know more</p>
-                                <p>He was admitted to the hospital on June 24, 2016.</p>
-                            </div>
-                            <div class="article-author">
-                                <div class="article-author-img">
-                                    <img src="https://placehold.co/40x40" alt="David Sherof" />
-                                </div>
-                                <div class="article-author-info">
-                                    <dl>
-                                        <dt>David Sherof</dt>
-                                        <dd>Reporter</dd>
-                                    </dl>
-                                </div>
+                                <p>The combination of my father's death and my personal background lit a fire in me to know more.</p>
                             </div>
                         </div>
                     </div>
                 </article>
-                <article class="single-article">
-                    <figure>
-                        <img src="https://placehold.co/1000x450" alt="Second article image" />
-                    </figure>
-                    <h2 class="article-title article-title--large">
-                        <a href="#" class="article-link">Second Article Title</a>
-                    </h2>
-                    <div class="political-bar mb-8">
-                        <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
-                        </div>
-                        <div class="section white" style="width: 50%;">
-                            <span>C 50%</span>
-                        </div>
-                        <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="text">
-                            <div class="article-excerpt">
-                                <p>Summary of the second article.</p>
+
+                <!-- Séparateur horizontal après le gros article central -->
+                <div class="horizontal-separator1"></div>
+
+                <!-- Section avec petits articles 2 par 2 -->
+                <div class="small-articles-grid">
+                    <article class="small-article">
+                        <figure>
+                            <img src="https://placehold.co/300x200" alt="Image de l'article A" />
+                        </figure>
+                        <h3 class="article-title article-title--small">
+                            <a href="#" class="article-link">Small Article A</a>
+                        </h3>
+                        <div class="political-bar mb-8">
+                            <div class="section red" style="width: 30%;">
+                                <span>30%</span>
                             </div>
-                            <div class="article-author">
-                                <div class="article-author-img">
-                                    <img src="https://placehold.co/40x40" alt="Author of second article" />
-                                </div>
-                                <div class="article-author-info">
-                                    <dl>
-                                        <dt>Author Name</dt>
-                                        <dd>Position</dd>
-                                    </dl>
-                                </div>
+                            <div class="section white" style="width: 50%;">
+                                <span>50%</span>
+                            </div>
+                            <div class="section blue" style="width: 20%;">
+                                <span>20%</span>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <article class="single-article">
-                    <figure>
-                        <img src="https://placehold.co/1000x450" alt="Third article image" />
-                    </figure>
-                    <h2 class="article-title article-title--large">
-                        <a href="#" class="article-link">Third Article Title</a>
-                    </h2>
-                    <div class="political-bar mb-8">
-                        <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
-                        </div>
-                        <div class="section white" style="width: 50%;">
-                            <span>C 50%</span>
-                        </div>
-                        <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="text">
-                            <div class="article-excerpt">
-                                <p>Summary of the third article.</p>
+                    </article>
+                    <article class="small-article">
+                        <figure>
+                            <img src="https://placehold.co/300x200" alt="Image de l'article B" />
+                        </figure>
+                        <h3 class="article-title article-title--small">
+                            <a href="#" class="article-link">Small Article B</a>
+                        </h3>
+                        <div class="political-bar mb-8">
+                            <div class="section red" style="width: 40%;">
+                                <span>40%</span>
                             </div>
-                            <div class="article-author">
-                                <div class="article-author-img">
-                                    <img src="https://placehold.co/40x40" alt="Author of third article" />
-                                </div>
-                                <div class="article-author-info">
-                                    <dl>
-                                        <dt>Author Name</dt>
-                                        <dd>Position</dd>
-                                    </dl>
-                                </div>
+                            <div class="section white" style="width: 40%;">
+                                <span>40%</span>
+                            </div>
+                            <div class="section blue" style="width: 20%;">
+                                <span>20%</span>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <article class="single-article">
-                    <figure>
-                        <img src="https://placehold.co/1000x450" alt="Fourth article image" />
-                    </figure>
-                    <h2 class="article-title article-title--large">
-                        <a href="#" class="article-link">Fourth Article Title</a>
-                    </h2>
-                     <div class="political-bar mb-8">
-                        <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
-                        </div>
-                        <div class="section white" style="width: 50%;">
-                            <span>C 50%</span>
-                        </div>
-                        <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="text">
-                            <div class="article-excerpt">
-                                <p>Summary of the fourth article.</p>
+                    </article>
+                    <article class="small-article">
+                        <figure>
+                            <img src="https://placehold.co/300x200" alt="Image de l'article C" />
+                        </figure>
+                        <h3 class="article-title article-title--small">
+                            <a href="#" class="article-link">Small Article C</a>
+                        </h3>
+                        <div class="political-bar mb-8">
+                            <div class="section red" style="width: 50%;">
+                                <span>50%</span>
                             </div>
-                            <div class="article-author">
-                                <div class="article-author-img">
-                                    <img src="https://placehold.co/40x40" alt="Author of fourth article" />
-                                </div>
-                                <div class="article-author-info">
-                                    <dl>
-                                        <dt>Author Name</dt>
-                                        <dd>Position</dd>
-                                    </dl>
-                                </div>
+                            <div class="section white" style="width: 30%;">
+                                <span>30%</span>
+                            </div>
+                            <div class="section blue" style="width: 20%;">
+                                <span>20%</span>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <article class="single-article">
-                    <figure>
-                        <img src="https://placehold.co/1000x450" alt="Fifth article image" />
-                    </figure>
-                    <h2 class="article-title article-title--large">
-                        <a href="#" class="article-link">Fifth Article Title</a>
-                    </h2>
-                    <div class="political-bar mb-8">
-                        <div class="section red" style="width: 30%;">
-                            <span>G 30%</span>
-                        </div>
-                        <div class="section white" style="width: 50%;">
-                            <span>C 50%</span>
-                        </div>
-                        <div class="section blue" style="width: 20%;">
-                            <span>D 20%</span>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="text">
-                            <div class="article-excerpt">
-                                <p>Summary of the fifth article.</p>
+                    </article>
+                    <article class="small-article">
+                        <figure>
+                            <img src="https://placehold.co/300x200" alt="Image de l'article D" />
+                        </figure>
+                        <h3 class="article-title article-title--small">
+                            <a href="#" class="article-link">Small Article D</a>
+                        </h3>
+                        <div class="political-bar mb-8">
+                            <div class="section red" style="width: 20%;">
+                                <span>20%</span>
                             </div>
-                            <div class="article-author">
-                                <div class="article-author-img">
-                                    <img src="https://placehold.co/40x40" alt="Author of fifth article" />
-                                </div>
-                                <div class="article-author-info">
-                                    <dl>
-                                        <dt>Author Name</dt>
-                                        <dd>Position</dd>
-                                    </dl>
-                                </div>
+                            <div class="section white" style="width: 50%;">
+                                <span>50%</span>
+                            </div>
+                            <div class="section blue" style="width: 30%;">
+                                <span>30%</span>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                </div>
             </div>
             <div class="vertical-separator"></div>
             <div class="magazine-column">
-                <h2 class="section-title section-title--blindspot">•France•</h2>
+                <h2 class="section-title section-title--france">•France•</h2>
                 <article class="small-article">
                     <figure>
-                        <img src="https://placehold.co/300x200" alt="Image de l'article" />
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 3" />
                     </figure>
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 3</a>
@@ -963,8 +766,8 @@
         function toggleClass(elem, className) {
             var newClass = ' ' + elem.className.replace( /[\t\r\n]/g, " " ) + ' ';
             if (hasClass(elem, className)) {
-                while (newClass.indexOf(" " + className + " ") >= 0 ) {
-                    newClass = newClass.replace( " " + className + " " , " " );
+                while (newClass.indexOf(" " + className + " " ) >= 0) {
+                    newClass = newClass.replace(" " + className + " " , " ");
                 }
                 elem.className = newClass.replace(/^\s+|\s+$/g, '');
             } else {
@@ -980,14 +783,37 @@
         // Article rotation logic with fade transition
         var articles = document.querySelectorAll('.single-article');
         var currentArticle = 0;
+        var totalArticles = articles.length;
 
         function showNextArticle() {
+            // Masquer l'article actuel
             articles[currentArticle].classList.remove('active');
-            currentArticle = (currentArticle + 1) % articles.length;
+
+            // Passer à l'article suivant
+            currentArticle = (currentArticle + 1) % totalArticles;
+
+            // Afficher le prochain article
             articles[currentArticle].classList.add('active');
         }
 
-        setInterval(showNextArticle, 20000); // Change article every 20 seconds
+        setInterval(showNextArticle, 10000); // Change article every 10 seconds
+
+        // Update border color based on the smallest percentage in the political bar
+        document.querySelectorAll('.magazine-column article').forEach(function(article) {
+            var sections = article.querySelectorAll('.political-bar .section');
+            var minPercentage = 100;
+            var minColor = 'transparent';
+
+            sections.forEach(function(section) {
+                var percentage = parseFloat(section.style.width);
+                if (percentage < minPercentage) {
+                    minPercentage = percentage;
+                    minColor = getComputedStyle(section).backgroundColor;
+                }
+            });
+
+            article.style.borderColor = minColor;
+        });
     </script>
 </body>
 </html>
