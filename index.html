@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-               @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Roboto:wght@700&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Roboto:wght@700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap');
 
         *,
@@ -508,7 +508,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const apiKey = '0dd205a802df427cb42c317f6931c67d';
-            const url = `https://newsapi.org/v2/top-headlines?country=fr&category=business&apiKey=${apiKey}`;
+            const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=0dd205a802df427cb42c317f6931c67d`;
 
             fetch(url)
                 .then(response => {
@@ -519,7 +519,7 @@
                 })
                 .then(data => {
                     const articles = data.articles;
-                    if (articles.length > 0) {
+                    if (articles && articles.length > 0) {
                         // Remplir le premier article avec les données de NewsAPI
                         const article1 = articles[0];
                         const imgElement = document.getElementById('article1-img');
@@ -528,31 +528,28 @@
                         imgElement.src = article1.urlToImage || 'https://placehold.co/300x200';
                         titleElement.innerText = article1.title || 'Titre non disponible';
                         titleElement.href = article1.url || '#';
-
-                        // Ajouter d'autres articles si nécessaire
                     }
                 })
                 .catch(error => {
                     console.error('Erreur:', error);
                 });
 
-            // Article rotation logic with fade transition
+            // Vérifiez si des articles existent avant de tenter de les faire tourner
             var articles = document.querySelectorAll('.single-article');
-            var currentArticle = 0;
-            var totalArticles = articles.length;
+            if (articles.length > 0) {
+                var currentArticle = 0;
+                var totalArticles = articles.length;
 
-            function showNextArticle() {
-                // Masquer l'article actuel
-                articles[currentArticle].classList.remove('active');
+                function showNextArticle() {
+                    articles[currentArticle].classList.remove('active');
+                    currentArticle = (currentArticle + 1) % totalArticles;
+                    articles[currentArticle].classList.add('active');
+                }
 
-                // Passer à l'article suivant
-                currentArticle = (currentArticle + 1) % totalArticles;
-
-                // Afficher le prochain article
-                articles[currentArticle].classList.add('active');
+                setInterval(showNextArticle, 10000); // Change article every 10 seconds
+            } else {
+                console.warn('Aucun article trouvé pour la rotation.');
             }
-
-            setInterval(showNextArticle, 10000); // Change article every 10 seconds
         });
     </script>
 </body>
