@@ -28,6 +28,13 @@
             max-width: 100%;
             height: auto;
             margin-top: 20px;
+            display: none; /* Hide image initially */
+        }
+
+        #no-image {
+            display: none; /* Hide 'No image available' initially */
+            margin-top: 20px;
+            color: grey;
         }
     </style>
 </head>
@@ -35,6 +42,7 @@
     <div id="article">
         <h1 id="title">Loading...</h1>
         <img id="image" src="" alt="Article Image">
+        <div id="no-image">No image available</div>
     </div>
 
     <script>
@@ -44,10 +52,18 @@
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === "ok" && data.articles.length > 0) {
+                    console.log("Data received:", data); // Log the received data to inspect it
+
+                    if (data.status === "ok" && data.articles && data.articles.length > 0) {
                         const article = data.articles[0];
                         document.getElementById("title").textContent = article.title;
-                        document.getElementById("image").src = article.urlToImage;
+
+                        if (article.urlToImage) {
+                            document.getElementById("image").src = article.urlToImage;
+                            document.getElementById("image").style.display = 'block';
+                        } else {
+                            document.getElementById("no-image").style.display = 'block';
+                        }
                     } else {
                         document.getElementById("title").textContent = "No articles found.";
                     }
