@@ -506,7 +506,6 @@
                         </div>
                     </div>
                 </article>
-                <!-- Répétez pour les autres articles avec des IDs uniques -->
                 <article class="small-article left" id="article2">
                     <figure>
                         <img src="https://placehold.co/300x200" alt="Image de l'article 2" />
@@ -549,7 +548,7 @@
             <div class="vertical-separator"></div>
             <div class="magazine-column article-container">
                 <!-- Article principal avec rotation -->
-                <article class="single-article active" id="main-article-1">
+                <article class="single-article active">
                     <figure>
                         <img src="https://placehold.co/1000x450" alt="Image de l'article 1" />
                     </figure>
@@ -577,7 +576,7 @@
                 </article>
 
                 <!-- Autres articles pour la rotation -->
-                <article class="single-article" id="main-article-2">
+                <article class="single-article">
                     <figure>
                         <img src="https://placehold.co/1000x450" alt="Image de l'article 2" />
                     </figure>
@@ -604,7 +603,7 @@
                     </div>
                 </article>
 
-                <article class="single-article" id="main-article-3">
+                <article class="single-article">
                     <figure>
                         <img src="https://placehold.co/1000x450" alt="Image de l'article 3" />
                     </figure>
@@ -631,12 +630,66 @@
                     </div>
                 </article>
 
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 4" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Article 4 - Advances in Artificial Intelligence and Society</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 20%;">
+                            <span>G 20%</span>
+                        </div>
+                        <div class="section white" style="width: 40%;">
+                            <span>C 40%</span>
+                        </div>
+                        <div class="section blue" style="width: 40%;">
+                            <span>D 40%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>The integration of AI into everyday life and its impacts on social structures.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 5" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Article 5 - The Future of Renewable Energy</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 35%;">
+                            <span>G 35%</span>
+                        </div>
+                        <div class="section white" style="width: 35%;">
+                            <span>C 35%</span>
+                        </div>
+                        <div class="section blue" style="width: 30%;">
+                            <span>D 30%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>An in-depth look at the advancements and challenges in renewable energy sources.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
                 <!-- Séparateur horizontal après le gros article central -->
                 <div class="horizontal-separator1"></div>
 
                 <!-- Section avec petits articles 2 par 2 -->
                 <div class="small-articles-grid">
-                    <article class="small-article" id="right-article-1">
+                    <article class="small-article">
                         <figure>
                             <img src="https://placehold.co/300x200" alt="Image de l'article A" />
                         </figure>
@@ -655,7 +708,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="small-article" id="right-article-2">
+                    <article class="small-article">
                         <figure>
                             <img src="https://placehold.co/300x200" alt="Image de l'article B" />
                         </figure>
@@ -679,7 +732,7 @@
             <div class="vertical-separator"></div>
             <div class="magazine-column">
                 <h2 class="section-title section-title--france">•France•</h2>
-                <article class="small-article" id="right-article-3">
+                <article class="small-article">
                     <figure>
                         <img src="https://placehold.co/300x200" alt="Image de l'article 3" />
                     </figure>
@@ -699,7 +752,7 @@
                     </div>
                 </article>
                 <div class="horizontal-separator"></div>
-                <article class="small-article" id="right-article-4">
+                <article class="small-article">
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 4</a>
                     </h3>
@@ -716,7 +769,7 @@
                     </div>
                 </article>
                 <div class="horizontal-separator"></div>
-                <article class="small-article" id="right-article-5">
+                <article class="small-article">
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 7</a>
                     </h3>
@@ -733,7 +786,7 @@
                     </div>
                 </article>
                 <div class="horizontal-separator"></div>
-                <article class="small-article" id="right-article-6">
+                <article class="small-article">
                     <h3 class="article-title article-title--small">
                         <a href="#" class="article-link">Small Article Title 8</a>
                     </h3>
@@ -759,73 +812,25 @@
     </footer>
 
     <script>
-        // Fonction pour charger les articles depuis l'API
-        async function loadArticles() {
-            const leftColumnUrl = 'https://newsapi.org/v2/top-headlines?country=fr&category=business&apiKey=0dd205a802df427cb42c317f6931c67d';
-            const rightColumnUrl = 'https://newsapi.org/v2/top-headlines?country=fr&apiKey=0dd205a802df427cb42c317f6931c67d';
-            const mainColumnUrl = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=0dd205a802df427cb42c317f6931c67d';
-
-            try {
-                const [leftResponse, rightResponse, mainResponse] = await Promise.all([
-                    fetch(leftColumnUrl),
-                    fetch(rightColumnUrl),
-                    fetch(mainColumnUrl)
-                ]);
-
-                const leftArticles = await leftResponse.json();
-                const rightArticles = await rightResponse.json();
-                const mainArticles = await mainResponse.json();
-
-                // Charger les articles de la colonne de gauche
-                document.querySelector('#article1 img').src = leftArticles.articles[0].urlToImage || 'https://placehold.co/300x200';
-                document.querySelector('#article1 .article-title a').textContent = leftArticles.articles[0].title;
-
-                document.querySelector('#article2 img').src = leftArticles.articles[1].urlToImage || 'https://placehold.co/300x200';
-                document.querySelector('#article2 .article-title a').textContent = leftArticles.articles[1].title;
-
-                document.querySelector('#article3 img').src = leftArticles.articles[2].urlToImage || 'https://placehold.co/300x200';
-                document.querySelector('#article3 .article-title a').textContent = leftArticles.articles[2].title;
-
-                // Charger les articles de la colonne de droite
-                document.querySelector('#right-article-1 img').src = rightArticles.articles[0].urlToImage || 'https://placehold.co/300x200';
-                document.querySelector('#right-article-1 .article-title a').textContent = rightArticles.articles[0].title;
-
-                document.querySelector('#right-article-2 img').src = rightArticles.articles[1].urlToImage || 'https://placehold.co/300x200';
-                document.querySelector('#right-article-2 .article-title a').textContent = rightArticles.articles[1].title;
-
-                document.querySelector('#right-article-3 img').src = rightArticles.articles[2].urlToImage || 'https://placehold.co/300x200';
-                document.querySelector('#right-article-3 .article-title a').textContent = rightArticles.articles[2].title;
-
-                // Charger les articles de la colonne principale
-                document.querySelector('#main-article-1 img').src = mainArticles.articles[0].urlToImage || 'https://placehold.co/1000x450';
-                document.querySelector('#main-article-1 .article-title a').textContent = mainArticles.articles[0].title;
-
-                document.querySelector('#main-article-2 img').src = mainArticles.articles[1].urlToImage || 'https://placehold.co/1000x450';
-                document.querySelector('#main-article-2 .article-title a').textContent = mainArticles.articles[1].title;
-
-                document.querySelector('#main-article-3 img').src = mainArticles.articles[2].urlToImage || 'https://placehold.co/1000x450';
-                document.querySelector('#main-article-3 .article-title a').textContent = mainArticles.articles[2].title;
-            } catch (error) {
-                console.error('Erreur lors du chargement des articles:', error);
-            }
-        }
-
-        loadArticles();
-
-        // Rotation des articles principaux toutes les 10 secondes
+        // Article rotation logic with fade transition
         var articles = document.querySelectorAll('.single-article');
         var currentArticle = 0;
         var totalArticles = articles.length;
 
         function showNextArticle() {
+            // Hide the current article
             articles[currentArticle].classList.remove('active');
+
+            // Move to the next article
             currentArticle = (currentArticle + 1) % totalArticles;
+
+            // Show the next article
             articles[currentArticle].classList.add('active');
         }
 
-        setInterval(showNextArticle, 10000);
-      
-               // Update border color based on the highest percentage in the political bar
+        setInterval(showNextArticle, 10000); // Change article every 10 seconds
+
+        // Update border color based on the highest percentage in the political bar
         document.querySelectorAll('.magazine-column article.left').forEach(function(article) {
             var sections = article.querySelectorAll('.political-bar .section');
             var maxPercentage = 0;
@@ -841,6 +846,63 @@
 
             article.style.borderColor = maxColor;
         });
+    document.addEventListener("DOMContentLoaded", function() {
+        // Fonction pour afficher les articles de gauche
+        async function loadLeftArticles() {
+            const response = await fetch('http://localhost:3000/api/left-articles');
+            const articles = await response.json();
+            const leftColumn = document.querySelectorAll('.magazine-column')[0];
+            const articlesElements = leftColumn.querySelectorAll('.small-article.left');
+
+            articlesElements.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    element.querySelector('img').src = article.urlToImage || 'https://placehold.co/300x200';
+                    element.querySelector('.article-title a').textContent = article.title;
+                    element.querySelector('.article-title a').href = article.url;
+                }
+            });
+        }
+
+        // Fonction pour afficher les articles du milieu
+        async function loadMiddleArticles() {
+            const response = await fetch('http://localhost:3000/api/middle-articles');
+            const articles = await response.json();
+            const middleColumn = document.querySelectorAll('.magazine-column.article-container .single-article');
+
+            middleColumn.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    element.querySelector('img').src = article.urlToImage || 'https://placehold.co/1000x450';
+                    element.querySelector('.article-title a').textContent = article.title;
+                    element.querySelector('.article-title a').href = article.url;
+                    element.querySelector('.article-excerpt p').textContent = article.description || '';
+                }
+            });
+        }
+
+        // Fonction pour afficher les articles de droite
+        async function loadRightArticles() {
+            const response = await fetch('http://localhost:3000/api/right-articles');
+            const articles = await response.json();
+            const rightColumn = document.querySelectorAll('.magazine-column')[2];
+            const articlesElements = rightColumn.querySelectorAll('.small-article');
+
+            articlesElements.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    element.querySelector('img').src = article.urlToImage || 'https://placehold.co/300x200';
+                    element.querySelector('.article-title a').textContent = article.title;
+                    element.querySelector('.article-title a').href = article.url;
+                }
+            });
+        }
+
+        // Chargement des articles
+        loadLeftArticles();
+        loadMiddleArticles();
+        loadRightArticles();
+    });
     </script>
 </body>
 </html>
