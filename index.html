@@ -848,125 +848,93 @@
         });
     document.addEventListener("DOMContentLoaded", function() {
         // Fonction pour afficher les articles de gauche
-        async function loadLeftArticles() {
-    try {
-        const response = await fetch('http://localhost:3000/api/left-articles');
-        const articles = await response.json();
-        const leftColumn = document.querySelectorAll('.magazine-column')[0];
-        const articlesElements = leftColumn.querySelectorAll('.small-article.left');
+        document.addEventListener("DOMContentLoaded", function() {
+    loadLeftArticles();
+    loadMiddleArticles();
+    loadRightArticles();
 
-        articlesElements.forEach((element, index) => {
-            if (index < articles.length) {
-                const article = articles[index];
-                
-                // Vérification et mise à jour de l'image
-                const imgElement = element.querySelector('img');
-                if (article.urlToImage) {
-                    imgElement.src = article.urlToImage;
-                } else {
-                    imgElement.style.display = 'none'; // Cacher l'image si elle n'est pas disponible
-                }
+    async function loadLeftArticles() {
+        try {
+            const response = await fetch('http://localhost:3000/api/left-articles');
+            const articles = await response.json();
+            const leftColumn = document.querySelectorAll('.magazine-column')[0];
+            const articlesElements = leftColumn.querySelectorAll('.small-article.left');
 
-                // Vérification et mise à jour du titre
-                const titleElement = element.querySelector('.article-title a');
-                if (article.title) {
-                    titleElement.textContent = article.title;
-                    titleElement.href = article.url; // Ajouter le lien vers l'article
-                } else {
-                    titleElement.style.display = 'none'; // Cacher le titre si pas disponible
+            articlesElements.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    
+                    // Vérification et mise à jour de l'image (utilisation d'une image par défaut si null)
+                    const imgElement = element.querySelector('img');
+                    imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
+
+                    // Vérification et mise à jour du titre
+                    const titleElement = element.querySelector('.article-title a');
+                    titleElement.textContent = article.title || 'Titre indisponible';
+                    titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
                 }
-            }
-        });
-    } catch (error) {
-        console.error('Erreur lors du chargement des articles de gauche:', error);
+            });
+        } catch (error) {
+            console.error('Erreur lors du chargement des articles de gauche:', error);
+        }
     }
-}
 
+    async function loadMiddleArticles() {
+        try {
+            const response = await fetch('http://localhost:3000/api/middle-articles');
+            const articles = await response.json();
+            const middleColumn = document.querySelectorAll('.magazine-column.article-container .single-article');
 
-        // Fonction pour afficher les articles du milieu
-        async function loadMiddleArticles() {
-    try {
-        const response = await fetch('http://localhost:3000/api/middle-articles');
-        const articles = await response.json();
-        const middleColumn = document.querySelectorAll('.magazine-column.article-container .single-article');
+            middleColumn.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    
+                    // Vérification et mise à jour de l'image (utilisation d'une image par défaut si null)
+                    const imgElement = element.querySelector('img');
+                    imgElement.src = article.urlToImage || 'https://placehold.co/1000x450';
 
-        middleColumn.forEach((element, index) => {
-            if (index < articles.length) {
-                const article = articles[index];
-                
-                // Vérification et mise à jour de l'image
-                const imgElement = element.querySelector('img');
-                if (article.urlToImage) {
-                    imgElement.src = article.urlToImage;
-                } else {
-                    imgElement.style.display = 'none'; // Cacher l'image si elle n'est pas disponible
+                    // Vérification et mise à jour du titre
+                    const titleElement = element.querySelector('.article-title a');
+                    titleElement.textContent = article.title || 'Titre indisponible';
+                    titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
+
+                    // Mise à jour de l'extrait de l'article (description)
+                    const excerptElement = element.querySelector('.article-excerpt p');
+                    excerptElement.textContent = article.description || 'Description non disponible';
                 }
-
-                // Vérification et mise à jour du titre
-                const titleElement = element.querySelector('.article-title a');
-                if (article.title) {
-                    titleElement.textContent = article.title;
-                    titleElement.href = article.url; // Ajouter le lien vers l'article
-                } else {
-                    titleElement.style.display = 'none'; // Cacher le titre si pas disponible
-                }
-
-                // Mise à jour de l'extrait de l'article (description)
-                const excerptElement = element.querySelector('.article-excerpt p');
-                if (article.description) {
-                    excerptElement.textContent = article.description;
-                } else {
-                    excerptElement.style.display = 'none'; // Cacher l'extrait si pas disponible
-                }
-            }
-        });
-    } catch (error) {
-        console.error('Erreur lors du chargement des articles du milieu:', error);
+            });
+        } catch (error) {
+            console.error('Erreur lors du chargement des articles du milieu:', error);
+        }
     }
-}
 
+    async function loadRightArticles() {
+        try {
+            const response = await fetch('http://localhost:3000/api/right-articles');
+            const articles = await response.json();
+            const rightColumn = document.querySelectorAll('.magazine-column')[2];
+            const articlesElements = rightColumn.querySelectorAll('.small-article');
 
-        // Fonction pour afficher les articles de droite
-async function loadRightArticles() {
-    try {
-        const response = await fetch('http://localhost:3000/api/right-articles');
-        const articles = await response.json();
-        const rightColumn = document.querySelectorAll('.magazine-column')[2];
-        const articlesElements = rightColumn.querySelectorAll('.small-article');
+            articlesElements.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    
+                    // Vérification et mise à jour de l'image (utilisation d'une image par défaut si null)
+                    const imgElement = element.querySelector('img');
+                    imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
 
-        articlesElements.forEach((element, index) => {
-            if (index < articles.length) {
-                const article = articles[index];
-                
-                // Vérification et mise à jour de l'image
-                const imgElement = element.querySelector('img');
-                if (article.urlToImage) {
-                    imgElement.src = article.urlToImage;
-                } else {
-                    imgElement.style.display = 'none'; // Cacher l'image si elle n'est pas disponible
+                    // Vérification et mise à jour du titre
+                    const titleElement = element.querySelector('.article-title a');
+                    titleElement.textContent = article.title || 'Titre indisponible';
+                    titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
                 }
-
-                // Vérification et mise à jour du titre
-                const titleElement = element.querySelector('.article-title a');
-                if (article.title) {
-                    titleElement.textContent = article.title;
-                    titleElement.href = article.url; // Ajouter le lien vers l'article
-                } else {
-                    titleElement.style.display = 'none'; // Cacher le titre si pas disponible
-                }
-            }
-        });
-    } catch (error) {
-        console.error('Erreur lors du chargement des articles de droite:', error);
+            });
+        } catch (error) {
+            console.error('Erreur lors du chargement des articles de droite:', error);
+        }
     }
-}
+});
 
-
-        // Chargement des articles
-        loadLeftArticles();
-        loadMiddleArticles();
-        loadRightArticles();
-    });
     </script>
 </body>
 </html>
