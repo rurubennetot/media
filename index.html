@@ -864,14 +864,18 @@
                 if (index < articles.length) {
                     const article = articles[index];
                     
-                    // Vérification et mise à jour de l'image (utilisation d'une image par défaut si null)
+                    // Vérification et mise à jour de l'image
                     const imgElement = element.querySelector('img');
-                    imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
+                    if (imgElement) {
+                        imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
+                    }
 
                     // Vérification et mise à jour du titre
                     const titleElement = element.querySelector('.article-title a');
-                    titleElement.textContent = article.title || 'Titre indisponible';
-                    titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
+                    if (titleElement) {
+                        titleElement.textContent = article.title || 'Titre indisponible';
+                        titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
+                    }
                 }
             });
         } catch (error) {
@@ -889,18 +893,24 @@
                 if (index < articles.length) {
                     const article = articles[index];
                     
-                    // Vérification et mise à jour de l'image (utilisation d'une image par défaut si null)
+                    // Vérification et mise à jour de l'image
                     const imgElement = element.querySelector('img');
-                    imgElement.src = article.urlToImage || 'https://placehold.co/1000x450';
+                    if (imgElement) {
+                        imgElement.src = article.urlToImage || 'https://placehold.co/1000x450';
+                    }
 
                     // Vérification et mise à jour du titre
                     const titleElement = element.querySelector('.article-title a');
-                    titleElement.textContent = article.title || 'Titre indisponible';
-                    titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
+                    if (titleElement) {
+                        titleElement.textContent = article.title || 'Titre indisponible';
+                        titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
+                    }
 
                     // Mise à jour de l'extrait de l'article (description)
                     const excerptElement = element.querySelector('.article-excerpt p');
-                    excerptElement.textContent = article.description || 'Description non disponible';
+                    if (excerptElement) {
+                        excerptElement.textContent = article.description || 'Description non disponible';
+                    }
                 }
             });
         } catch (error) {
@@ -919,14 +929,18 @@
                 if (index < articles.length) {
                     const article = articles[index];
                     
-                    // Vérification et mise à jour de l'image (utilisation d'une image par défaut si null)
+                    // Vérification et mise à jour de l'image
                     const imgElement = element.querySelector('img');
-                    imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
+                    if (imgElement) {
+                        imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
+                    }
 
                     // Vérification et mise à jour du titre
                     const titleElement = element.querySelector('.article-title a');
-                    titleElement.textContent = article.title || 'Titre indisponible';
-                    titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
+                    if (titleElement) {
+                        titleElement.textContent = article.title || 'Titre indisponible';
+                        titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
+                    }
                 }
             });
         } catch (error) {
@@ -934,7 +948,6 @@
         }
     }
 });
-
     </script>
 </body>
 </html>
