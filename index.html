@@ -812,6 +812,22 @@
     </footer>
 
     <script>
+               // Update border color based on the highest percentage in the political bar
+        document.querySelectorAll('.magazine-column article.left').forEach(function(article) {
+            var sections = article.querySelectorAll('.political-bar .section');
+            var maxPercentage = 0;
+            var maxColor = 'transparent';
+
+            sections.forEach(function(section) {
+                var percentage = parseFloat(section.style.width);
+                if (percentage > maxPercentage) {
+                    maxPercentage = percentage;
+                    maxColor = getComputedStyle(section).backgroundColor;
+                }
+            });
+
+            article.style.borderColor = maxColor;
+        });
         // Article rotation logic with fade transition
         var articles = document.querySelectorAll('.single-article');
         var currentArticle = 0;
@@ -828,42 +844,67 @@
             articles[currentArticle].classList.add('active');
         }
 
-        setInterval(showNextArticle, 10000); // Change article every 10 seconds
+        setInterval(showNextArticle, 7000); // Change article every 10 seconds
 
-        // Update border color based on the highest percentage in the political bar
-        document.querySelectorAll('.magazine-column article.left').forEach(function(article) {
-            var sections = article.querySelectorAll('.political-bar .section');
-            var maxPercentage = 0;
-            var maxColor = 'transparent';
-
-            sections.forEach(function(section) {
-                var percentage = parseFloat(section.style.width);
-                if (percentage > maxPercentage) {
-                    maxPercentage = percentage;
-                    maxColor = getComputedStyle(section).backgroundColor;
-                }
-            });
-
-            article.style.borderColor = maxColor;
-        });
+         
     document.addEventListener("DOMContentLoaded", function() {
         // Fonction pour afficher les articles de gauche
-        document.addEventListener("DOMContentLoaded", function() {
-    console.log("Script chargé et en cours d'exécution");
+        async function loadLeftArticles() {
+            const response = await fetch('http://localhost:3000/api/left-articles');
+            const articles = await response.json();
+            const leftColumn = document.querySelectorAll('.magazine-column')[0];
+            const articlesElements = leftColumn.querySelectorAll('.small-article.left');
 
-    // Vérification simple d'une requête API
-    fetch('http://localhost:3000/api/left-articles')
-        .then(response => response.json())
-        .then(data => console.log('Données reçues:', data))
-        .catch(error => console.error('Erreur lors du fetch:', error));
+            articlesElements.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    element.querySelector('img').src = article.urlToImage || 'https://placehold.co/300x200';
+                    element.querySelector('.article-title a').textContent = article.title;
+                    element.querySelector('.article-title a').href = article.url;
+                }
+            });
+        }
 
-    // Autres fonctions peuvent être ajoutées ici si la requête fonctionne
-    // loadLeftArticles();
-    // loadMiddleArticles();
-    // loadRightArticles();
-});
+        // Fonction pour afficher les articles du milieu
+        async function loadMiddleArticles() {
+            const response = await fetch('http://localhost:3000/api/middle-articles');
+            const articles = await response.json();
+            const middleColumn = document.querySelectorAll('.magazine-column.article-container .single-article');
 
- 
+            middleColumn.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    element.querySelector('img').src = article.urlToImage || 'https://placehold.co/1000x450';
+                    element.querySelector('.article-title a').textContent = article.title;
+                    element.querySelector('.article-title a').href = article.url;
+                    element.querySelector('.article-excerpt p').textContent = article.description || '';
+                }
+            });
+        }
+
+        // Fonction pour afficher les articles de droite
+        async function loadRightArticles() {
+            const response = await fetch('http://localhost:3000/api/right-articles');
+            const articles = await response.json();
+            const rightColumn = document.querySelectorAll('.magazine-column')[2];
+            const articlesElements = rightColumn.querySelectorAll('.small-article');
+
+            articlesElements.forEach((element, index) => {
+                if (index < articles.length) {
+                    const article = articles[index];
+                    element.querySelector('img').src = article.urlToImage || 'https://placehold.co/300x200';
+                    element.querySelector('.article-title a').textContent = article.title;
+                    element.querySelector('.article-title a').href = article.url;
+                }
+            });
+        }
+
+        // Chargement des articles
+        loadLeftArticles();
+        loadMiddleArticles();
+        loadRightArticles();
+    });
+
     </script>
 </body>
 </html>
