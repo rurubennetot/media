@@ -849,105 +849,21 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Fonction pour afficher les articles de gauche
         document.addEventListener("DOMContentLoaded", function() {
-    loadLeftArticles();
-    loadMiddleArticles();
-    loadRightArticles();
+    console.log("Script chargé et en cours d'exécution");
 
-    async function loadLeftArticles() {
-        try {
-            const response = await fetch('http://localhost:3000/api/left-articles');
-            const articles = await response.json();
-            const leftColumn = document.querySelectorAll('.magazine-column')[0];
-            const articlesElements = leftColumn.querySelectorAll('.small-article.left');
+    // Vérification simple d'une requête API
+    fetch('http://localhost:3000/api/left-articles')
+        .then(response => response.json())
+        .then(data => console.log('Données reçues:', data))
+        .catch(error => console.error('Erreur lors du fetch:', error));
 
-            articlesElements.forEach((element, index) => {
-                if (index < articles.length) {
-                    const article = articles[index];
-                    
-                    // Vérification et mise à jour de l'image
-                    const imgElement = element.querySelector('img');
-                    if (imgElement) {
-                        imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
-                    }
-
-                    // Vérification et mise à jour du titre
-                    const titleElement = element.querySelector('.article-title a');
-                    if (titleElement) {
-                        titleElement.textContent = article.title || 'Titre indisponible';
-                        titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Erreur lors du chargement des articles de gauche:', error);
-        }
-    }
-
-    async function loadMiddleArticles() {
-        try {
-            const response = await fetch('http://localhost:3000/api/middle-articles');
-            const articles = await response.json();
-            const middleColumn = document.querySelectorAll('.magazine-column.article-container .single-article');
-
-            middleColumn.forEach((element, index) => {
-                if (index < articles.length) {
-                    const article = articles[index];
-                    
-                    // Vérification et mise à jour de l'image
-                    const imgElement = element.querySelector('img');
-                    if (imgElement) {
-                        imgElement.src = article.urlToImage || 'https://placehold.co/1000x450';
-                    }
-
-                    // Vérification et mise à jour du titre
-                    const titleElement = element.querySelector('.article-title a');
-                    if (titleElement) {
-                        titleElement.textContent = article.title || 'Titre indisponible';
-                        titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
-                    }
-
-                    // Mise à jour de l'extrait de l'article (description)
-                    const excerptElement = element.querySelector('.article-excerpt p');
-                    if (excerptElement) {
-                        excerptElement.textContent = article.description || 'Description non disponible';
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Erreur lors du chargement des articles du milieu:', error);
-        }
-    }
-
-    async function loadRightArticles() {
-        try {
-            const response = await fetch('http://localhost:3000/api/right-articles');
-            const articles = await response.json();
-            const rightColumn = document.querySelectorAll('.magazine-column')[2];
-            const articlesElements = rightColumn.querySelectorAll('.small-article');
-
-            articlesElements.forEach((element, index) => {
-                if (index < articles.length) {
-                    const article = articles[index];
-                    
-                    // Vérification et mise à jour de l'image
-                    const imgElement = element.querySelector('img');
-                    if (imgElement) {
-                        imgElement.src = article.urlToImage || 'https://placehold.co/300x200';
-                    }
-
-                    // Vérification et mise à jour du titre
-                    const titleElement = element.querySelector('.article-title a');
-                    if (titleElement) {
-                        titleElement.textContent = article.title || 'Titre indisponible';
-                        titleElement.href = article.url || '#'; // Ajouter le lien vers l'article si disponible
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Erreur lors du chargement des articles de droite:', error);
-        }
-    }
+    // Autres fonctions peuvent être ajoutées ici si la requête fonctionne
+    // loadLeftArticles();
+    // loadMiddleArticles();
+    // loadRightArticles();
 });
+
+ 
     </script>
 </body>
 </html>
