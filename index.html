@@ -113,7 +113,10 @@
             });
 
             const data = await response.json();
-            console.log("Réponse de l'API MBFC:", data);  // Ajout d'un log pour vérifier les données reçues
+            console.log("Réponse de l'API MBFC:", data);  // Vérifiez ici les données complètes
+
+            // Affichez les 5 premiers éléments pour inspection
+            console.log("Aperçu des données MBFC:", data.slice(0, 5));
 
             if (Array.isArray(data) && data.length > 0) {
                 // Flexibilité dans la vérification des sources
