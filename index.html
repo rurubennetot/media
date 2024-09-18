@@ -113,10 +113,10 @@
             });
 
             const data = await response.json();
-            console.log("Réponse de l'API MBFC:", data);  // Vérifiez ici les données complètes
+            console.log("Réponse de l'API MBFC:", data);  // Afficher les données complètes pour débogage
 
-            // Affichez les 5 premiers éléments pour inspection
-            console.log("Aperçu des données MBFC:", data.slice(0, 5));
+            // Vérifiez la structure des données avec un exemple
+            console.log("Exemple complet d'une source MBFC:", data[0]);
 
             if (Array.isArray(data) && data.length > 0) {
                 // Flexibilité dans la vérification des sources
@@ -128,7 +128,8 @@
 
                 const biasBar = document.getElementById('bias-bar');
 
-                if (source) {
+                if (source && source.political_bias) {
+                    // Ajuster l'affichage de la barre de biais
                     if (source.political_bias === 'left') {
                         biasBar.innerHTML = '<div class="left">Gauche</div><div></div><div></div>';
                     } else if (source.political_bias === 'center') {
