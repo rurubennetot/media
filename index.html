@@ -67,9 +67,9 @@
     // Clé API NewsData.io filtrée pour Le Monde
     const newsAPIUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&country=fr&language=fr&category=politics&domainurl=lemonde.fr";
 
-    // Clé API Media Bias Fact Check via SheetDB
-    const mbfcAPIUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
-    const bearerToken = "hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
+    // URL d'API MBFC (assurez-vous que c'est correct)
+    const mbfcAPIUrl = "https://api.mbfc.com/v1/getBias"; // Exemple d'URL API, à vérifier selon la documentation réelle
+    const mbfcAPIKey = "votre_cle_api_mbfc"; // Clé API de MBFC, à remplacer par la vôtre
 
     // Fonction pour récupérer un article via l'API de NewsData.io
     async function fetchArticle() {
@@ -92,7 +92,7 @@
 
                 // Analyser la source avec l'API MBFC
                 if (domain) {
-                    analyzeSource(domain);
+                    await analyzeSource(domain); // Appel de l'API MBFC avec le domaine
                 } else {
                     document.getElementById('bias-bar').innerHTML = '<div class="unknown">Domaine non disponible</div>';
                 }
@@ -106,42 +106,42 @@
         }
     }
 
-    // Fonction pour analyser le domaine avec MBFC
+    // Fonction pour analyser le domaine avec l'API MBFC
     async function analyzeSource(domain) {
         try {
-            const response = await fetch(mbfcAPIUrl, {
+            // Envoi de la requête à l'API MBFC avec le domaine
+            const response = await fetch(`${mbfcAPIUrl}?domain=${domain}`, {
+                method: 'GET',
                 headers: {
-                    "Authorization": `Bearer ${bearerToken}`
+                    'Authorization': `Bearer ${mbfcAPIKey}`,
+                    'Content-Type': 'application/json'
                 }
             });
+
+            if (!response.ok) {
+                throw new Error(`Erreur de l'API MBFC: ${response.statusText}`);
+            }
 
             const data = await response.json();
             console.log("Réponse de l'API MBFC:", data);  // Afficher les données complètes pour débogage
 
-            if (Array.isArray(data) && data.length > 0) {
-                // Rechercher la source en fonction du domaine du média
-                const source = data.find(s => s.Domain && s.Domain.toLowerCase() === domain.toLowerCase());
+            const biasBar = document.getElementById('bias-bar');
 
-                const biasBar = document.getElementById('bias-bar');
-
-                if (source && source.Bias) {
-                    // Ajuster l'affichage de la barre de biais selon le champ Bias
-                    if (source.Bias === 'Left') {
-                        biasBar.innerHTML = '<div class="left">Gauche</div><div></div><div></div>';
-                    } else if (source.Bias === 'Center') {
-                        biasBar.innerHTML = '<div></div><div class="center">Centre</div><div></div>';
-                    } else if (source.Bias === 'Right') {
-                        biasBar.innerHTML = '<div></div><div></div><div class="right">Droite</div>';
-                    } else {
-                        biasBar.innerHTML = '<div class="unknown">Orientation inconnue</div>';
-                    }
+            // Vérification de la présence du biais politique
+            if (data && data.bias) {
+                // Ajuster l'affichage de la barre de biais selon le champ "bias"
+                if (data.bias === 'Left') {
+                    biasBar.innerHTML = '<div class="left">Gauche</div><div></div><div></div>';
+                } else if (data.bias === 'Center') {
+                    biasBar.innerHTML = '<div></div><div class="center">Centre</div><div></div>';
+                } else if (data.bias === 'Right') {
+                    biasBar.innerHTML = '<div></div><div></div><div class="right">Droite</div>';
                 } else {
-                    biasBar.innerHTML = '<div class="unknown">Domaine non répertorié dans MBFC</div>';
+                    biasBar.innerHTML = '<div class="unknown">Orientation inconnue</div>';
                 }
             } else {
-                throw new Error("Données MBFC non valides");
+                biasBar.innerHTML = '<div class="unknown">Domaine non répertorié dans MBFC</div>';
             }
-
         } catch (error) {
             console.error("Erreur lors de la récupération des données MBFC :", error);
             document.getElementById('bias-bar').innerHTML = '<div class="unknown">Erreur lors de l\'analyse de la source</div>';
