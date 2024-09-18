@@ -67,7 +67,7 @@
     // Clé API NewsData.io filtrée pour Le Monde
     const newsAPIUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&country=fr&language=fr&category=politics&domainurl=lemonde.fr";
 
-    // Clé API Media Bias Fact Check
+    // Clé API Media Bias Fact Check via SheetDB
     const mbfcAPIUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
     const bearerToken = "hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
 
@@ -88,6 +88,7 @@
 
                 // Si la source est présente, on analyse la source
                 if (article.source_id) {
+                    console.log("Source ID de l'article : ", article.source_id);  // Affiche la source pour vérifier
                     analyzeSource(article.source_id);
                 } else {
                     document.getElementById('bias-bar').innerHTML = '<div class="unknown">Source non disponible</div>';
@@ -110,11 +111,18 @@
                     "Authorization": `Bearer ${bearerToken}`
                 }
             });
-            const data = await response.json();
 
-            // Vérification que le résultat est valide
+            const data = await response.json();
+            console.log("Réponse de l'API MBFC:", data);  // Ajout d'un log pour vérifier les données reçues
+
             if (Array.isArray(data) && data.length > 0) {
-                const source = data.find(s => s.source_name && s.source_name.toLowerCase() === sourceId.toLowerCase());
+                // Flexibilité dans la vérification des sources
+                const source = data.find(s => 
+                    (s.source_name && s.source_name.toLowerCase() === sourceId.toLowerCase()) ||
+                    (s.source_name && sourceId.toLowerCase().includes(s.source_name.toLowerCase())) ||
+                    (s.source_name && s.source_name.toLowerCase().includes(sourceId.toLowerCase()))
+                );
+
                 const biasBar = document.getElementById('bias-bar');
 
                 if (source) {
@@ -135,7 +143,7 @@
             }
 
         } catch (error) {
-            console.error("Erreur lors de la récupération des données MBFC : ", error);
+            console.error("Erreur lors de la récupération des données MBFC :", error);
             document.getElementById('bias-bar').innerHTML = '<div class="unknown">Erreur lors de l\'analyse de la source</div>';
         }
     }
