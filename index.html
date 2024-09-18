@@ -80,18 +80,21 @@
             // On récupère le premier article
             const article = data.results[0];
 
-            // Vérification que l'article contient une source
+            // Vérification que l'article contient une source et un domaine
             if (article) {
                 document.getElementById('article-title').textContent = article.title || "Titre non disponible";
                 document.getElementById('article-description').textContent = article.description || "Description non disponible";
                 document.getElementById('article-image').src = article.image_url || "https://via.placeholder.com/800x400?text=Image+non+disponible";
 
-                // Si la source est présente, on analyse la source
-                if (article.source_id) {
-                    console.log("Source ID de l'article : ", article.source_id);  // Affiche la source pour vérifier
-                    analyzeSource(article.source_id);
+                // Extraire le domaine du média qui publie l'article
+                const domain = article.domain || article.link.split('/')[2];  // Parfois "domainurl" peut ne pas être directement disponible
+                console.log("Domaine de l'article : ", domain);
+
+                // Analyser la source avec l'API MBFC
+                if (domain) {
+                    analyzeSource(domain);
                 } else {
-                    document.getElementById('bias-bar').innerHTML = '<div class="unknown">Source non disponible</div>';
+                    document.getElementById('bias-bar').innerHTML = '<div class="unknown">Domaine non disponible</div>';
                 }
             } else {
                 throw new Error("Aucun article trouvé");
@@ -103,8 +106,8 @@
         }
     }
 
-    // Fonction pour analyser la source avec MBFC
-    async function analyzeSource(sourceId) {
+    // Fonction pour analyser le domaine avec MBFC
+    async function analyzeSource(domain) {
         try {
             const response = await fetch(mbfcAPIUrl, {
                 headers: {
@@ -115,32 +118,25 @@
             const data = await response.json();
             console.log("Réponse de l'API MBFC:", data);  // Afficher les données complètes pour débogage
 
-            // Vérifiez la structure des données avec un exemple
-            console.log("Exemple complet d'une source MBFC:", data[0]);
-
             if (Array.isArray(data) && data.length > 0) {
-                // Flexibilité dans la vérification des sources
-                const source = data.find(s => 
-                    (s.source_name && s.source_name.toLowerCase() === sourceId.toLowerCase()) ||
-                    (s.source_name && sourceId.toLowerCase().includes(s.source_name.toLowerCase())) ||
-                    (s.source_name && s.source_name.toLowerCase().includes(sourceId.toLowerCase()))
-                );
+                // Rechercher la source en fonction du domaine du média
+                const source = data.find(s => s.Domain && s.Domain.toLowerCase() === domain.toLowerCase());
 
                 const biasBar = document.getElementById('bias-bar');
 
-                if (source && source.political_bias) {
-                    // Ajuster l'affichage de la barre de biais
-                    if (source.political_bias === 'left') {
+                if (source && source.Bias) {
+                    // Ajuster l'affichage de la barre de biais selon le champ Bias
+                    if (source.Bias === 'Left') {
                         biasBar.innerHTML = '<div class="left">Gauche</div><div></div><div></div>';
-                    } else if (source.political_bias === 'center') {
+                    } else if (source.Bias === 'Center') {
                         biasBar.innerHTML = '<div></div><div class="center">Centre</div><div></div>';
-                    } else if (source.political_bias === 'right') {
+                    } else if (source.Bias === 'Right') {
                         biasBar.innerHTML = '<div></div><div></div><div class="right">Droite</div>';
                     } else {
                         biasBar.innerHTML = '<div class="unknown">Orientation inconnue</div>';
                     }
                 } else {
-                    biasBar.innerHTML = '<div class="unknown">Source non répertoriée</div>';
+                    biasBar.innerHTML = '<div class="unknown">Domaine non répertorié dans MBFC</div>';
                 }
             } else {
                 throw new Error("Données MBFC non valides");
