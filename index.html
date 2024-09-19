@@ -128,7 +128,8 @@
             const biasBar = document.getElementById('bias-bar');
 
             // Recherche dans les données pour trouver le domaine correspondant
-            const source = data.find(s => s.Domain && s.Domain.toLowerCase() === domain.toLowerCase());
+            // Remplacer www.lemonde.fr par Le Monde (ou autre correspondance dans Name)
+            const source = data.find(s => s.Name && s.Name.toLowerCase().includes("le monde"));
 
             // Vérification de la présence du biais politique
             if (source && source.Bias) {
