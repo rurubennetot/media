@@ -3,167 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articles Politiques - Analyse des Biais</title>
+    <title>Analyse de Biais Politique</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            max-width: 800px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            font-size: 24px;
-        }
-        .bias-bar {
-            display: flex;
-            margin-top: 10px;
-            height: 30px;
-        }
-        .bias-bar div {
             text-align: center;
-            color: white;
         }
-        .left {
-            background-color: #ff4c4c;
+
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: inline-block;
+            width: 80%;
+            text-align: center;
         }
-        .center {
-            background-color: #4caf50;
+
+        .bar-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
         }
-        .right {
-            background-color: #2196F3;
+
+        .bar-left, .bar-center, .bar-right {
+            height: 50px;
         }
-        .unknown {
-            background-color: #e0e0e0;
-            color: #000;
+
+        .bar-left {
+            background-color: red;
+        }
+
+        .bar-center {
+            background-color: white;
+            border: 1px solid black;
+        }
+
+        .bar-right {
+            background-color: blue;
         }
     </style>
 </head>
 <body>
+    <h1>Analyse de Biais Politique des Médias</h1>
+    <div id="result"></div>
 
-<div class="container">
-    <h1 id="article-title">Articles sur le même sujet</h1>
-    <div id="articles-list"></div>
-    <h2>Répartition des Biais Politiques des Médias</h2>
-    <div class="bias-bar" id="bias-bar">
-        <!-- La barre d'orientation médiatique sera ici -->
-    </div>
-</div>
+    <script>
+        // Exécuter dès que la page est chargée
+        document.addEventListener("DOMContentLoaded", function() {
+            const newsApiUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&q=nouveau%20gouvernement&country=fr&language=fr&category=politics";
 
-<script>
-    const newsAPIUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&country=fr&language=fr&category=politics";
-    const mbfcAPIUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
-    const mbfcBearerToken = "hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
+            // Fetch les articles du sujet
+            fetch(newsApiUrl)
+            .then(response => response.json())
+            .then(newsData => {
+                const articles = newsData.results;
 
-    let leftCount = 0, centerCount = 0, rightCount = 0, totalCount = 0;
-
-    // Fonction pour récupérer des articles sur un sujet
-    async function fetchArticles() {
-        try {
-            const response = await fetch(newsAPIUrl);
-            const data = await response.json();
-            const articles = data.results;
-            const articleList = document.getElementById('articles-list');
-
-            // Affichage des articles
-            articles.forEach(article => {
-                const articleElement = document.createElement('p');
-                articleElement.textContent = article.title;
-                articleList.appendChild(articleElement);
+                if (articles && articles.length > 0) {
+                    const sources = articles.map(article => article.source_id);
+                    analyseBias(sources);
+                } else {
+                    document.getElementById("result").innerHTML = "Aucun article trouvé.";
+                }
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = `<p class="error">${error.message}</p>`;
             });
+        });
 
-            // Analyser les biais politiques des médias
-            await analyzeArticles(articles);
-
-        } catch (error) {
-            console.error("Erreur lors de la récupération des articles : ", error);
-        }
-    }
-
-    // Fonction pour analyser les biais des médias pour chaque article
-    async function analyzeArticles(articles) {
-        const domains = [...new Set(articles.map(article => article.domain || article.link.split('/')[2]))];
-        totalCount = domains.length;
-
-        // Analyser les biais pour chaque domaine
-        for (let domain of domains) {
-            await analyzeSource(domain);
-        }
-
-        // Afficher la barre de répartition des biais
-        displayBiasBar();
-    }
-
-    // Fonction pour analyser un média via MBFC
-    async function analyzeSource(domain) {
-        try {
-            const response = await fetch(mbfcAPIUrl, {
-                method: 'GET',
+        function analyseBias(sources) {
+            const mbfcApiUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
+            const token = "Bearer hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
+            
+            // Fetch les données de MBFC pour analyser les biais des sources
+            fetch(mbfcApiUrl, {
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${mbfcBearerToken}`,
-                    'Content-Type': 'application/json'
+                    "Authorization": token
                 }
+            })
+            .then(response => response.json())
+            .then(data => {
+                let leftCount = 0, centerCount = 0, rightCount = 0;
+
+                sources.forEach(source => {
+                    // Chercher les biais dans les données de MBFC
+                    const biasData = data.find(media => media.Name && media.Name.toLowerCase() === source.toLowerCase());
+
+                    if (biasData) {
+                        const bias = biasData.Bias.toLowerCase();
+                        if (bias.includes("left") || bias.includes("left-center")) {
+                            leftCount++;
+                        } else if (bias.includes("center")) {
+                            centerCount++;
+                        } else if (bias.includes("right") || bias.includes("right-center")) {
+                            rightCount++;
+                        }
+                    }
+                });
+
+                const total = leftCount + centerCount + rightCount;
+                const leftPercent = (leftCount / total) * 100;
+                const centerPercent = (centerCount / total) * 100;
+                const rightPercent = (rightCount / total) * 100;
+
+                displayBiasResults(leftPercent, centerPercent, rightPercent);
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = `<p class="error">${error.message}</p>`;
             });
-
-            if (!response.ok) {
-                throw new Error(`Erreur de l'API MBFC: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            console.log(`Données MBFC pour ${domain}:`, data);
-
-            const source = data.find(s => s.Domain && s.Domain.toLowerCase() === domain.toLowerCase());
-
-            // Comptabiliser les biais politiques
-            if (source && source.Bias) {
-                if (source.Bias === 'Left' || source.Bias === 'Left-Center') {
-                    leftCount++;
-                } else if (source.Bias === 'Center') {
-                    centerCount++;
-                } else if (source.Bias === 'Right' || source.Bias === 'Right-Center') {
-                    rightCount++;
-                }
-            }
-        } catch (error) {
-            console.error(`Erreur lors de l'analyse du domaine ${domain}: `, error);
         }
-    }
 
-    // Fonction pour afficher la répartition des biais politiques
-    function displayBiasBar() {
-        const biasBar = document.getElementById('bias-bar');
-
-        const leftPercentage = (leftCount / totalCount) * 100 || 0;
-        const centerPercentage = (centerCount / totalCount) * 100 || 0;
-        const rightPercentage = (rightCount / totalCount) * 100 || 0;
-
-        const leftBar = document.createElement('div');
-        leftBar.classList.add('left');
-        leftBar.style.width = `${leftPercentage}%`;
-
-        const centerBar = document.createElement('div');
-        centerBar.classList.add('center');
-        centerBar.style.width = `${centerPercentage}%`;
-
-        const rightBar = document.createElement('div');
-        rightBar.classList.add('right');
-        rightBar.style.width = `${rightPercentage}%`;
-
-        biasBar.appendChild(leftBar);
-        biasBar.appendChild(centerBar);
-        biasBar.appendChild(rightBar);
-    }
-
-    // Charger les articles au chargement de la page
-    fetchArticles();
-</script>
-
+        function displayBiasResults(leftPercent, centerPercent, rightPercent) {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `
+                <div class="bar-container">
+                    <div class="bar-left" style="width:${leftPercent}%;">${leftPercent.toFixed(2)}% Gauche</div>
+                    <div class="bar-center" style="width:${centerPercent}%;">${centerPercent.toFixed(2)}% Centre</div>
+                    <div class="bar-right" style="width:${rightPercent}%;">${rightPercent.toFixed(2)}% Droite</div>
+                </div>
+            `;
+        }
+    </script>
 </body>
 </html>
