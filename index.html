@@ -34,7 +34,6 @@
     <div id="result">Chargement des articles en cours...</div>
 
     <script>
-        // Exécuter dès que la page est chargée
         document.addEventListener("DOMContentLoaded", function() {
             // API pour récupérer les articles via NewsData.io
             const newsApiUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&q=nouveau%20gouvernement&country=fr&language=fr&category=politics";
@@ -47,8 +46,16 @@
                 const articles = newsData.results;
 
                 if (articles && articles.length > 0) {
-                    // Extraire les sources (médias) des articles
-                    const sources = articles.map(article => article.source_id);
+                    const sources = articles.map(article => {
+                        // Récupérer le domaine à partir de l'URL si le source_id est manquant
+                        let source = article.source_id;
+                        if (!source && article.link) {
+                            // Extraire le domaine de l'URL
+                            const url = new URL(article.link);
+                            source = url.hostname.replace('www.', '');
+                        }
+                        return source;
+                    });
                     console.log("Sources des articles :", sources);
 
                     // Analyser les biais politiques des sources
@@ -83,7 +90,12 @@
                 let output = '';
 
                 sources.forEach(source => {
-                    const biasData = data.find(media => media.Name && media.Name.toLowerCase() === source.toLowerCase());
+                    // Rechercher le média via son nom ou son domaine dans les données MBFC
+                    const biasData = data.find(media => {
+                        const domainMatch = media.Domain && media.Domain.toLowerCase() === source.toLowerCase();
+                        const nameMatch = media.Name && media.Name.toLowerCase() === source.toLowerCase();
+                        return domainMatch || nameMatch;
+                    });
 
                     if (biasData) {
                         output += `<p><strong>Nom :</strong> ${biasData.Name} <br> <strong>Biais Politique :</strong> ${biasData.Bias}</p>`;
