@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classement des Articles par Biais Politique</title>
+    <title>Biais Politique des Médias - News API</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,6 +23,10 @@
             width: 80%;
             text-align: center;
         }
+
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -32,9 +36,10 @@
     <script>
         // Exécuter dès que la page est chargée
         document.addEventListener("DOMContentLoaded", function() {
+            // API pour récupérer les articles via NewsData.io
             const newsApiUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&q=nouveau%20gouvernement&country=fr&language=fr&category=politics";
 
-            // Fetch les articles du sujet
+            // Fetch les articles du sujet via NewsData.io
             fetch(newsApiUrl)
             .then(response => response.json())
             .then(newsData => {
@@ -42,8 +47,11 @@
                 const articles = newsData.results;
 
                 if (articles && articles.length > 0) {
+                    // Extraire les sources (médias) des articles
                     const sources = articles.map(article => article.source_id);
                     console.log("Sources des articles :", sources);
+
+                    // Analyser les biais politiques des sources
                     analyseBias(sources);
                 } else {
                     document.getElementById("result").innerHTML = "Aucun article trouvé.";
@@ -56,6 +64,7 @@
         });
 
         function analyseBias(sources) {
+            // API URL et token pour MBFC
             const mbfcApiUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
             const token = "Bearer hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
             
@@ -69,52 +78,27 @@
             .then(response => response.json())
             .then(data => {
                 console.log("Données récupérées de MBFC :", data);
-                
-                // Regrouper les articles par biais politique
-                const leftSources = [];
-                const centerSources = [];
-                const rightSources = [];
+
+                const resultDiv = document.getElementById("result");
+                let output = '';
 
                 sources.forEach(source => {
                     const biasData = data.find(media => media.Name && media.Name.toLowerCase() === source.toLowerCase());
 
                     if (biasData) {
-                        const bias = biasData.Bias.toLowerCase();
-                        console.log(`Source: ${source}, Biais: ${bias}`);
-                        if (bias.includes("left") || bias.includes("left-center")) {
-                            leftSources.push(source);
-                        } else if (bias.includes("center")) {
-                            centerSources.push(source);
-                        } else if (bias.includes("right") || bias.includes("right-center")) {
-                            rightSources.push(source);
-                        }
+                        output += `<p><strong>Nom :</strong> ${biasData.Name} <br> <strong>Biais Politique :</strong> ${biasData.Bias}</p>`;
                     } else {
-                        console.warn(`Source non trouvée dans MBFC : ${source}`);
+                        output += `<p><strong>Source :</strong> ${source} - Biais politique introuvable.</p>`;
                     }
                 });
 
-                // Afficher les résultats dans la console
-                console.log("Sources avec biais de gauche :", leftSources);
-                console.log("Sources avec biais du centre :", centerSources);
-                console.log("Sources avec biais de droite :", rightSources);
-
-                // Affichage dans la page
-                displayBiasResults(leftSources, centerSources, rightSources);
+                // Afficher les résultats dans la page
+                resultDiv.innerHTML = output;
             })
             .catch(error => {
                 document.getElementById("result").innerHTML = `<p class="error">${error.message}</p>`;
                 console.error("Erreur lors de l'analyse des biais :", error);
             });
-        }
-
-        function displayBiasResults(leftSources, centerSources, rightSources) {
-            const resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = `
-                <h3>Sources classées par biais politique :</h3>
-                <p><strong>Gauche :</strong> ${leftSources.length > 0 ? leftSources.join(', ') : "Aucune"}</p>
-                <p><strong>Centre :</strong> ${centerSources.length > 0 ? centerSources.join(', ') : "Aucune"}</p>
-                <p><strong>Droite :</strong> ${rightSources.length > 0 ? rightSources.join(', ') : "Aucune"}</p>
-            `;
         }
     </script>
 </body>
