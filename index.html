@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article Politique - Le Monde</title>
+    <title>Biais Politique des Médias</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,26 +22,16 @@
         h1 {
             font-size: 24px;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
         .bias-bar {
             display: flex;
+            height: 30px;
             margin-top: 10px;
-        }
-        .bias-bar div {
-            width: 33.33%;
-            padding: 10px;
-            color: white;
-            text-align: center;
         }
         .left {
             background-color: #ff4c4c;
         }
         .center {
-            background-color: #4caf50;
+            background-color: #ffffff;
         }
         .right {
             background-color: #2196F3;
@@ -55,61 +45,66 @@
 <body>
 
 <div class="container">
-    <h1 id="article-title">Chargement de l'article...</h1>
-    <img id="article-image" src="" alt="Image de l'article">
-    <p id="article-description"></p>
-    <div class="bias-bar" id="bias-bar">
-        <!-- La barre d'orientation médiatique sera ici -->
-    </div>
+    <h1 id="topic-title">Articles sur le sujet</h1>
+    <div id="articles-list"></div>
+    <h2>Répartition des Biais Politiques des Médias</h2>
+    <div class="bias-bar" id="bias-bar"></div>
 </div>
 
 <script>
-    // Clé API NewsData.io filtrée pour Le Monde
-    const newsAPIUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&country=fr&language=fr&category=politics&domainurl=lemonde.fr";
-
-    // URL et Bearer Token fournis par MBFC
+    const newsAPIUrl = "https://newsdata.io/api/1/news?apikey=pub_515353533f3d243a848d5ed6c74963418ece7&country=fr&language=fr&category=politics&q=politics"; // URL pour obtenir des articles de NewsData.io
     const mbfcAPIUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
     const mbfcBearerToken = "hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
 
-    // Fonction pour récupérer un article via l'API de NewsData.io
-    async function fetchArticle() {
+    // Variables pour stocker les biais
+    let leftCount = 0, centerCount = 0, rightCount = 0, totalCount = 0;
+
+    // Fonction pour récupérer des articles sur un sujet
+    async function fetchArticles() {
         try {
             const response = await fetch(newsAPIUrl);
             const data = await response.json();
 
-            // On récupère le premier article
-            const article = data.results[0];
+            console.log("Articles récupérés : ", data); // Log pour voir la structure des articles
 
-            // Vérification que l'article contient une source et un domaine
-            if (article) {
-                document.getElementById('article-title').textContent = article.title || "Titre non disponible";
-                document.getElementById('article-description').textContent = article.description || "Description non disponible";
-                document.getElementById('article-image').src = article.image_url || "https://via.placeholder.com/800x400?text=Image+non+disponible";
+            const articles = data.results;
+            const articleList = document.getElementById('articles-list');
 
-                // Extraire le domaine du média qui publie l'article
-                const domain = article.domain || article.link.split('/')[2];  // Parfois "domainurl" peut ne pas être directement disponible
-                console.log("Domaine de l'article : ", domain);
+            // Affichage des articles
+            articles.forEach(article => {
+                const articleElement = document.createElement('p');
+                articleElement.textContent = article.title;
+                articleList.appendChild(articleElement);
+            });
 
-                // Analyser la source avec l'API MBFC
-                if (domain) {
-                    await analyzeSource(domain); // Appel de l'API MBFC avec le domaine
-                } else {
-                    document.getElementById('bias-bar').innerHTML = '<div class="unknown">Domaine non disponible</div>';
-                }
-            } else {
-                throw new Error("Aucun article trouvé");
-            }
+            // Analyser chaque article pour obtenir le biais des médias
+            await analyzeArticles(articles);
 
         } catch (error) {
-            console.error("Erreur lors de la récupération de l'article : ", error);
-            document.getElementById('article-title').textContent = "Erreur lors du chargement de l'article.";
+            console.error("Erreur lors de la récupération des articles : ", error);
         }
     }
 
-    // Fonction pour analyser le domaine avec l'API MBFC
+    // Fonction pour analyser les médias de chaque article
+    async function analyzeArticles(articles) {
+        const domains = [...new Set(articles.map(article => article.domain || article.link.split('/')[2]))]; // Extraire les domaines
+        console.log("Domaines extraits :", domains); // Log pour voir les domaines extraits
+
+        totalCount = domains.length; // Total de médias à analyser
+
+        // Récupérer les biais pour chaque média
+        for (let domain of domains) {
+            console.log("Analyse du domaine : ", domain); // Log pour voir quel domaine est analysé
+            await analyzeSource(domain);
+        }
+
+        // Afficher la barre de répartition des biais
+        displayBiasBar();
+    }
+
+    // Fonction pour analyser une source (média) avec l'API MBFC
     async function analyzeSource(domain) {
         try {
-            // Envoi de la requête à l'API MBFC avec le domaine
             const response = await fetch(mbfcAPIUrl, {
                 method: 'GET',
                 headers: {
@@ -123,37 +118,54 @@
             }
 
             const data = await response.json();
-            console.log("Réponse complète de l'API MBFC:", data);  // Afficher les données complètes pour débogage
+            console.log("Données MBFC pour le domaine :", domain, data); // Log pour voir les données MBFC récupérées
 
-            const biasBar = document.getElementById('bias-bar');
+            const source = data.find(s => s.Domain && s.Domain.toLowerCase() === domain.toLowerCase());
 
-            // Recherche dans les données pour trouver le domaine correspondant
-            // Remplacer www.lemonde.fr par Le Monde (ou autre correspondance dans Name)
-            const source = data.find(s => s.Name && s.Name.toLowerCase().includes("le monde"));
-
-            // Vérification de la présence du biais politique
             if (source && source.Bias) {
-                // Ajuster l'affichage de la barre de biais selon le champ "Bias"
-                if (source.Bias === 'Left') {
-                    biasBar.innerHTML = '<div class="left">Gauche</div><div></div><div></div>';
+                if (source.Bias === 'Left' || source.Bias === 'Left-Center') {
+                    leftCount++;
                 } else if (source.Bias === 'Center') {
-                    biasBar.innerHTML = '<div></div><div class="center">Centre</div><div></div>';
-                } else if (source.Bias === 'Right') {
-                    biasBar.innerHTML = '<div></div><div></div><div class="right">Droite</div>';
-                } else {
-                    biasBar.innerHTML = '<div class="unknown">Orientation inconnue</div>';
+                    centerCount++;
+                } else if (source.Bias === 'Right' || source.Bias === 'Right-Center') {
+                    rightCount++;
                 }
-            } else {
-                biasBar.innerHTML = '<div class="unknown">Domaine non répertorié dans MBFC</div>';
             }
         } catch (error) {
-            console.error("Erreur lors de la récupération des données MBFC :", error);
-            document.getElementById('bias-bar').innerHTML = '<div class="unknown">Erreur lors de l\'analyse de la source</div>';
+            console.error("Erreur lors de l'analyse de la source : ", error);
         }
     }
 
-    // Charger l'article au chargement de la page
-    fetchArticle();
+    // Fonction pour afficher la barre de répartition des biais
+    function displayBiasBar() {
+        const biasBar = document.getElementById('bias-bar');
+
+        const leftPercentage = (leftCount / totalCount) * 100 || 0;
+        const centerPercentage = (centerCount / totalCount) * 100 || 0;
+        const rightPercentage = (rightCount / totalCount) * 100 || 0;
+
+        console.log(`Pourcentages : Gauche ${leftPercentage}% | Centre ${centerPercentage}% | Droite ${rightPercentage}%`); // Log pour voir les pourcentages calculés
+
+        const leftBar = document.createElement('div');
+        leftBar.classList.add('left');
+        leftBar.style.width = `${leftPercentage}%`;
+
+        const centerBar = document.createElement('div');
+        centerBar.classList.add('center');
+        centerBar.style.width = `${centerPercentage}%`;
+
+        const rightBar = document.createElement('div');
+        rightBar.classList.add('right');
+        rightBar.style.width = `${rightPercentage}%`;
+
+        biasBar.appendChild(leftBar);
+        biasBar.appendChild(centerBar);
+        biasBar.appendChild(rightBar);
+    }
+
+    // Charger les articles et analyser les biais au chargement de la page
+    fetchArticles();
+
 </script>
 
 </body>
