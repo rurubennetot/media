@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyse de Biais Politique</title>
+    <title>Classement des Articles par Biais Politique</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,35 +23,11 @@
             width: 80%;
             text-align: center;
         }
-
-        .bar-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .bar-left, .bar-center, .bar-right {
-            height: 50px;
-        }
-
-        .bar-left {
-            background-color: red;
-        }
-
-        .bar-center {
-            background-color: white;
-            border: 1px solid black;
-        }
-
-        .bar-right {
-            background-color: blue;
-        }
     </style>
 </head>
 <body>
-    <h1>Analyse de Biais Politique des Médias</h1>
-    <div id="result"></div>
+    <h1>Classement des Articles par Biais Politique</h1>
+    <div id="result">Chargement des articles en cours...</div>
 
     <script>
         // Exécuter dès que la page est chargée
@@ -62,10 +38,12 @@
             fetch(newsApiUrl)
             .then(response => response.json())
             .then(newsData => {
+                console.log("Données récupérées de l'API NewsData.io :", newsData);
                 const articles = newsData.results;
 
                 if (articles && articles.length > 0) {
                     const sources = articles.map(article => article.source_id);
+                    console.log("Sources des articles :", sources);
                     analyseBias(sources);
                 } else {
                     document.getElementById("result").innerHTML = "Aucun article trouvé.";
@@ -73,6 +51,7 @@
             })
             .catch(error => {
                 document.getElementById("result").innerHTML = `<p class="error">${error.message}</p>`;
+                console.error("Erreur lors de la récupération des articles :", error);
             });
         });
 
@@ -89,44 +68,52 @@
             })
             .then(response => response.json())
             .then(data => {
-                let leftCount = 0, centerCount = 0, rightCount = 0;
+                console.log("Données récupérées de MBFC :", data);
+                
+                // Regrouper les articles par biais politique
+                const leftSources = [];
+                const centerSources = [];
+                const rightSources = [];
 
                 sources.forEach(source => {
-                    // Chercher les biais dans les données de MBFC
                     const biasData = data.find(media => media.Name && media.Name.toLowerCase() === source.toLowerCase());
 
                     if (biasData) {
                         const bias = biasData.Bias.toLowerCase();
+                        console.log(`Source: ${source}, Biais: ${bias}`);
                         if (bias.includes("left") || bias.includes("left-center")) {
-                            leftCount++;
+                            leftSources.push(source);
                         } else if (bias.includes("center")) {
-                            centerCount++;
+                            centerSources.push(source);
                         } else if (bias.includes("right") || bias.includes("right-center")) {
-                            rightCount++;
+                            rightSources.push(source);
                         }
+                    } else {
+                        console.warn(`Source non trouvée dans MBFC : ${source}`);
                     }
                 });
 
-                const total = leftCount + centerCount + rightCount;
-                const leftPercent = (leftCount / total) * 100;
-                const centerPercent = (centerCount / total) * 100;
-                const rightPercent = (rightCount / total) * 100;
+                // Afficher les résultats dans la console
+                console.log("Sources avec biais de gauche :", leftSources);
+                console.log("Sources avec biais du centre :", centerSources);
+                console.log("Sources avec biais de droite :", rightSources);
 
-                displayBiasResults(leftPercent, centerPercent, rightPercent);
+                // Affichage dans la page
+                displayBiasResults(leftSources, centerSources, rightSources);
             })
             .catch(error => {
                 document.getElementById("result").innerHTML = `<p class="error">${error.message}</p>`;
+                console.error("Erreur lors de l'analyse des biais :", error);
             });
         }
 
-        function displayBiasResults(leftPercent, centerPercent, rightPercent) {
+        function displayBiasResults(leftSources, centerSources, rightSources) {
             const resultDiv = document.getElementById("result");
             resultDiv.innerHTML = `
-                <div class="bar-container">
-                    <div class="bar-left" style="width:${leftPercent}%;">${leftPercent.toFixed(2)}% Gauche</div>
-                    <div class="bar-center" style="width:${centerPercent}%;">${centerPercent.toFixed(2)}% Centre</div>
-                    <div class="bar-right" style="width:${rightPercent}%;">${rightPercent.toFixed(2)}% Droite</div>
-                </div>
+                <h3>Sources classées par biais politique :</h3>
+                <p><strong>Gauche :</strong> ${leftSources.length > 0 ? leftSources.join(', ') : "Aucune"}</p>
+                <p><strong>Centre :</strong> ${centerSources.length > 0 ? centerSources.join(', ') : "Aucune"}</p>
+                <p><strong>Droite :</strong> ${rightSources.length > 0 ? rightSources.join(', ') : "Aucune"}</p>
             `;
         }
     </script>
