@@ -77,7 +77,7 @@
         fetch(newsAPIUrl, {
             method: "GET",
             headers: {
-                "x-api-key": newsAPIKey
+                "x-api-token": newsAPIToken
             }
         })
         .then(response => response.json())
