@@ -65,7 +65,7 @@
 <script>
     document.getElementById("getBiasBtn").addEventListener("click", function() {
         // API NewsCatcher mise à jour avec votre clé API
-        const newsAPIUrl = "https://v3api.newscatcherapi.com/api/latest_headlines?when=1h&by_parse_date=false&page=1&page_size=100";
+        const newsAPIUrl = "https://api.newscatcherapi.com/v3/latest_headlines?when=1h&by_parse_date=false&page=1&page_size=100";
         const newsAPIKey = "FeWY0zuchvFUvr7rW_l3r631ei40Vj7V";
         const mbfcAPIUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
         const mbfcBearerToken = "Bearer hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
@@ -80,23 +80,11 @@
                 "x-api-key": newsAPIKey
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de la requête NewsCatcher : " + response.status);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log("Articles récupérés depuis NewsCatcher API :", data); // Log des articles récupérés
-
             const articles = data.articles;
-            const domains = [...new Set(articles.map(article => {
-                console.log("URL de l'article :", article.link); // Log des URLs pour vérifier
-                return new URL(article.link).hostname;
-            }))];
-
+            const domains = [...new Set(articles.map(article => new URL(article.link).hostname))];
             totalCount = domains.length;
-            console.log("Domaines extraits :", domains); // Log des domaines extraits
 
             if (totalCount === 0) {
                 resultDiv.innerHTML = "<p>Aucun média trouvé pour ce sujet.</p>";
@@ -118,8 +106,6 @@
                 return response.json();
             })
             .then(mbfcData => {
-                console.log("Données MBFC :", mbfcData); // Log des données MBFC
-
                 let output = `<p><strong>Médias analysés pour le sujet:</strong></p>`;
 
                 // Analyse des biais pour chaque média
@@ -139,18 +125,14 @@
                     }
                 });
 
-                console.log(`Gauche: ${leftCount}, Centre: ${centerCount}, Droite: ${rightCount}`); // Log des résultats de l'analyse
-
                 // Affichage des résultats et de la barre de répartition
                 resultDiv.innerHTML = output + getBiasBar(leftCount, centerCount, rightCount, totalCount);
             })
             .catch(error => {
-                console.error("Erreur lors de la récupération des données MBFC :", error);
                 resultDiv.innerHTML = `<p class="error">${error.message}</p>`;
             });
         })
         .catch(error => {
-            console.error("Erreur lors de la récupération des articles NewsCatcher :", error);
             resultDiv.innerHTML = `<p class="error">Erreur lors de la récupération des articles : ${error.message}</p>`;
         });
 
