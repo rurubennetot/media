@@ -3,171 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biais Politique des Médias sur un Sujet</title>
+    <title>Articles de France - NewsCatcher API</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
             background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
+
         .container {
-            background-color: white;
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 5px;
-            max-width: 800px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            font-size: 24px;
-        }
-        .bias-bar {
-            display: flex;
-            margin-top: 10px;
-            height: 30px;
-        }
-        .bias-bar div {
-            text-align: center;
-            color: white;
-        }
-        .left {
-            background-color: #ff4c4c;
-        }
-        .center {
-            background-color: #ffffff;
-            color: black;
-        }
-        .right {
-            background-color: #2196F3;
-        }
-        .unknown {
-            background-color: #e0e0e0;
-            color: #000;
-        }
-        #result {
-            margin-top: 20px;
-            padding: 10px;
             background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .article {
+            background-color: #fafafa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .article:hover {
+            transform: translateY(-10px);
+        }
+
+        .article img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 15px;
+        }
+
+        .article-content h2 {
+            font-size: 18px;
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .article-content p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .article-content .source {
+            font-weight: bold;
+            font-size: 12px;
+            color: #007bff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Répartition du Biais Politique des Médias</h1>
-    <button id="getBiasBtn">Analyser les Médias sur les Titres d'Actualité</button>
-    <div id="result"></div>
+    <h1>Derniers Articles de France</h1>
+    <div class="articles" id="articles"></div>
 </div>
 
+<footer>
+    <p>© 2024 NewsCatcher API - Articles de France</p>
+</footer>
+
 <script>
-    document.getElementById("getBiasBtn").addEventListener("click", function() {
-        // API NewsCatcher mise à jour avec votre clé API
-        const newsAPIUrl = "https://v3-api.newscatcherapi.com/api/latest_headlines?when=1h&by_parse_date=false&page=1&page_size=100";
-        const newsAPIToken = "FeWY0zuchvFUvr7rW_l3r631ei40Vj7V"; // Remplacez par votre clé API
-        const mbfcAPIUrl = "https://sheetdb.io/api/v1/p3dkx7064mky2";
-        const mbfcBearerToken = "Bearer hfc8ufkknwmc4r7kpgcrw4faarzoobn5264m7159";
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("DOM content loaded");
 
-        let leftCount = 0, centerCount = 0, rightCount = 0, totalCount = 0;
-        const resultDiv = document.getElementById("result");
-
-        // Fonction pour récupérer les articles via l'API NewsCatcher
-        fetch(newsAPIUrl, {
-            method: "GET",
-            headers: {
-                "x-api-token": newsAPIToken
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de la requête NewsCatcher : " + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Articles récupérés depuis NewsCatcher API :", data); // Log des articles récupérés
-
-            const articles = data.articles;
-            const domains = [...new Set(articles.map(article => {
-                console.log("URL de l'article :", article.link); // Log des URLs pour vérifier
-                return new URL(article.link).hostname;
-            }))];
-
-            totalCount = domains.length;
-            console.log("Domaines extraits :", domains); // Log des domaines extraits
-
-            if (totalCount === 0) {
-                resultDiv.innerHTML = "<p>Aucun média trouvé pour ce sujet.</p>";
-                return;
-            }
-
-            // Requête pour analyser les biais des médias via MBFC
-            fetch(mbfcAPIUrl, {
-                method: "GET",
-                headers: {
-                    "Authorization": mbfcBearerToken,
-                    "Content-Type": "application/json"
-                }
-            })
+        fetch('http://localhost:3000/news')  // L'URL de votre backend
             .then(response => {
+                console.log("Réponse de fetch reçue", response);
                 if (!response.ok) {
-                    throw new Error("Erreur lors de la requête MBFC : " + response.status);
+                    throw new Error('Erreur dans la réponse de l\'API : ' + response.status);
                 }
                 return response.json();
             })
-            .then(mbfcData => {
-                console.log("Données MBFC :", mbfcData); // Log des données MBFC
+            .then(data => {
+                console.log("Données JSON reçues de l'API :", data);
+                const articlesContainer = document.getElementById('articles');
 
-                let output = `<p><strong>Médias analysés pour le sujet:</strong></p>`;
+                // Vérifier si des articles sont présents
+                if (data.articles && data.articles.length > 0) {
+                    console.log("Nombre d'articles récupérés :", data.articles.length);
+                    data.articles.forEach(article => {
+                        console.log("Article actuel : ", article);
+                        
+                        // Créer la carte de l'article
+                        const articleElement = document.createElement('div');
+                        articleElement.classList.add('article');
 
-                // Analyse des biais pour chaque média
-                domains.forEach(domain => {
-                    const mediaData = mbfcData.find(media => media.Domain && media.Domain.toLowerCase() === domain.toLowerCase());
-                    if (mediaData) {
-                        output += `<p><strong>Nom :</strong> ${mediaData.Name} <br> <strong>Biais Politique :</strong> ${mediaData.Bias}</p>`;
-                        if (mediaData.Bias === 'Left' || mediaData.Bias === 'Left-Center') {
-                            leftCount++;
-                        } else if (mediaData.Bias === 'Center') {
-                            centerCount++;
-                        } else if (mediaData.Bias === 'Right' || mediaData.Bias === 'Right-Center') {
-                            rightCount++;
-                        }
-                    } else {
-                        output += `<p><strong>Nom :</strong> ${domain} <br> Biais non répertorié.</p>`;
-                    }
-                });
+                        // Assurer qu'il y a une image, sinon ajouter une image par défaut
+                        const imageUrl = article.media ? article.media : 'https://via.placeholder.com/300x200?text=No+Image';
+                        console.log("Image URL :", imageUrl);
 
-                console.log(`Gauche: ${leftCount}, Centre: ${centerCount}, Droite: ${rightCount}`); // Log des résultats de l'analyse
+                        articleElement.innerHTML = `
+                            <img src="${imageUrl}" alt="Image de l'article">
+                            <div class="article-content">
+                                <h2>${article.title}</h2>
+                                <p>${article.description ? article.description : 'Aucune description disponible.'}</p>
+                                <span class="source">${article.rights ? article.rights : 'Source inconnue'}</span>
+                            </div>
+                        `;
 
-                // Affichage des résultats et de la barre de répartition
-                resultDiv.innerHTML = output + getBiasBar(leftCount, centerCount, rightCount, totalCount);
+                        // Ajouter l'article au conteneur des articles
+                        articlesContainer.appendChild(articleElement);
+                    });
+                } else {
+                    console.log("Aucun article trouvé dans la réponse de l'API.");
+                    articlesContainer.innerHTML = '<p>Aucun article disponible pour le moment.</p>';
+                }
             })
             .catch(error => {
-                console.error("Erreur lors de la récupération des données MBFC :", error);
-                resultDiv.innerHTML = `<p class="error">${error.message}</p>`;
+                console.error('Erreur lors de la récupération des articles :', error);
+                document.getElementById('articles').innerHTML = '<p>Erreur lors de la récupération des articles.</p>';
             });
-        })
-        .catch(error => {
-            console.error("Erreur lors de la récupération des articles NewsCatcher :", error);
-            resultDiv.innerHTML = `<p class="error">Erreur lors de la récupération des articles : ${error.message}</p>`;
-        });
-
-        // Fonction pour afficher la barre de répartition des biais
-        function getBiasBar(leftCount, centerCount, rightCount, totalCount) {
-            const leftPercentage = (leftCount / totalCount) * 100 || 0;
-            const centerPercentage = (centerCount / totalCount) * 100 || 0;
-            const rightPercentage = (rightCount / totalCount) * 100 || 0;
-
-            return `
-                <div class="bias-bar">
-                    <div class="left" style="width:${leftPercentage}%;">${leftPercentage.toFixed(1)}% Gauche</div>
-                    <div class="center" style="width:${centerPercentage}%;">${centerPercentage.toFixed(1)}% Centre</div>
-                    <div class="right" style="width:${rightPercentage}%;">${rightPercentage.toFixed(1)}% Droite</div>
-                </div>
-            `;
-        }
     });
 </script>
 
