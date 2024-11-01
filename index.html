@@ -37,6 +37,13 @@
       color: #333;
     }
 
+    .article img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
     .article p {
       color: #666;
     }
@@ -69,13 +76,17 @@
       }
 
       function displayArticles(articles) {
-        articlesContainer.innerHTML = ""; // Clear any existing content
+        articlesContainer.innerHTML = ""; // Efface le contenu existant
         articles.forEach((article) => {
           const articleDiv = document.createElement("div");
           articleDiv.className = "article";
 
           const title = document.createElement("h2");
           title.textContent = article.title;
+
+          const image = document.createElement("img");
+          image.src = article.image || "default.jpg"; // Utilise une image par défaut si aucune image n'est disponible
+          image.alt = article.title;
 
           const description = document.createElement("p");
           description.textContent = article.body;
@@ -87,6 +98,7 @@
           link.rel = "noopener noreferrer";
 
           articleDiv.appendChild(title);
+          articleDiv.appendChild(image); // Ajoute l'image à l'article
           articleDiv.appendChild(description);
           articleDiv.appendChild(link);
 
