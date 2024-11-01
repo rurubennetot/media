@@ -23,6 +23,17 @@
       color: #333;
     }
 
+    .category {
+      margin: 20px 0;
+    }
+
+    .category h2 {
+      color: #333;
+      font-size: 22px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+
     .article {
       background-color: #fff;
       padding: 15px;
@@ -31,10 +42,10 @@
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 
-    .article h2 {
-      margin: 0 0 10px;
+    .article h3 {
       font-size: 18px;
       color: #333;
+      margin: 0 0 5px;
     }
 
     .article img {
@@ -46,6 +57,7 @@
 
     .article p {
       color: #666;
+      font-size: 14px;
     }
 
     .article a {
@@ -57,53 +69,65 @@
 <body>
   <div class="container">
     <h1>Articles sur la France</h1>
-    <div id="articles-container"></div>
+    <div id="categories-container"></div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const articlesContainer = document.getElementById("articles-container");
+      const categoriesContainer = document.getElementById("categories-container");
 
       async function fetchArticles() {
         try {
           const response = await fetch("http://localhost:5000/api/articles");
           const data = await response.json();
-          displayArticles(data.articles.results);
+          displayCategories(data.categories);
         } catch (error) {
           console.error("Erreur lors du chargement des articles:", error);
-          articlesContainer.innerHTML = "<p>Erreur lors du chargement des articles.</p>";
+          categoriesContainer.innerHTML = "<p>Erreur lors du chargement des articles.</p>";
         }
       }
 
-      function displayArticles(articles) {
-        articlesContainer.innerHTML = ""; // Efface le contenu existant
-        articles.forEach((article) => {
-          const articleDiv = document.createElement("div");
-          articleDiv.className = "article";
+      function displayCategories(categories) {
+        categoriesContainer.innerHTML = ""; // Efface le contenu existant
 
-          const title = document.createElement("h2");
-          title.textContent = article.title;
+        for (const [category, articles] of Object.entries(categories)) {
+          const categoryDiv = document.createElement("div");
+          categoryDiv.className = "category";
 
-          const image = document.createElement("img");
-          image.src = article.image || "default.jpg"; // Utilise une image par défaut si aucune image n'est disponible
-          image.alt = article.title;
+          const categoryTitle = document.createElement("h2");
+          categoryTitle.textContent = category;
+          categoryDiv.appendChild(categoryTitle);
 
-          const description = document.createElement("p");
-          description.textContent = article.body;
+          articles.forEach((article) => {
+            const articleDiv = document.createElement("div");
+            articleDiv.className = "article";
 
-          const link = document.createElement("a");
-          link.href = article.url;
-          link.textContent = "Lire l'article complet";
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
+            const title = document.createElement("h3");
+            title.textContent = article.title;
 
-          articleDiv.appendChild(title);
-          articleDiv.appendChild(image); // Ajoute l'image à l'article
-          articleDiv.appendChild(description);
-          articleDiv.appendChild(link);
+            const image = document.createElement("img");
+            image.src = article.image || "default.jpg";
+            image.alt = article.title;
 
-          articlesContainer.appendChild(articleDiv);
-        });
+            const snippet = document.createElement("p");
+            snippet.textContent = article.snippet;
+
+            const link = document.createElement("a");
+            link.href = article.url;
+            link.textContent = "Lire l'article complet";
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+
+            articleDiv.appendChild(title);
+            articleDiv.appendChild(image);
+            articleDiv.appendChild(snippet);
+            articleDiv.appendChild(link);
+
+            categoryDiv.appendChild(articleDiv);
+          });
+
+          categoriesContainer.appendChild(categoryDiv);
+        }
       }
 
       fetchArticles();
