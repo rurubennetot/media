@@ -3,135 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Articles classés par catégories</title>
+  <title>Articles Politiques</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
       background-color: #f4f4f4;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
       padding: 20px;
     }
-
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-
     .category {
-      margin: 20px 0;
+      margin-bottom: 20px;
     }
-
     .category h2 {
+      font-size: 24px;
       color: #333;
-      font-size: 22px;
       border-bottom: 2px solid #ddd;
       padding-bottom: 5px;
     }
-
     .article {
-      background-color: #fff;
-      padding: 15px;
       margin: 10px 0;
+      padding: 10px;
+      background-color: #fff;
       border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-
     .article h3 {
       font-size: 18px;
       color: #333;
-      margin: 0 0 5px;
     }
-
+    .article p {
+      color: #666;
+    }
     .article img {
       max-width: 100%;
       height: auto;
-      margin-bottom: 10px;
       border-radius: 5px;
+      margin-bottom: 10px;
     }
-
-    .article p {
-      color: #666;
-      font-size: 14px;
-    }
-
     .article a {
-      text-decoration: none;
       color: #1e90ff;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Articles classés par catégories</h1>
-    <div id="categories-container"></div>
-  </div>
+  <h1>Articles Politiques</h1>
+  <div id="categories-container"></div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const categoriesContainer = document.getElementById("categories-container");
-
-      async function fetchArticles() {
-        try {
-          const response = await fetch("http://localhost:3000/api/articles");
-          const data = await response.json();
-          displayCategories(data.categories);
-        } catch (error) {
-          console.error("Erreur lors du chargement des articles:", error);
-          categoriesContainer.innerHTML = "<p>Erreur lors du chargement des articles.</p>";
-        }
+    async function fetchArticles() {
+      try {
+        const response = await fetch("http://localhost:3000/api/articles");
+        const data = await response.json();
+        displayCategories(data.categories);
+      } catch (error) {
+        console.error("Erreur lors du chargement des articles:", error);
+        document.getElementById("categories-container").innerHTML = "<p>Erreur lors du chargement des articles.</p>";
       }
+    }
 
-      function displayCategories(categories) {
-        categoriesContainer.innerHTML = ""; // Efface le contenu existant
+    function displayCategories(categories) {
+      const container = document.getElementById("categories-container");
+      container.innerHTML = "";
 
-        categories.forEach((category) => {
-          const categoryDiv = document.createElement("div");
-          categoryDiv.className = "category";
+      categories.forEach(category => {
+        const categoryDiv = document.createElement("div");
+        categoryDiv.className = "category";
 
-          const categoryTitle = document.createElement("h2");
-          categoryTitle.textContent = category.category;
-          categoryDiv.appendChild(categoryTitle);
+        const categoryTitle = document.createElement("h2");
+        categoryTitle.textContent = category.category;
+        categoryDiv.appendChild(categoryTitle);
 
-          category.articles.forEach((article) => {
-            const articleDiv = document.createElement("div");
-            articleDiv.className = "article";
+        category.articles.forEach(article => {
+          const articleDiv = document.createElement("div");
+          articleDiv.className = "article";
 
-            const title = document.createElement("h3");
-            title.textContent = article.title;
+          const title = document.createElement("h3");
+          title.textContent = article.title;
 
-            const image = document.createElement("img");
-            image.src = article.image || "default.jpg";
-            image.alt = article.title;
+          const img = document.createElement("img");
+          img.src = article.image || "default.jpg";
+          img.alt = article.title;
 
-            const snippet = document.createElement("p");
-            snippet.textContent = article.snippet;
+          const snippet = document.createElement("p");
+          snippet.textContent = article.snippet;
 
-            const link = document.createElement("a");
-            link.href = article.url;
-            link.textContent = "Lire l'article complet";
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
+          const link = document.createElement("a");
+          link.href = article.url;
+          link.textContent = "Lire l'article complet";
+          link.target = "_blank";
 
-            articleDiv.appendChild(title);
-            articleDiv.appendChild(image);
-            articleDiv.appendChild(snippet);
-            articleDiv.appendChild(link);
-
-            categoryDiv.appendChild(articleDiv);
-          });
-
-          categoriesContainer.appendChild(categoryDiv);
+          articleDiv.appendChild(title);
+          articleDiv.appendChild(img);
+          articleDiv.appendChild(snippet);
+          articleDiv.appendChild(link);
+          categoryDiv.appendChild(articleDiv);
         });
-      }
 
-      fetchArticles();
-    });
+        container.appendChild(categoryDiv);
+      });
+    }
+
+    fetchArticles();
   </script>
 </body>
 </html>
