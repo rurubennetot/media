@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Articles Politiques</title>
   <style>
+    /* Styles de la page */
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -50,19 +51,16 @@
   <div id="categories-container"></div>
 
   <script>
-    const apiKey = "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"; // Remplace par ton jeton d'API Hugging Face
+    const rapidApiKey = "a1a3468615mshf324b1e8f4bf20ep13eba9js81dac68689e6"; // Ta clé API RapidAPI
 
     async function fetchArticles() {
       try {
         const response = await fetch("https://newsdata.io/api/1/news?apikey=pub_57681345fb44cee51df2204a2a9361e4fd97a&country=fr&language=fr&category=politics");
         const data = await response.json();
         const articles = data.results;
-        
-        // Récupérer les embeddings pour chaque article
-        const embeddings = await getEmbeddings(articles.map(article => article.title));
-        
-        // Regrouper les articles par similarité
-        const categorizedArticles = categorizeArticles(articles, embeddings);
+
+        // Obtenir les similarités entre les titres
+        const categorizedArticles = await categorizeArticles(articles);
         displayCategories(categorizedArticles);
       } catch (error) {
         console.error("Erreur lors du chargement des articles:", error);
@@ -70,35 +68,38 @@
       }
     }
 
-    // Fonction pour obtenir les embeddings depuis l'API Hugging Face
-    async function getEmbeddings(titles) {
-      const embeddings = [];
-      for (const title of titles) {
-        const response = await fetch("https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ inputs: title })
-        });
-        const data = await response.json();
-        embeddings.push(data[0]);
-      }
-      return embeddings;
+    // Fonction pour obtenir la similarité entre deux titres avec Twinword Text Similarity API
+    async function getSimilarity(title1, title2) {
+      const response = await fetch("https://twinword-text-similarity-v1.p.rapidapi.com/similarity/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": rapidApiKey,
+          "X-RapidAPI-Host": "twinword-text-similarity-v1.p.rapidapi.com"
+        },
+        body: JSON.stringify({
+          text1: title1,
+          text2: title2
+        })
+      });
+      const data = await response.json();
+      return data.similarity; // Retourne le score de similarité entre 0 et 1
     }
 
-    // Fonction pour calculer la similarité et regrouper les articles
-    function categorizeArticles(articles, embeddings) {
-      const threshold = 0.8; // Ajuster pour des regroupements plus ou moins stricts
+    // Fonction pour regrouper les articles par similarité de titre
+    async function categorizeArticles(articles) {
+      const threshold = 0.7; // Ajuster pour un regroupement plus strict ou plus large
       const categories = [];
 
-      articles.forEach((article, idx) => {
-        const titleEmbedding = embeddings[idx];
+      for (let i = 0; i < articles.length; i++) {
+        const article = articles[i];
+        const title = article.title || "Sans titre";
+
         let categoryFound = false;
 
         for (const category of categories) {
-          const similarity = cosineSimilarity(category.embedding, titleEmbedding);
+          // Utilise la similarité de titre pour déterminer le regroupement
+          const similarity = await getSimilarity(category.articles[0].title, title);
           if (similarity >= threshold) {
             category.articles.push(article);
             categoryFound = true;
@@ -107,28 +108,16 @@
         }
 
         if (!categoryFound) {
-          categories.push({ embedding: titleEmbedding, articles: [article] });
+          categories.push({
+            articles: [article]
+          });
         }
-      });
+      }
 
       return categories.map((cat, index) => ({
         category: `Sujet ${index + 1}`,
         articles: cat.articles
       }));
-    }
-
-    // Calcul de similarité cosinus entre deux embeddings
-    function cosineSimilarity(vecA, vecB) {
-      let dotProduct = 0;
-      let normA = 0;
-      let normB = 0;
-
-      for (let i = 0; i < vecA.length; i++) {
-        dotProduct += vecA[i] * vecB[i];
-        normA += vecA[i] ** 2;
-        normB += vecB[i] ** 2;
-      }
-      return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
     // Fonction pour afficher les catégories et articles
