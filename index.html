@@ -51,7 +51,7 @@
   <div id="categories-container"></div>
 
   <script>
-    const huggingFaceApiKey = "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"; // Remplace par ta clé API Hugging Face
+    const huggingFaceApiKey = "YOUR_HUGGING_FACE_API_KEY"; // Remplace par ta clé API Hugging Face
 
     async function fetchArticles() {
       try {
@@ -74,7 +74,7 @@
     async function getEmbeddingsForArticles(articles) {
       const embeddings = [];
       for (const article of articles) {
-        const content = `${article.title || ""} ${article.description || ""}`;
+        const content = `${article.title || ""} ${article.description || ""}`.slice(0, 500); // Limite la longueur du texte à 500 caractères
         const embedding = await getEmbedding(content);
         embeddings.push(embedding);
       }
@@ -82,16 +82,27 @@
     }
 
     async function getEmbedding(text) {
-      const response = await fetch("https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${huggingFaceApiKey}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ inputs: text })
-      });
-      const data = await response.json();
-      return data[0]; // Le vecteur d'embedding
+      try {
+        const response = await fetch("https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${huggingFaceApiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ inputs: text })
+        });
+
+        if (!response.ok) {
+          console.error(`Erreur API Hugging Face: ${response.status} ${response.statusText}`);
+          return null; // Retourne null si l'API ne peut pas traiter la demande
+        }
+
+        const data = await response.json();
+        return data[0]; // Le vecteur d'embedding
+      } catch (error) {
+        console.error("Erreur lors de l'appel à l'API Hugging Face:", error);
+        return null;
+      }
     }
 
     // Clustering des articles par similarité
@@ -101,6 +112,8 @@
 
       articles.forEach((article, index) => {
         const embedding = embeddings[index];
+        if (!embedding) return; // Ignore si l'embedding est null
+
         let addedToCluster = false;
 
         for (const cluster of clusters) {
