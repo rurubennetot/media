@@ -1,201 +1,55 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Articles Politiques</title>
-  <style>
-    /* Styles de la page */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      padding: 20px;
-    }
-    .category {
-      margin-bottom: 20px;
-    }
-    .category h2 {
-      font-size: 24px;
-      color: #333;
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 5px;
-    }
-    .article {
-      margin: 10px 0;
-      padding: 10px;
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .article h3 {
-      font-size: 18px;
-      color: #333;
-    }
-    .article p {
-      color: #666;
-    }
-    .article img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-    .article a {
-      color: #1e90ff;
-      text-decoration: none;
-    }
-  </style>
+  <title>News Clustering</title>
 </head>
 <body>
-  <h1>Articles Politiques</h1>
-  <div id="categories-container"></div>
+  <h1>Clustering d'articles</h1>
+  <button id="fetch-articles-btn">Charger et classer les articles</button>
+  <div id="results"></div>
 
   <script>
-    const huggingFaceApiKey = "YOUR_HUGGING_FACE_API_KEY"; // Remplace par ta clé API Hugging Face
-
     async function fetchArticles() {
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '<p>Chargement des articles...</p>';
+
       try {
-        const response = await fetch("https://newsdata.io/api/1/news?apikey=pub_57681345fb44cee51df2204a2a9361e4fd97a&country=fr&language=fr&category=politics");
-        const data = await response.json();
-        const articles = data.results;
-
-        // Obtenir les embeddings pour chaque article
-        const embeddings = await getEmbeddingsForArticles(articles);
-        
-        // Clustering des articles par similarité
-        const categorizedArticles = clusterArticles(articles, embeddings);
-        displayCategories(categorizedArticles);
-      } catch (error) {
-        console.error("Erreur lors du chargement des articles:", error);
-        document.getElementById("categories-container").innerHTML = "<p>Erreur lors du chargement des articles.</p>";
-      }
-    }
-
-    async function getEmbeddingsForArticles(articles) {
-      const embeddings = [];
-      for (const article of articles) {
-        const content = `${article.title || ""} ${article.description || ""}`.slice(0, 500); // Limite la longueur du texte à 500 caractères
-        const embedding = await getEmbedding(content);
-        embeddings.push(embedding);
-      }
-      return embeddings;
-    }
-
-    async function getEmbedding(text) {
-      try {
-        const response = await fetch("https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${huggingFaceApiKey}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ inputs: text })
-        });
-
+        // Appel vers la bonne route API
+        const response = await fetch('/api/classify-articles');
         if (!response.ok) {
-          console.error(`Erreur API Hugging Face: ${response.status} ${response.statusText}`);
-          return null; // Retourne null si l'API ne peut pas traiter la demande
+          throw new Error(`Erreur lors de l'appel API : ${response.statusText}`);
         }
 
         const data = await response.json();
-        return data[0]; // Le vecteur d'embedding
+        resultsContainer.innerHTML = '';
+
+        if (data.message) {
+          // Aucun article disponible
+          resultsContainer.innerHTML = `<p>${data.message}</p>`;
+        } else {
+          // Affichage des clusters d'articles
+          data.forEach((cluster) => {
+            const clusterDiv = document.createElement('div');
+            clusterDiv.innerHTML = `
+              <h2>${cluster.category}</h2>
+              <ul>
+                ${cluster.articles
+                  .map((article) => `<li>${article.title || 'Sans titre'}</li>`)
+                  .join('')}
+              </ul>
+            `;
+            resultsContainer.appendChild(clusterDiv);
+          });
+        }
       } catch (error) {
-        console.error("Erreur lors de l'appel à l'API Hugging Face:", error);
-        return null;
+        console.error('Erreur lors du chargement des articles:', error);
+        resultsContainer.innerHTML = `<p>Erreur : ${error.message}</p>`;
       }
     }
 
-    // Clustering des articles par similarité
-    function clusterArticles(articles, embeddings) {
-      const threshold = 0.8; // Ajuster pour un regroupement plus strict
-      const clusters = [];
-
-      articles.forEach((article, index) => {
-        const embedding = embeddings[index];
-        if (!embedding) return; // Ignore si l'embedding est null
-
-        let addedToCluster = false;
-
-        for (const cluster of clusters) {
-          const similarity = cosineSimilarity(cluster.embedding, embedding);
-          if (similarity >= threshold) {
-            cluster.articles.push(article);
-            addedToCluster = true;
-            break;
-          }
-        }
-
-        if (!addedToCluster) {
-          clusters.push({ embedding, articles: [article] });
-        }
-      });
-
-      return clusters.map((cluster, index) => ({
-        category: `Sujet ${index + 1}`,
-        articles: cluster.articles
-      }));
-    }
-
-    // Calcul de la similarité cosinus
-    function cosineSimilarity(vecA, vecB) {
-      let dotProduct = 0;
-      let normA = 0;
-      let normB = 0;
-
-      for (let i = 0; i < vecA.length; i++) {
-        dotProduct += vecA[i] * vecB[i];
-        normA += vecA[i] ** 2;
-        normB += vecB[i] ** 2;
-      }
-
-      return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-    }
-
-    // Afficher les catégories et articles
-    function displayCategories(categorizedArticles) {
-      const container = document.getElementById("categories-container");
-      container.innerHTML = "";
-
-      categorizedArticles.forEach(category => {
-        const categoryDiv = document.createElement("div");
-        categoryDiv.className = "category";
-
-        const categoryTitle = document.createElement("h2");
-        categoryTitle.textContent = category.category;
-        categoryDiv.appendChild(categoryTitle);
-
-        category.articles.forEach(article => {
-          const articleDiv = document.createElement("div");
-          articleDiv.className = "article";
-
-          const title = document.createElement("h3");
-          title.textContent = article.title;
-
-          const img = document.createElement("img");
-          img.src = article.image_url || "default.jpg";
-          img.alt = article.title;
-
-          const snippet = document.createElement("p");
-          snippet.textContent = article.description ? article.description.slice(0, 100) + "..." : "Pas de description";
-
-          const link = document.createElement("a");
-          link.href = article.link;
-          link.textContent = "Lire l'article complet";
-          link.target = "_blank";
-
-          articleDiv.appendChild(title);
-          articleDiv.appendChild(img);
-          articleDiv.appendChild(snippet);
-          articleDiv.appendChild(link);
-          categoryDiv.appendChild(articleDiv);
-        });
-
-        container.appendChild(categoryDiv);
-      });
-    }
-
-    // Charger les articles au démarrage
-    fetchArticles();
+    document.getElementById('fetch-articles-btn').addEventListener('click', fetchArticles);
   </script>
 </body>
 </html>
