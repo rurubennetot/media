@@ -3,102 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Articles Classés</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 20px auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .article-pair {
-      display: flex;
-      justify-content: space-between;
-      background-color: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .article {
-      flex: 1;
-      margin: 0 10px;
-    }
-    .article h3 {
-      font-size: 18px;
-      margin: 0;
-      color: #333;
-    }
-    .article p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #666;
-    }
-  </style>
+  <title>Articles Politiques</title>
 </head>
 <body>
-  <div class="container" id="articles-container">
-    <h1>Articles Politiques Classés</h1>
-  </div>
+  <h1>Liste des articles</h1>
+  <div id="articles"></div>
 
   <script>
-    // Fonction pour charger et afficher les articles
     async function loadArticles() {
-      const container = document.getElementById("articles-container");
-
       try {
-        // Récupération des articles depuis l'API backend
-        const response = await fetch('/api/articles');
+        const response = await fetch('http://localhost:3000/api/articles');
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des articles.');
         }
-
         const articles = await response.json();
+        console.log("Articles récupérés :", articles);
 
-        // Gestion du cas où aucun article n'est disponible
-        if (articles.length === 0) {
-          container.innerHTML += '<p>Aucun article trouvé.</p>';
-          return;
-        }
-
-        // Affichage des articles deux par deux
-        for (let i = 0; i < articles.length; i += 2) {
-          const articlePair = document.createElement("div");
-          articlePair.className = "article-pair";
-
-          const article1 = articles[i];
-          const article2 = articles[i + 1];
-
-          articlePair.innerHTML = `
-            <div class="article">
-              <h3>${article1.title || "Titre non disponible"}</h3>
-              <p>${article1.description || "Description non disponible"}</p>
-            </div>
-            ${article2 ? `
-            <div class="article">
-              <h3>${article2.title || "Titre non disponible"}</h3>
-              <p>${article2.description || "Description non disponible"}</p>
-            </div>
-            ` : ""}
-          `;
-
-          container.appendChild(articlePair);
-        }
+        const articlesDiv = document.getElementById('articles');
+        articlesDiv.innerHTML = articles.map(article => `
+          <div>
+            <h2>${article.title || "Titre indisponible"}</h2>
+            <p>${article.description || "Description indisponible"}</p>
+          </div>
+        `).join('');
       } catch (error) {
-        console.error('Erreur lors du chargement des articles:', error);
-        container.innerHTML += `<p>Erreur : ${error.message}</p>`;
+        console.error("Erreur lors du chargement des articles :", error);
       }
     }
 
-    // Charger les articles au chargement de la page
-    window.onload = loadArticles;
+    // Charger les articles automatiquement
+    loadArticles();
   </script>
 </body>
 </html>
