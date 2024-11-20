@@ -1,55 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>News Clustering</title>
+  <title>Articles Classés</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .article-pair {
+      display: flex;
+      justify-content: space-between;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .article {
+      flex: 1;
+      margin: 0 10px;
+    }
+    .article h3 {
+      font-size: 18px;
+      margin: 0;
+      color: #333;
+    }
+    .article p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-  <h1>Clustering d'articles</h1>
-  <button id="fetch-articles-btn">Charger et classer les articles</button>
-  <div id="results"></div>
+  <div class="container" id="articles-container">
+    <h1>Articles Politiques Classés</h1>
+  </div>
 
   <script>
-    async function fetchArticles() {
-      const resultsContainer = document.getElementById('results');
-      resultsContainer.innerHTML = '<p>Chargement des articles...</p>';
+    // Fonction pour charger et afficher les articles
+    async function loadArticles() {
+      const container = document.getElementById("articles-container");
 
       try {
-        // Appel vers la bonne route API
-        const response = await fetch('/api/classify-articles');
+        // Récupération des articles depuis l'API backend
+        const response = await fetch('/api/articles');
         if (!response.ok) {
-          throw new Error(`Erreur lors de l'appel API : ${response.statusText}`);
+          throw new Error('Erreur lors de la récupération des articles.');
         }
 
-        const data = await response.json();
-        resultsContainer.innerHTML = '';
+        const articles = await response.json();
 
-        if (data.message) {
-          // Aucun article disponible
-          resultsContainer.innerHTML = `<p>${data.message}</p>`;
-        } else {
-          // Affichage des clusters d'articles
-          data.forEach((cluster) => {
-            const clusterDiv = document.createElement('div');
-            clusterDiv.innerHTML = `
-              <h2>${cluster.category}</h2>
-              <ul>
-                ${cluster.articles
-                  .map((article) => `<li>${article.title || 'Sans titre'}</li>`)
-                  .join('')}
-              </ul>
-            `;
-            resultsContainer.appendChild(clusterDiv);
-          });
+        // Gestion du cas où aucun article n'est disponible
+        if (articles.length === 0) {
+          container.innerHTML += '<p>Aucun article trouvé.</p>';
+          return;
+        }
+
+        // Affichage des articles deux par deux
+        for (let i = 0; i < articles.length; i += 2) {
+          const articlePair = document.createElement("div");
+          articlePair.className = "article-pair";
+
+          const article1 = articles[i];
+          const article2 = articles[i + 1];
+
+          articlePair.innerHTML = `
+            <div class="article">
+              <h3>${article1.title || "Titre non disponible"}</h3>
+              <p>${article1.description || "Description non disponible"}</p>
+            </div>
+            ${article2 ? `
+            <div class="article">
+              <h3>${article2.title || "Titre non disponible"}</h3>
+              <p>${article2.description || "Description non disponible"}</p>
+            </div>
+            ` : ""}
+          `;
+
+          container.appendChild(articlePair);
         }
       } catch (error) {
         console.error('Erreur lors du chargement des articles:', error);
-        resultsContainer.innerHTML = `<p>Erreur : ${error.message}</p>`;
+        container.innerHTML += `<p>Erreur : ${error.message}</p>`;
       }
     }
 
-    document.getElementById('fetch-articles-btn').addEventListener('click', fetchArticles);
+    // Charger les articles au chargement de la page
+    window.onload = loadArticles;
   </script>
 </body>
 </html>
