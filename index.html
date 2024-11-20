@@ -9,54 +9,67 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f9;
+      background-color: #f9f9f9;
     }
+
     .container {
-      width: 90%;
-      margin: auto;
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 20px;
     }
+
     .category {
       margin-bottom: 40px;
     }
-    .category-title {
+
+    .category h2 {
       font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
       color: #333;
-    }
-    .article-box {
-      display: flex;
-      flex-direction: column;
+      border-bottom: 2px solid #007BFF;
+      padding-bottom: 5px;
       margin-bottom: 20px;
-      background-color: white;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .article {
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 8px;
       overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-    .article-box img {
+
+    .article img {
       width: 100%;
-      height: 200px;
+      height: 180px;
       object-fit: cover;
     }
+
     .article-content {
       padding: 15px;
     }
+
     .article-title {
       font-size: 18px;
       font-weight: bold;
-      margin-bottom: 10px;
+      color: #333;
+      margin: 0 0 10px;
     }
+
     .article-description {
       font-size: 14px;
       color: #555;
+      margin: 0;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="categories-container">
-    <!-- Les catégories et articles seront injectés ici -->
-  </div>
+  <div class="container" id="classified-articles"></div>
 
   <script>
     async function loadClassifiedArticles() {
@@ -66,52 +79,43 @@
           throw new Error('Erreur lors de la récupération des articles classés.');
         }
         const data = await response.json();
-        const container = document.getElementById('categories-container');
-
-        data.forEach(category => {
-          const categoryDiv = document.createElement('div');
-          categoryDiv.classList.add('category');
-
-          const categoryTitle = document.createElement('div');
-          categoryTitle.classList.add('category-title');
-          categoryTitle.textContent = category.category;
-          categoryDiv.appendChild(categoryTitle);
-
-          category.articles.forEach(article => {
-            const articleBox = document.createElement('div');
-            articleBox.classList.add('article-box');
-
-            const img = document.createElement('img');
-            img.src = article.image_url || 'https://via.placeholder.com/400x200?text=Pas+de+photo';
-            img.alt = article.title || 'Image de l\'article';
-            articleBox.appendChild(img);
-
-            const content = document.createElement('div');
-            content.classList.add('article-content');
-
-            const title = document.createElement('div');
-            title.classList.add('article-title');
-            title.textContent = article.title || 'Titre non disponible';
-            content.appendChild(title);
-
-            const description = document.createElement('div');
-            description.classList.add('article-description');
-            description.textContent = article.description || 'Description non disponible';
-            content.appendChild(description);
-
-            articleBox.appendChild(content);
-            categoryDiv.appendChild(articleBox);
-          });
-
-          container.appendChild(categoryDiv);
-        });
+        displayClassifiedArticles(data);
       } catch (error) {
         console.error('Erreur lors du chargement des articles classés:', error);
       }
     }
 
-    // Charger les articles classés au chargement de la page
-    window.onload = loadClassifiedArticles;
+    function displayClassifiedArticles(categories) {
+      const container = document.getElementById('classified-articles');
+      container.innerHTML = '';
+
+      categories.forEach((category) => {
+        const categoryElement = document.createElement('div');
+        categoryElement.classList.add('category');
+        categoryElement.innerHTML = `<h2>${category.category}</h2>`;
+
+        const articlesGrid = document.createElement('div');
+        articlesGrid.classList.add('articles-grid');
+
+        category.articles.forEach((article) => {
+          const articleElement = document.createElement('div');
+          articleElement.classList.add('article');
+          articleElement.innerHTML = `
+            <img src="${article.image_url || 'https://via.placeholder.com/300x180'}" alt="${article.title}">
+            <div class="article-content">
+              <h3 class="article-title">${article.title || 'Titre non disponible'}</h3>
+              <p class="article-description">${article.description || 'Description non disponible'}</p>
+            </div>
+          `;
+          articlesGrid.appendChild(articleElement);
+        });
+
+        categoryElement.appendChild(articlesGrid);
+        container.appendChild(categoryElement);
+      });
+    }
+
+    loadClassifiedArticles();
   </script>
 </body>
 </html>
