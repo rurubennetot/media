@@ -1,76 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Articles Classés</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clustering des Articles</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
       padding: 20px;
+      background-color: #f4f4f4;
     }
-
-    .category {
+    .cluster {
       margin-bottom: 40px;
     }
-
-    .category h2 {
-      font-size: 24px;
-      color: #333;
-      border-bottom: 2px solid #007BFF;
-      padding-bottom: 5px;
+    .cluster-title {
+      font-size: 1.5em;
       margin-bottom: 20px;
     }
-
-    .articles-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .articles {
+      display: flex;
+      flex-wrap: wrap;
       gap: 20px;
     }
-
     .article {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      flex: 1 1 calc(50% - 20px);
+      display: flex;
+      flex-direction: column;
     }
-
     .article img {
       width: 100%;
-      height: 180px;
+      height: 200px;
       object-fit: cover;
     }
-
     .article-content {
       padding: 15px;
     }
-
     .article-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
+      font-size: 1.2em;
       margin: 0 0 10px;
     }
-
+    .article-media {
+      font-size: 0.9em;
+      color: #888;
+      margin-bottom: 5px;
+    }
     .article-description {
-      font-size: 14px;
-      color: #555;
-      margin: 0;
+      font-size: 1em;
+      color: #333;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="classified-articles"></div>
-
+  <h1>Clustering des Articles</h1>
+  <div id="clusters"></div>
   <script>
     async function loadClassifiedArticles() {
       try {
@@ -78,41 +65,38 @@
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des articles classés.');
         }
-        const data = await response.json();
-        displayClassifiedArticles(data);
+        const clusters = await response.json();
+        const clustersContainer = document.getElementById('clusters');
+        clustersContainer.innerHTML = '';
+
+        clusters.forEach((cluster) => {
+          const clusterDiv = document.createElement('div');
+          clusterDiv.classList.add('cluster');
+          clusterDiv.innerHTML = `<h2 class="cluster-title">${cluster.category}</h2>`;
+
+          const articlesDiv = document.createElement('div');
+          articlesDiv.classList.add('articles');
+
+          cluster.articles.forEach((article) => {
+            const articleDiv = document.createElement('div');
+            articleDiv.classList.add('article');
+            articleDiv.innerHTML = `
+              <img src="${article.image_url || 'https://via.placeholder.com/400x200'}" alt="${article.title}" />
+              <div class="article-content">
+                <h3 class="article-title">${article.title || 'Titre non disponible'}</h3>
+                <p class="article-media"><strong>${article.source_id || 'Source inconnue'}</strong></p>
+                <p class="article-description">${article.description || 'Description non disponible'}</p>
+              </div>
+            `;
+            articlesDiv.appendChild(articleDiv);
+          });
+
+          clusterDiv.appendChild(articlesDiv);
+          clustersContainer.appendChild(clusterDiv);
+        });
       } catch (error) {
         console.error('Erreur lors du chargement des articles classés:', error);
       }
-    }
-
-    function displayClassifiedArticles(categories) {
-      const container = document.getElementById('classified-articles');
-      container.innerHTML = '';
-
-      categories.forEach((category) => {
-        const categoryElement = document.createElement('div');
-        categoryElement.classList.add('category');
-        categoryElement.innerHTML = `<h2>${category.category}</h2>`;
-
-        const articlesGrid = document.createElement('div');
-        articlesGrid.classList.add('articles-grid');
-
-        category.articles.forEach((article) => {
-          const articleElement = document.createElement('div');
-          articleElement.classList.add('article');
-          articleElement.innerHTML = `
-            <img src="${article.image_url || 'https://via.placeholder.com/300x180'}" alt="${article.title}">
-            <div class="article-content">
-              <h3 class="article-title">${article.title || 'Titre non disponible'}</h3>
-              <p class="article-description">${article.description || 'Description non disponible'}</p>
-            </div>
-          `;
-          articlesGrid.appendChild(articleElement);
-        });
-
-        categoryElement.appendChild(articlesGrid);
-        container.appendChild(categoryElement);
-      });
     }
 
     loadClassifiedArticles();
