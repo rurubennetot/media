@@ -1,99 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articles</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
-        .container {
-            width: 90%;
-            margin: auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-        }
-        .article-box {
-            display: flex;
-            flex-direction: column;
-            width: calc(50% - 20px);
-            background-color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .article-box img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .article-content {
-            padding: 15px;
-        }
-        .article-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .article-description {
-            font-size: 14px;
-            color: #555;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articles Classés</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    .container {
+      width: 90%;
+      margin: auto;
+      padding: 20px;
+    }
+    .category {
+      margin-bottom: 40px;
+    }
+    .category-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .article-box {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .article-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .article-content {
+      padding: 15px;
+    }
+    .article-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .article-description {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-    <div class="container" id="articles-container">
-        <!-- Les articles seront injectés ici -->
-    </div>
+  <div class="container" id="categories-container">
+    <!-- Les catégories et articles seront injectés ici -->
+  </div>
 
-    <script>
-        async function loadArticles() {
-            try {
-                const response = await fetch('http://localhost:3000/api/articles');
-                if (!response.ok) {
-                    throw new Error('Erreur lors de la récupération des articles.');
-                }
-                const articles = await response.json();
-
-                const container = document.getElementById('articles-container');
-                articles.forEach(article => {
-                    const articleBox = document.createElement('div');
-                    articleBox.classList.add('article-box');
-
-                    const img = document.createElement('img');
-                    img.src = article.image_url || 'https://via.placeholder.com/400x200?text=Pas+de+photo';
-                    img.alt = article.title || 'Image de l\'article';
-                    articleBox.appendChild(img);
-
-                    const content = document.createElement('div');
-                    content.classList.add('article-content');
-
-                    const title = document.createElement('div');
-                    title.classList.add('article-title');
-                    title.textContent = article.title || 'Titre non disponible';
-                    content.appendChild(title);
-
-                    const description = document.createElement('div');
-                    description.classList.add('article-description');
-                    description.textContent = article.description || 'Description non disponible';
-                    content.appendChild(description);
-
-                    articleBox.appendChild(content);
-                    container.appendChild(articleBox);
-                });
-            } catch (error) {
-                console.error('Erreur lors du chargement des articles:', error);
-            }
+  <script>
+    async function loadClassifiedArticles() {
+      try {
+        const response = await fetch('http://localhost:3000/api/classify-articles');
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des articles classés.');
         }
+        const data = await response.json();
+        const container = document.getElementById('categories-container');
 
-        // Charger les articles au chargement de la page
-        window.onload = loadArticles;
-    </script>
+        data.forEach(category => {
+          const categoryDiv = document.createElement('div');
+          categoryDiv.classList.add('category');
+
+          const categoryTitle = document.createElement('div');
+          categoryTitle.classList.add('category-title');
+          categoryTitle.textContent = category.category;
+          categoryDiv.appendChild(categoryTitle);
+
+          category.articles.forEach(article => {
+            const articleBox = document.createElement('div');
+            articleBox.classList.add('article-box');
+
+            const img = document.createElement('img');
+            img.src = article.image_url || 'https://via.placeholder.com/400x200?text=Pas+de+photo';
+            img.alt = article.title || 'Image de l\'article';
+            articleBox.appendChild(img);
+
+            const content = document.createElement('div');
+            content.classList.add('article-content');
+
+            const title = document.createElement('div');
+            title.classList.add('article-title');
+            title.textContent = article.title || 'Titre non disponible';
+            content.appendChild(title);
+
+            const description = document.createElement('div');
+            description.classList.add('article-description');
+            description.textContent = article.description || 'Description non disponible';
+            content.appendChild(description);
+
+            articleBox.appendChild(content);
+            categoryDiv.appendChild(articleBox);
+          });
+
+          container.appendChild(categoryDiv);
+        });
+      } catch (error) {
+        console.error('Erreur lors du chargement des articles classés:', error);
+      }
+    }
+
+    // Charger les articles classés au chargement de la page
+    window.onload = loadClassifiedArticles;
+  </script>
 </body>
 </html>
