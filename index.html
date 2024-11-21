@@ -811,7 +811,7 @@ code page  pirncipal : <!DOCTYPE html>
         &copy; 2024 Perspectiv. All rights reserved.
     </footer>
   
-  <script>
+<script>
 document.addEventListener("DOMContentLoaded", async function() {
     // Fetch and display classified articles
     async function loadAndDisplayArticles() {
@@ -828,21 +828,22 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     function displayArticles(categories) {
-        // Assumptions on category names: Change these selectors based on actual category names or logic
+        // Clear existing content in the columns to prevent duplication
         const leftColumn = document.querySelector('.magazine-column:first-child');
         const middleColumn = document.querySelector('.magazine-column.article-container');
         const rightColumn = document.querySelector('.magazine-column:last-child');
+        leftColumn.innerHTML = '';
+        middleColumn.innerHTML = '';
+        rightColumn.innerHTML = '';
 
         categories.forEach((category, index) => {
-            // Example of assigning categories to different columns by index or other properties
-            let targetColumn;
-            if (index % 3 === 0) targetColumn = leftColumn;
-            else if (index % 3 === 1) targetColumn = middleColumn;
-            else targetColumn = rightColumn;
+            // Assuming the layout is determined by category name or index
+            let targetColumn = (index % 3 === 0) ? leftColumn :
+                              (index % 3 === 1) ? middleColumn : rightColumn;
 
             category.articles.forEach(article => {
                 let articleElement = document.createElement('article');
-                articleElement.className = 'small-article left'; // or 'single-article' based on your layout needs
+                articleElement.className = 'small-article left'; // Apply class based on the layout needs
                 articleElement.innerHTML = `
                     <figure>
                         <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
@@ -857,6 +858,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         });
 
+        // After appending all articles, apply color updates and start article rotation
         updateBorderColor();
         rotateArticles();
     }
@@ -896,7 +898,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Load and display articles
     loadAndDisplayArticles();
 });
-  </script>
+</script>
+
 
 </body>
 </html>
