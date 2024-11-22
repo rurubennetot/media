@@ -504,13 +504,16 @@
   <style>
 document.addEventListener("DOMContentLoaded", function() {
     async function fetchArticles() {
+        const apiUrl = 'http://localhost:3000/api/classify-articles';
+        console.log("Tentative de récupération des articles à partir de:", apiUrl); // Log pour suivre l'URL utilisée
         try {
-            const apiUrl = 'http://localhost:3000/api/classify-articles';
             const response = await fetch(apiUrl);
+            console.log("Réponse reçue de l'API:", response.status); // Log pour vérifier le statut de la réponse
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const articles = await response.json();
+            console.log("Articles récupérés:", articles); // Log pour voir les articles récupérés
             displayArticles(articles);
             rotateArticles();
         } catch (error) {
@@ -528,7 +531,6 @@ document.addEventListener("DOMContentLoaded", function() {
         rightColumn.innerHTML = '';
 
         articles.forEach((article, index) => {
-            const targetColumn = (index % 3 === 0) ? leftColumn : (index % 3 === 1) ? middleColumn : rightColumn;
             const politicalScores = generatePoliticalScores(); // Génération fictive de scores politiques
             const articleElem = document.createElement('div');
             articleElem.className = 'article';
@@ -542,13 +544,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="blue" style="width: ${politicalScores.blue}%"></div>
                 </div>
             `;
+            console.log("Article traité:", articleElem); // Log pour vérifier chaque article traité
+            const targetColumn = index % 3 === 0 ? leftColumn : index % 3 === 1 ? middleColumn : rightColumn;
             targetColumn.appendChild(articleElem);
         });
         updateBorderColor();
     }
 
     function generatePoliticalScores() {
-        // Retourne des scores politiques fictifs
         return {
             red: Math.floor(Math.random() * 100),
             white: Math.floor(Math.random() * 100),
@@ -559,13 +562,14 @@ document.addEventListener("DOMContentLoaded", function() {
     function rotateArticles() {
         const articles = document.querySelectorAll('#middle-column .article');
         let currentArticle = 0;
-        articles[currentArticle].style.display = 'block'; // Show first article initially
+        articles[currentArticle].style.display = 'block'; // Afficher le premier article initialement
 
         setInterval(() => {
-            articles[currentArticle].style.display = 'none'; // Hide current article
-            currentArticle = (currentArticle + 1) % articles.length; // Move to the next article
-            articles[currentArticle].style.display = 'block'; // Show next article
-        }, 7000); // Change every 7 seconds
+            articles[currentArticle].style.display = 'none'; // Masquer l'article courant
+            currentArticle = (currentArticle + 1) % articles.length; // Passer au suivant
+            articles[currentArticle].style.display = 'block'; // Afficher le nouvel article
+            console.log("Rotation vers l'article:", currentArticle); // Log pour suivre la rotation
+        }, 7000); // Changer chaque 7 secondes
     }
 
     function updateBorderColor() {
@@ -576,17 +580,19 @@ document.addEventListener("DOMContentLoaded", function() {
             const maxColorWidth = Math.max(redWidth, whiteWidth, blueWidth);
 
             if (maxColorWidth === redWidth) {
-                article.style.borderColor = '#e63946'; // red
+                article.style.borderColor = '#e63946'; // rouge
             } else if (maxColorWidth === whiteWidth) {
-                article.style.borderColor = '#f1faee'; // white
+                article.style.borderColor = '#f1faee'; // blanc
             } else {
-                article.style.borderColor = '#a8dadc'; // blue
+                article.style.borderColor = '#a8dadc'; // bleu
             }
+            console.log("Mise à jour de la couleur de bordure pour:", article); // Log pour vérifier la mise à jour de la bordure
         });
     }
 
     fetchArticles();
 });
+
   </style>
 </body>
 </html>
