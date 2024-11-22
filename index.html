@@ -1,4 +1,4 @@
-code page  pirncipal : <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -813,7 +813,6 @@ code page  pirncipal : <!DOCTYPE html>
   
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
-    // Fetch and display classified articles
     async function loadAndDisplayArticles() {
         try {
             const apiUrl = 'http://localhost:3000/api/classify-articles'; // URL de ton API
@@ -822,28 +821,24 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             const categories = await response.json();
             displayArticles(categories);
+            rotateArticles(); // Initiate article rotation after articles are displayed
         } catch (error) {
             console.error('Error loading classified articles:', error);
         }
     }
 
     function displayArticles(categories) {
-        // Clear existing content in the columns to prevent duplication
         const leftColumn = document.querySelector('.magazine-column:first-child');
         const middleColumn = document.querySelector('.magazine-column.article-container');
         const rightColumn = document.querySelector('.magazine-column:last-child');
-        leftColumn.innerHTML = '';
-        middleColumn.innerHTML = '';
-        rightColumn.innerHTML = '';
 
         categories.forEach((category, index) => {
-            // Assuming the layout is determined by category name or index
             let targetColumn = (index % 3 === 0) ? leftColumn :
                               (index % 3 === 1) ? middleColumn : rightColumn;
 
             category.articles.forEach(article => {
                 let articleElement = document.createElement('article');
-                articleElement.className = 'small-article left'; // Apply class based on the layout needs
+                articleElement.className = 'small-article left'; 
                 articleElement.innerHTML = `
                     <figure>
                         <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
@@ -852,53 +847,45 @@ document.addEventListener("DOMContentLoaded", async function() {
                         <a href="${article.url || '#'}">${article.title}</a>
                     </h3>
                     <p>${article.description || ''}</p>
+                    <div class="political-bar" style="display: flex;">
+                        <div class="red" style="width: ${article.politicalScores.red}%; background-color: red;"></div>
+                        <div class="white" style="width: ${article.politicalScores.white}%; background-color: white;"></div>
+                        <div class="blue" style="width: ${article.politicalScores.blue}%; background-color: blue;"></div>
+                    </div>
                 `;
 
                 targetColumn.appendChild(articleElement);
-            });
-        });
-
-        // After appending all articles, apply color updates and start article rotation
-        updateBorderColor();
-        rotateArticles();
-    }
-
-    // Update border color based on the highest percentage in the political bar
-    function updateBorderColor() {
-        document.querySelectorAll('.magazine-column article.left').forEach(function(article) {
-            var sections = article.querySelectorAll('.political-bar .section');
-            var maxPercentage = 0;
-            var maxColor = 'transparent';
-
-            sections.forEach(function(section) {
-                var percentage = parseFloat(section.style.width);
-                if (percentage > maxPercentage) {
-                    maxPercentage = percentage;
-                    maxColor = getComputedStyle(section).backgroundColor;
+                if (index % 3 === 0) { // Update border color for left column articles
+                    articleElement.style.borderColor = getBorderColor(article.politicalScores);
                 }
             });
-
-            article.style.borderColor = maxColor;
         });
     }
 
-    // Article rotation logic with fade transition
-    function rotateArticles() {
-        var articles = document.querySelectorAll('.single-article');
-        var currentArticle = 0;
-        var totalArticles = articles.length;
+    function getBorderColor(scores) {
+        if (scores.red > scores.blue) {
+            return 'red';
+        } else if (scores.blue > scores.red) {
+            return 'blue';
+        } else {
+            return 'grey'; // Neutral color if equal or no clear majority
+        }
+    }
 
-        setInterval(function() {
+    function rotateArticles() {
+        const articles = document.querySelectorAll('.magazine-column.article-container .single-article');
+        let currentArticle = 0;
+        setInterval(() => {
             articles[currentArticle].classList.remove('active');
-            currentArticle = (currentArticle + 1) % totalArticles;
+            currentArticle = (currentArticle + 1) % articles.length;
             articles[currentArticle].classList.add('active');
         }, 7000); // Change article every 7 seconds
     }
 
-    // Load and display articles
     loadAndDisplayArticles();
 });
 </script>
+
 
 
 </body>
