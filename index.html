@@ -821,7 +821,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             const categories = await response.json();
             displayArticles(categories);
-            rotateArticles(); // Initiate article rotation after articles are displayed
         } catch (error) {
             console.error('Error loading classified articles:', error);
         }
@@ -831,6 +830,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         const leftColumn = document.querySelector('.magazine-column:first-child');
         const middleColumn = document.querySelector('.magazine-column.article-container');
         const rightColumn = document.querySelector('.magazine-column:last-child');
+        leftColumn.innerHTML = '';
+        middleColumn.innerHTML = '';
+        rightColumn.innerHTML = '';
 
         categories.forEach((category, index) => {
             let targetColumn = (index % 3 === 0) ? leftColumn :
@@ -838,7 +840,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             category.articles.forEach(article => {
                 let articleElement = document.createElement('article');
-                articleElement.className = 'small-article left'; 
+                articleElement.className = 'small-article left';
                 articleElement.innerHTML = `
                     <figure>
                         <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
@@ -847,46 +849,51 @@ document.addEventListener("DOMContentLoaded", async function() {
                         <a href="${article.url || '#'}">${article.title}</a>
                     </h3>
                     <p>${article.description || ''}</p>
-                    <div class="political-bar" style="display: flex;">
-                        <div class="red" style="width: ${article.politicalScores.red}%; background-color: red;"></div>
-                        <div class="white" style="width: ${article.politicalScores.white}%; background-color: white;"></div>
-                        <div class="blue" style="width: ${article.politicalScores.blue}%; background-color: blue;"></div>
+                    <div class="political-bar" style="display: flex; width: 100%;">
+                        <div style="width: ${article.politicalScores.left || 0}%; background-color: red;"></div>
+                        <div style="width: ${article.politicalScores.center || 0}%; background-color: white;"></div>
+                        <div style="width: ${article.politicalScores.right || 0}%; background-color: blue;"></div>
                     </div>
                 `;
-
                 targetColumn.appendChild(articleElement);
-                if (index % 3 === 0) { // Update border color for left column articles
-                    articleElement.style.borderColor = getBorderColor(article.politicalScores);
+            });
+        });
+
+        updateBorderColor();
+        rotateArticles();
+    }
+
+    function updateBorderColor() {
+        document.querySelectorAll('.magazine-column:first-child article').forEach(function(article) {
+            var sections = article.querySelectorAll('.political-bar div');
+            var maxPercentage = 0;
+            var maxColor = 'transparent';
+
+            sections.forEach(function(section) {
+                var percentage = parseFloat(section.style.width);
+                if (percentage > maxPercentage) {
+                    maxPercentage = percentage;
+                    maxColor = getComputedStyle(section).backgroundColor;
                 }
             });
+
+            article.style.borderColor = maxColor;
         });
     }
 
-    function getBorderColor(scores) {
-        if (scores.red > scores.blue) {
-            return 'red';
-        } else if (scores.blue > scores.red) {
-            return 'blue';
-        } else {
-            return 'grey'; // Neutral color if equal or no clear majority
-        }
-    }
-
     function rotateArticles() {
-        const articles = document.querySelectorAll('.magazine-column.article-container .single-article');
+        const articles = document.querySelectorAll('.magazine-column.article-container article');
         let currentArticle = 0;
-        setInterval(() => {
+        setInterval(function() {
             articles[currentArticle].classList.remove('active');
             currentArticle = (currentArticle + 1) % articles.length;
             articles[currentArticle].classList.add('active');
-        }, 7000); // Change article every 7 seconds
+        }, 7000); // Rotate articles every 7 seconds
     }
 
     loadAndDisplayArticles();
 });
 </script>
-
-
 
 </body>
 </html>
