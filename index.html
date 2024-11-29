@@ -852,7 +852,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             articleElement.innerHTML = `
                 <figure>
-                    <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" style="width: 100%; height: auto;" />
+                    <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" style="width: 100%; height: 200px; object-fit: cover;" />
                 </figure>
                 <h3 class="article-title">
                     <a href="${article.url || '#'}">${article.title}</a>
@@ -871,7 +871,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 <p>${article.description || ''}</p>
             `;
 
-            // Mise à jour de la couleur de bordure en fonction de la plus grande proportion (pour la colonne de droite uniquement)
+            // Mise à jour de la couleur de bordure en fonction de la plus grande proportion (pour la colonne de gauche uniquement)
             if (addBorderColor) {
                 const maxColorSection = Math.max(randomRed, randomWhite, randomBlue);
                 let borderColor = '';
@@ -887,22 +887,22 @@ document.addEventListener("DOMContentLoaded", async function() {
             return articleElement;
         }
 
-        // Ajout des articles dans la colonne de gauche
+        // Ajout des articles dans la colonne de gauche (avec bordure)
         if (organizedArticles.leftColumn) {
             organizedArticles.leftColumn.forEach((article) => {
-                const articleElement = createArticleElement(article);
+                const articleElement = createArticleElement(article, true);
                 leftColumn.appendChild(articleElement);
             });
         }
 
         // Ajout d'un article unique dans la colonne du milieu pour rotation
         if (organizedArticles.middleColumn) {
-            organizedArticles.middleColumn.forEach((article) => {
+            organizedArticles.middleColumn.forEach((article, index) => {
                 const articleElement = document.createElement('article');
-                articleElement.className = 'single-article active'; // Assure-toi qu'il est actif au chargement
+                articleElement.className = index === 0 ? 'single-article active' : 'single-article'; // Le premier article est actif au chargement
                 articleElement.innerHTML = `
                     <figure>
-                        <img src="${article.image_url || 'https://placehold.co/1000x450'}" alt="${article.title}" style="width: 100%; height: auto;" />
+                        <img src="${article.image_url || 'https://placehold.co/1000x450'}" alt="${article.title}" style="width: 100%; height: 450px; object-fit: cover;" />
                     </figure>
                     <h2 class="article-title article-title--large">
                         <a href="${article.url || '#'}">${article.title}</a>
@@ -930,10 +930,10 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
 
-        // Ajout des articles dans la colonne de droite
+        // Ajout des articles dans la colonne de droite (sans bordure)
         if (organizedArticles.rightColumn) {
             organizedArticles.rightColumn.forEach((article) => {
-                const articleElement = createArticleElement(article, true);
+                const articleElement = createArticleElement(article);
                 rightColumn.appendChild(articleElement);
             });
         }
@@ -961,8 +961,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     loadAndDisplayArticles();
 });
 </script>
-
-
 
 </body>
 </html>
