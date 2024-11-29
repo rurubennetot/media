@@ -904,13 +904,14 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Ajout d'un article unique dans la colonne du milieu pour rotation
         if (organizedArticles.middleColumn) {
             // Conteneur pour les articles rotatifs au centre
-            const rotativeContainer = document.createElement('div');
-            rotativeContainer.className = 'rotative-container';
-            rotativeContainer.style.margin = '0 auto 20px auto';
-            rotativeContainer.style.padding = '20px';
-            rotativeContainer.style.maxWidth = '800px';
-            rotativeContainer.style.border = '1px solid #e5e7eb';
-            rotativeContainer.style.borderRadius = '8px';
+            const middleWrapper = document.createElement('div');
+            middleWrapper.className = 'middle-wrapper';
+            middleWrapper.style.margin = '0 auto 30px auto';
+            middleWrapper.style.padding = '20px';
+            middleWrapper.style.maxWidth = '800px';
+            middleWrapper.style.border = '1px solid #e5e7eb';
+            middleWrapper.style.borderRadius = '8px';
+            middleWrapper.style.backgroundColor = '#111827';
 
             organizedArticles.middleColumn.forEach((article, index) => {
                 const articleElement = document.createElement('article');
@@ -942,18 +943,18 @@ document.addEventListener("DOMContentLoaded", async function() {
                         </div>
                     </div>
                 `;
-                rotativeContainer.appendChild(articleElement);
+                middleWrapper.appendChild(articleElement);
             });
 
-            middleColumn.appendChild(rotativeContainer);
+            middleColumn.appendChild(middleWrapper);
 
             // Ajout de la section d'articles deux par deux en dessous du rotatif
             const smallArticlesGrid = document.createElement('div');
             smallArticlesGrid.className = 'small-articles-grid';
             smallArticlesGrid.style.display = 'grid';
             smallArticlesGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
-            smallArticlesGrid.style.gap = '1rem';
-            smallArticlesGrid.style.marginTop = '20px';
+            smallArticlesGrid.style.gap = '20px';
+            smallArticlesGrid.style.marginTop = '30px';
 
             if (organizedArticles.middleColumn.length > 2) {
                 organizedArticles.middleColumn.slice(2).forEach((article) => {
@@ -969,7 +970,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (organizedArticles.rightColumn) {
             organizedArticles.rightColumn.forEach((article) => {
                 const articleElement = createArticleElement(article);
-                articleElement.style.marginBottom = '20px'; // Espacement supplémentaire
+                articleElement.style.marginBottom = '30px'; // Espacement supplémentaire
                 rightColumn.appendChild(articleElement);
             });
         }
