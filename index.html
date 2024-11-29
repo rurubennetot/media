@@ -836,12 +836,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         const rightColumn = document.querySelector('.magazine-column:last-child');
 
         // Effacement des articles existants pour éviter la duplication
-        leftColumn.innerHTML = '';
-        middleColumn.innerHTML = '';
-        rightColumn.innerHTML = '';
+        leftColumn.innerHTML = '<h2 class="section-title section-title--blindspot">•BlindSpot•</h2>';
+        middleColumn.innerHTML = ''; // Article unique au milieu
+        rightColumn.innerHTML = '<h2 class="section-title section-title--france">•France•</h2>';
 
         // Fonction pour créer un élément d'article avec la barre de pourcentage
-        function createArticleElement(article) {
+        function createArticleElement(article, addBorderColor = false) {
             const articleElement = document.createElement('article');
             articleElement.className = 'small-article left';
 
@@ -852,7 +852,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             articleElement.innerHTML = `
                 <figure>
-                    <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
+                    <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" style="width: 100%; height: auto;" />
                 </figure>
                 <h3 class="article-title">
                     <a href="${article.url || '#'}">${article.title}</a>
@@ -871,14 +871,18 @@ document.addEventListener("DOMContentLoaded", async function() {
                 <p>${article.description || ''}</p>
             `;
 
-            // Mise à jour de la couleur de bordure en fonction de la plus grande proportion
-            const maxColorSection = Math.max(randomRed, randomWhite, randomBlue);
-            let borderColor = '';
-            if (maxColorSection === randomRed) borderColor = '#9E3939';
-            if (maxColorSection === randomWhite) borderColor = '#e4e7ed';
-            if (maxColorSection === randomBlue) borderColor = '#3C3A8E';
+            // Mise à jour de la couleur de bordure en fonction de la plus grande proportion (pour la colonne de droite uniquement)
+            if (addBorderColor) {
+                const maxColorSection = Math.max(randomRed, randomWhite, randomBlue);
+                let borderColor = '';
+                if (maxColorSection === randomRed) borderColor = '#9E3939';
+                if (maxColorSection === randomWhite) borderColor = '#e4e7ed';
+                if (maxColorSection === randomBlue) borderColor = '#3C3A8E';
 
-            articleElement.style.borderColor = borderColor;
+                articleElement.style.borderColor = borderColor;
+                articleElement.style.borderWidth = '2px';
+                articleElement.style.borderStyle = 'solid';
+            }
 
             return articleElement;
         }
@@ -895,10 +899,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (organizedArticles.middleColumn) {
             organizedArticles.middleColumn.forEach((article) => {
                 const articleElement = document.createElement('article');
-                articleElement.className = 'single-article';
+                articleElement.className = 'single-article active'; // Assure-toi qu'il est actif au chargement
                 articleElement.innerHTML = `
                     <figure>
-                        <img src="${article.image_url || 'https://placehold.co/1000x450'}" alt="${article.title}" />
+                        <img src="${article.image_url || 'https://placehold.co/1000x450'}" alt="${article.title}" style="width: 100%; height: auto;" />
                     </figure>
                     <h2 class="article-title article-title--large">
                         <a href="${article.url || '#'}">${article.title}</a>
@@ -929,7 +933,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Ajout des articles dans la colonne de droite
         if (organizedArticles.rightColumn) {
             organizedArticles.rightColumn.forEach((article) => {
-                const articleElement = createArticleElement(article);
+                const articleElement = createArticleElement(article, true);
                 rightColumn.appendChild(articleElement);
             });
         }
@@ -957,6 +961,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     loadAndDisplayArticles();
 });
 </script>
+
 
 
 </body>
