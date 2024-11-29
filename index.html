@@ -903,15 +903,15 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         // Ajout d'un article unique dans la colonne du milieu pour rotation
         if (organizedArticles.middleColumn) {
-            // Conteneur pour les articles rotatifs au centre
-            const middleWrapper = document.createElement('div');
-            middleWrapper.className = 'middle-wrapper';
-            middleWrapper.style.margin = '0 auto 30px auto';
-            middleWrapper.style.padding = '20px';
-            middleWrapper.style.maxWidth = '800px';
-            middleWrapper.style.border = '1px solid #e5e7eb';
-            middleWrapper.style.borderRadius = '8px';
-            middleWrapper.style.backgroundColor = '#111827';
+            // Conteneur pour l'article rotatif au centre
+            const rotativeWrapper = document.createElement('div');
+            rotativeWrapper.className = 'rotative-wrapper';
+            rotativeWrapper.style.margin = '0 auto 30px auto';
+            rotativeWrapper.style.padding = '20px';
+            rotativeWrapper.style.maxWidth = '800px';
+            rotativeWrapper.style.border = '1px solid #e5e7eb';
+            rotativeWrapper.style.borderRadius = '8px';
+            rotativeWrapper.style.backgroundColor = '#111827';
 
             organizedArticles.middleColumn.forEach((article, index) => {
                 const articleElement = document.createElement('article');
@@ -943,10 +943,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                         </div>
                     </div>
                 `;
-                middleWrapper.appendChild(articleElement);
+                rotativeWrapper.appendChild(articleElement);
             });
 
-            middleColumn.appendChild(middleWrapper);
+            middleColumn.appendChild(rotativeWrapper);
 
             // Ajout de la section d'articles deux par deux en dessous du rotatif
             const smallArticlesGrid = document.createElement('div');
