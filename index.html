@@ -850,6 +850,21 @@ document.addEventListener("DOMContentLoaded", async function() {
             const randomWhite = Math.floor(Math.random() * (50 - randomRed));
             const randomBlue = 100 - randomRed - randomWhite;
 
+            // Générer la barre de pourcentage sans texte pour les petites valeurs
+            const politicalBarHTML = `
+                <div class="political-bar mb-8">
+                    <div class="section red" style="width: ${randomRed}%;">
+                        ${randomRed > 10 ? `<span>${randomRed}%</span>` : ''}
+                    </div>
+                    <div class="section white" style="width: ${randomWhite}%;">
+                        ${randomWhite > 10 ? `<span>${randomWhite}%</span>` : ''}
+                    </div>
+                    <div class="section blue" style="width: ${randomBlue}%;">
+                        ${randomBlue > 10 ? `<span>${randomBlue}%</span>` : ''}
+                    </div>
+                </div>
+            `;
+
             articleElement.innerHTML = `
                 <figure>
                     <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" style="width: 100%; height: 200px; object-fit: cover;" />
@@ -857,17 +872,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 <h3 class="article-title">
                     <a href="${article.url || '#'}">${article.title}</a>
                 </h3>
-                <div class="political-bar mb-8">
-                    <div class="section red" style="width: ${randomRed}%;">
-                        <span>${randomRed}%</span>
-                    </div>
-                    <div class="section white" style="width: ${randomWhite}%;">
-                        <span>${randomWhite}%</span>
-                    </div>
-                    <div class="section blue" style="width: ${randomBlue}%;">
-                        <span>${randomBlue}%</span>
-                    </div>
-                </div>
+                ${politicalBarHTML}
                 <p>${article.description || ''}</p>
             `;
 
@@ -897,12 +902,19 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         // Ajout d'un article unique dans la colonne du milieu pour rotation
         if (organizedArticles.middleColumn) {
+            // Conteneur pour les articles rotatifs au centre
+            const rotativeContainer = document.createElement('div');
+            rotativeContainer.className = 'rotative-container';
+            rotativeContainer.style.margin = '0 auto';
+            rotativeContainer.style.padding = '20px';
+            rotativeContainer.style.maxWidth = '800px';
+
             organizedArticles.middleColumn.forEach((article, index) => {
                 const articleElement = document.createElement('article');
                 articleElement.className = index === 0 ? 'single-article active' : 'single-article'; // Le premier article est actif au chargement
                 articleElement.innerHTML = `
                     <figure>
-                        <img src="${article.image_url || 'https://placehold.co/1000x450'}" alt="${article.title}" style="width: 100%; height: 450px; object-fit: cover;" />
+                        <img src="${article.image_url || 'https://placehold.co/800x400'}" alt="${article.title}" style="width: 100%; height: 400px; object-fit: cover;" />
                     </figure>
                     <h2 class="article-title article-title--large">
                         <a href="${article.url || '#'}">${article.title}</a>
@@ -926,8 +938,27 @@ document.addEventListener("DOMContentLoaded", async function() {
                         </div>
                     </div>
                 `;
-                middleColumn.appendChild(articleElement);
+                rotativeContainer.appendChild(articleElement);
             });
+
+            middleColumn.appendChild(rotativeContainer);
+
+            // Ajout de la section d'articles deux par deux en dessous du rotatif
+            const smallArticlesGrid = document.createElement('div');
+            smallArticlesGrid.className = 'small-articles-grid';
+            smallArticlesGrid.style.display = 'grid';
+            smallArticlesGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+            smallArticlesGrid.style.gap = '1rem';
+            smallArticlesGrid.style.marginTop = '20px';
+
+            if (organizedArticles.middleColumn.length > 2) {
+                organizedArticles.middleColumn.slice(2).forEach((article) => {
+                    const articleElement = createArticleElement(article);
+                    smallArticlesGrid.appendChild(articleElement);
+                });
+            }
+
+            middleColumn.appendChild(smallArticlesGrid);
         }
 
         // Ajout des articles dans la colonne de droite (sans bordure)
