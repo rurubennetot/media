@@ -446,7 +446,7 @@
             background-color: #111827;
             color: #FFFFFF;
         }
-  </style>
+    </style>
 </head>
 <body>
     <!-- Header Section -->
@@ -479,20 +479,329 @@
         </div>
     </div>
 
+    <!-- Ajout de la séparation horizontale juste en dessous des sous-catégories -->
+    <div class="horizontal-separator2"></div>
+
     <!-- Main Content -->
     <main class="responsive-wrapper">
         <div id="actu-du-jour" class="magazine-layout">
-            <!-- Identifiants ajoutés pour faciliter la sélection dans le JS -->
-            <div class="magazine-column" id="left-column">
-                <!-- Articles de gauche seront insérés ici -->
+            <div class="magazine-column">
+                <h2 class="section-title section-title--blindspot">•BlindSpot•</h2>
+                <article class="small-article left" id="article1">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 1" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 1</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                        <div class="section blue" style="width: 50%;">
+                            <span>D 50%</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="small-article left" id="article2">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 2" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 2</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 60%;">
+                            <span>G 60%</span>
+                        </div>
+                        <div class="section white" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="small-article left" id="article3">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 3" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 3</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 10%;">
+                            <span>10%</span>
+                        </div>
+                        <div class="section white" style="width: 70%;">
+                            <span>C 70%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
             </div>
             <div class="vertical-separator"></div>
-            <div class="magazine-column article-container" id="middle-column">
-                <!-- Articles principaux en rotation seront insérés ici -->
+            <div class="magazine-column article-container">
+                <!-- Article principal avec rotation -->
+                <article class="single-article active">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 1" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Article 1 - The First Signs of Alcoholic Liver Damage</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>G 30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>The combination of my father's death and my personal background lit a fire in me to know more.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Autres articles pour la rotation -->
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 2" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Article 2 - A Deep Dive into the Political Landscape</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 40%;">
+                            <span>G 40%</span>
+                        </div>
+                        <div class="section white" style="width: 30%;">
+                            <span>C 30%</span>
+                        </div>
+                        <div class="section blue" style="width: 30%;">
+                            <span>D 30%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>A closer look at the shifting political dynamics in the modern era.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 3" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Article 3 - The Impact of Climate Change on Global Economies</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 50%;">
+                            <span>G 50%</span>
+                        </div>
+                        <div class="section white" style="width: 30%;">
+                            <span>C 30%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>Exploring the potential consequences of a rapidly changing climate on world economies.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 4" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Article 4 - Advances in Artificial Intelligence and Society</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 20%;">
+                            <span>G 20%</span>
+                        </div>
+                        <div class="section white" style="width: 40%;">
+                            <span>C 40%</span>
+                        </div>
+                        <div class="section blue" style="width: 40%;">
+                            <span>D 40%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>The integration of AI into everyday life and its impacts on social structures.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="single-article">
+                    <figure>
+                        <img src="https://placehold.co/1000x450" alt="Image de l'article 5" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="#" class="article-link">Article 5 - The Future of Renewable Energy</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 35%;">
+                            <span>G 35%</span>
+                        </div>
+                        <div class="section white" style="width: 35%;">
+                            <span>C 35%</span>
+                        </div>
+                        <div class="section blue" style="width: 30%;">
+                            <span>D 30%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>An in-depth look at the advancements and challenges in renewable energy sources.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Séparateur horizontal après le gros article central -->
+                <div class="horizontal-separator1"></div>
+
+                <!-- Section avec petits articles 2 par 2 -->
+                <div class="small-articles-grid">
+                    <article class="small-article">
+                        <figure>
+                            <img src="https://placehold.co/300x200" alt="Image de l'article A" />
+                        </figure>
+                        <h3 class="article-title article-title--small">
+                            <a href="#" class="article-link">Small Article A</a>
+                        </h3>
+                        <div class="political-bar mb-8">
+                            <div class="section red" style="width: 30%;">
+                                <span>30%</span>
+                            </div>
+                            <div class="section white" style="width: 50%;">
+                                <span>50%</span>
+                            </div>
+                            <div class="section blue" style="width: 20%;">
+                                <span>20%</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="small-article">
+                        <figure>
+                            <img src="https://placehold.co/300x200" alt="Image de l'article B" />
+                        </figure>
+                        <h3 class="article-title article-title--small">
+                            <a href="#" class="article-link">Small Article B</a>
+                        </h3>
+                        <div class="political-bar mb-8">
+                            <div class="section red" style="width: 40%;">
+                                <span>40%</span>
+                            </div>
+                            <div class="section white" style="width: 40%;">
+                                <span>40%</span>
+                            </div>
+                            <div class="section blue" style="width: 20%;">
+                                <span>20%</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             </div>
             <div class="vertical-separator"></div>
-            <div class="magazine-column" id="right-column">
-                <!-- Articles de droite seront insérés ici -->
+            <div class="magazine-column">
+                <h2 class="section-title section-title--france">•France•</h2>
+                <article class="small-article">
+                    <figure>
+                        <img src="https://placehold.co/300x200" alt="Image de l'article 3" />
+                    </figure>
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 3</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
+                <div class="horizontal-separator"></div>
+                <article class="small-article">
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 4</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
+                <div class="horizontal-separator"></div>
+                <article class="small-article">
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 7</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
+                <div class="horizontal-separator"></div>
+                <article class="small-article">
+                    <h3 class="article-title article-title--small">
+                        <a href="#" class="article-link">Small Article Title 8</a>
+                    </h3>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </article>
             </div>
         </div>
     </main>
@@ -501,98 +810,96 @@
     <footer class="footer">
         &copy; 2024 Perspectiv. All rights reserved.
     </footer>
-  <style>
-document.addEventListener("DOMContentLoaded", function() {
-    async function fetchArticles() {
-        const apiUrl = 'http://localhost:3000/api/classify-articles';
-        console.log("Tentative de récupération des articles à partir de:", apiUrl); // Log pour suivre l'URL utilisée
+  
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+    // Fetch and display classified articles
+    async function loadAndDisplayArticles() {
         try {
+            const apiUrl = 'http://localhost:3000/api/classify-articles'; // URL de ton API
             const response = await fetch(apiUrl);
-            console.log("Réponse reçue de l'API:", response.status); // Log pour vérifier le statut de la réponse
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const articles = await response.json();
-            console.log("Articles récupérés:", articles); // Log pour voir les articles récupérés
-            displayArticles(articles);
-            rotateArticles();
+            if (!response.ok) throw new Error('Failed to fetch articles');
+
+            const categories = await response.json();
+            displayArticles(categories);
         } catch (error) {
-            console.error('Failed to fetch articles:', error);
+            console.error('Error loading classified articles:', error);
         }
     }
 
-    function displayArticles(articles) {
-        const leftColumn = document.getElementById('left-column');
-        const middleColumn = document.getElementById('middle-column');
-        const rightColumn = document.getElementById('right-column');
-
+    function displayArticles(categories) {
+        // Clear existing content in the columns to prevent duplication
+        const leftColumn = document.querySelector('.magazine-column:first-child');
+        const middleColumn = document.querySelector('.magazine-column.article-container');
+        const rightColumn = document.querySelector('.magazine-column:last-child');
         leftColumn.innerHTML = '';
         middleColumn.innerHTML = '';
         rightColumn.innerHTML = '';
 
-        articles.forEach((article, index) => {
-            const politicalScores = generatePoliticalScores(); // Génération fictive de scores politiques
-            const articleElem = document.createElement('div');
-            articleElem.className = 'article';
-            articleElem.innerHTML = `
-                <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}">
-                <h3>${article.title}</h3>
-                <p>${article.description}</p>
-                <div class="political-bar">
-                    <div class="red" style="width: ${politicalScores.red}%"></div>
-                    <div class="white" style="width: ${politicalScores.white}%"></div>
-                    <div class="blue" style="width: ${politicalScores.blue}%"></div>
-                </div>
-            `;
-            console.log("Article traité:", articleElem); // Log pour vérifier chaque article traité
-            const targetColumn = index % 3 === 0 ? leftColumn : index % 3 === 1 ? middleColumn : rightColumn;
-            targetColumn.appendChild(articleElem);
+        categories.forEach((category, index) => {
+            // Assuming the layout is determined by category name or index
+            let targetColumn = (index % 3 === 0) ? leftColumn :
+                              (index % 3 === 1) ? middleColumn : rightColumn;
+
+            category.articles.forEach(article => {
+                let articleElement = document.createElement('article');
+                articleElement.className = 'small-article left'; // Apply class based on the layout needs
+                articleElement.innerHTML = `
+                    <figure>
+                        <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
+                    </figure>
+                    <h3 class="article-title">
+                        <a href="${article.url || '#'}">${article.title}</a>
+                    </h3>
+                    <p>${article.description || ''}</p>
+                `;
+
+                targetColumn.appendChild(articleElement);
+            });
         });
+
+        // After appending all articles, apply color updates and start article rotation
         updateBorderColor();
+        rotateArticles();
     }
 
-    function generatePoliticalScores() {
-        return {
-            red: Math.floor(Math.random() * 100),
-            white: Math.floor(Math.random() * 100),
-            blue: Math.floor(Math.random() * 100)
-        };
-    }
-
-    function rotateArticles() {
-        const articles = document.querySelectorAll('#middle-column .article');
-        let currentArticle = 0;
-        articles[currentArticle].style.display = 'block'; // Afficher le premier article initialement
-
-        setInterval(() => {
-            articles[currentArticle].style.display = 'none'; // Masquer l'article courant
-            currentArticle = (currentArticle + 1) % articles.length; // Passer au suivant
-            articles[currentArticle].style.display = 'block'; // Afficher le nouvel article
-            console.log("Rotation vers l'article:", currentArticle); // Log pour suivre la rotation
-        }, 7000); // Changer chaque 7 secondes
-    }
-
+    // Update border color based on the highest percentage in the political bar
     function updateBorderColor() {
-        document.querySelectorAll('#left-column .article').forEach(article => {
-            const redWidth = parseInt(article.querySelector('.red').style.width);
-            const whiteWidth = parseInt(article.querySelector('.white').style.width);
-            const blueWidth = parseInt(article.querySelector('.blue').style.width);
-            const maxColorWidth = Math.max(redWidth, whiteWidth, blueWidth);
+        document.querySelectorAll('.magazine-column article.left').forEach(function(article) {
+            var sections = article.querySelectorAll('.political-bar .section');
+            var maxPercentage = 0;
+            var maxColor = 'transparent';
 
-            if (maxColorWidth === redWidth) {
-                article.style.borderColor = '#e63946'; // rouge
-            } else if (maxColorWidth === whiteWidth) {
-                article.style.borderColor = '#f1faee'; // blanc
-            } else {
-                article.style.borderColor = '#a8dadc'; // bleu
-            }
-            console.log("Mise à jour de la couleur de bordure pour:", article); // Log pour vérifier la mise à jour de la bordure
+            sections.forEach(function(section) {
+                var percentage = parseFloat(section.style.width);
+                if (percentage > maxPercentage) {
+                    maxPercentage = percentage;
+                    maxColor = getComputedStyle(section).backgroundColor;
+                }
+            });
+
+            article.style.borderColor = maxColor;
         });
     }
 
-    fetchArticles();
-});
+    // Article rotation logic with fade transition
+    function rotateArticles() {
+        var articles = document.querySelectorAll('.single-article');
+        var currentArticle = 0;
+        var totalArticles = articles.length;
 
-  </style>
+        setInterval(function() {
+            articles[currentArticle].classList.remove('active');
+            currentArticle = (currentArticle + 1) % totalArticles;
+            articles[currentArticle].classList.add('active');
+        }, 7000); // Change article every 7 seconds
+    }
+
+    // Load and display articles
+    loadAndDisplayArticles();
+});
+</script>
+
+
 </body>
 </html>
