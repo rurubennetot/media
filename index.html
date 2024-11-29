@@ -840,10 +840,16 @@ document.addEventListener("DOMContentLoaded", async function() {
         middleColumn.innerHTML = '';
         rightColumn.innerHTML = '';
 
-        // Fonction pour créer un élément d'article
+        // Fonction pour créer un élément d'article avec la barre de pourcentage
         function createArticleElement(article) {
             const articleElement = document.createElement('article');
             articleElement.className = 'small-article left';
+
+            // Remplissage de la barre de pourcentage politique
+            const randomRed = Math.floor(Math.random() * 40 + 10);
+            const randomWhite = Math.floor(Math.random() * (50 - randomRed));
+            const randomBlue = 100 - randomRed - randomWhite;
+
             articleElement.innerHTML = `
                 <figure>
                     <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
@@ -851,8 +857,29 @@ document.addEventListener("DOMContentLoaded", async function() {
                 <h3 class="article-title">
                     <a href="${article.url || '#'}">${article.title}</a>
                 </h3>
+                <div class="political-bar mb-8">
+                    <div class="section red" style="width: ${randomRed}%;">
+                        <span>${randomRed}%</span>
+                    </div>
+                    <div class="section white" style="width: ${randomWhite}%;">
+                        <span>${randomWhite}%</span>
+                    </div>
+                    <div class="section blue" style="width: ${randomBlue}%;">
+                        <span>${randomBlue}%</span>
+                    </div>
+                </div>
                 <p>${article.description || ''}</p>
             `;
+
+            // Mise à jour de la couleur de bordure en fonction de la plus grande proportion
+            const maxColorSection = Math.max(randomRed, randomWhite, randomBlue);
+            let borderColor = '';
+            if (maxColorSection === randomRed) borderColor = '#9E3939';
+            if (maxColorSection === randomWhite) borderColor = '#e4e7ed';
+            if (maxColorSection === randomBlue) borderColor = '#3C3A8E';
+
+            articleElement.style.borderColor = borderColor;
+
             return articleElement;
         }
 
@@ -864,10 +891,37 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
 
-        // Ajout des articles dans la colonne du milieu
+        // Ajout d'un article unique dans la colonne du milieu pour rotation
         if (organizedArticles.middleColumn) {
             organizedArticles.middleColumn.forEach((article) => {
-                const articleElement = createArticleElement(article);
+                const articleElement = document.createElement('article');
+                articleElement.className = 'single-article';
+                articleElement.innerHTML = `
+                    <figure>
+                        <img src="${article.image_url || 'https://placehold.co/1000x450'}" alt="${article.title}" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="${article.url || '#'}">${article.title}</a>
+                    </h2>
+                    <div class="political-bar mb-8">
+                        <div class="section red" style="width: 30%;">
+                            <span>30%</span>
+                        </div>
+                        <div class="section white" style="width: 50%;">
+                            <span>C 50%</span>
+                        </div>
+                        <div class="section blue" style="width: 20%;">
+                            <span>D 20%</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="text">
+                            <div class="article-excerpt">
+                                <p>${article.description || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 middleColumn.appendChild(articleElement);
             });
         }
@@ -880,41 +934,23 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
 
-        // After appending all articles, apply color updates and start article rotation
-        updateBorderColor();
+        // Rotation des articles du milieu
         rotateArticles();
-    }
-
-    // Update border color based on the highest percentage in the political bar
-    function updateBorderColor() {
-        document.querySelectorAll('.magazine-column article.left').forEach(function(article) {
-            var sections = article.querySelectorAll('.political-bar .section');
-            var maxPercentage = 0;
-            var maxColor = 'transparent';
-
-            sections.forEach(function(section) {
-                var percentage = parseFloat(section.style.width);
-                if (percentage > maxPercentage) {
-                    maxPercentage = percentage;
-                    maxColor = getComputedStyle(section).backgroundColor;
-                }
-            });
-
-            article.style.borderColor = maxColor;
-        });
     }
 
     // Article rotation logic with fade transition
     function rotateArticles() {
-        var articles = document.querySelectorAll('.single-article');
-        var currentArticle = 0;
-        var totalArticles = articles.length;
+        const articles = document.querySelectorAll('.single-article');
+        let currentArticle = 0;
+        const totalArticles = articles.length;
 
-        setInterval(function() {
-            articles[currentArticle].classList.remove('active');
-            currentArticle = (currentArticle + 1) % totalArticles;
-            articles[currentArticle].classList.add('active');
-        }, 7000); // Change article every 7 seconds
+        if (totalArticles > 1) {
+            setInterval(function() {
+                articles[currentArticle].classList.remove('active');
+                currentArticle = (currentArticle + 1) % totalArticles;
+                articles[currentArticle].classList.add('active');
+            }, 7000); // Change article every 7 seconds
+        }
     }
 
     // Load and display articles
