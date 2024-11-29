@@ -820,43 +820,65 @@ document.addEventListener("DOMContentLoaded", async function() {
             const response = await fetch(apiUrl);
             if (!response.ok) throw new Error('Failed to fetch articles');
 
-            const categories = await response.json();
-            displayArticles(categories);
+            const organizedArticles = await response.json();
+            console.log('Articles reçus depuis le backend :', organizedArticles); // Log des articles reçus
+
+            displayArticles(organizedArticles);
         } catch (error) {
             console.error('Error loading classified articles:', error);
         }
     }
 
-    function displayArticles(categories) {
-        // Clear existing content in the columns to prevent duplication
+    function displayArticles(organizedArticles) {
+        // Sélection des colonnes pour l'affichage des articles
         const leftColumn = document.querySelector('.magazine-column:first-child');
         const middleColumn = document.querySelector('.magazine-column.article-container');
         const rightColumn = document.querySelector('.magazine-column:last-child');
+
+        // Effacement des articles existants pour éviter la duplication
         leftColumn.innerHTML = '';
         middleColumn.innerHTML = '';
         rightColumn.innerHTML = '';
 
-        categories.forEach((category, index) => {
-            // Assuming the layout is determined by category name or index
-            let targetColumn = (index % 3 === 0) ? leftColumn :
-                              (index % 3 === 1) ? middleColumn : rightColumn;
+        // Fonction pour créer un élément d'article
+        function createArticleElement(article) {
+            const articleElement = document.createElement('article');
+            articleElement.className = 'small-article left';
+            articleElement.innerHTML = `
+                <figure>
+                    <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
+                </figure>
+                <h3 class="article-title">
+                    <a href="${article.url || '#'}">${article.title}</a>
+                </h3>
+                <p>${article.description || ''}</p>
+            `;
+            return articleElement;
+        }
 
-            category.articles.forEach(article => {
-                let articleElement = document.createElement('article');
-                articleElement.className = 'small-article left'; // Apply class based on the layout needs
-                articleElement.innerHTML = `
-                    <figure>
-                        <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" />
-                    </figure>
-                    <h3 class="article-title">
-                        <a href="${article.url || '#'}">${article.title}</a>
-                    </h3>
-                    <p>${article.description || ''}</p>
-                `;
-
-                targetColumn.appendChild(articleElement);
+        // Ajout des articles dans la colonne de gauche
+        if (organizedArticles.leftColumn) {
+            organizedArticles.leftColumn.forEach((article) => {
+                const articleElement = createArticleElement(article);
+                leftColumn.appendChild(articleElement);
             });
-        });
+        }
+
+        // Ajout des articles dans la colonne du milieu
+        if (organizedArticles.middleColumn) {
+            organizedArticles.middleColumn.forEach((article) => {
+                const articleElement = createArticleElement(article);
+                middleColumn.appendChild(articleElement);
+            });
+        }
+
+        // Ajout des articles dans la colonne de droite
+        if (organizedArticles.rightColumn) {
+            organizedArticles.rightColumn.forEach((article) => {
+                const articleElement = createArticleElement(article);
+                rightColumn.appendChild(articleElement);
+            });
+        }
 
         // After appending all articles, apply color updates and start article rotation
         updateBorderColor();
