@@ -821,6 +821,12 @@ document.addEventListener("DOMContentLoaded", async function() {
             if (!response.ok) throw new Error('Failed to fetch articles');
 
             const organizedArticles = await response.json();
+
+            // Filtrer pour n'afficher que les articles qui ont une image
+            organizedArticles.leftColumn = organizedArticles.leftColumn.filter(article => article.image_url);
+            organizedArticles.middleColumn = organizedArticles.middleColumn.filter(article => article.image_url);
+            organizedArticles.rightColumn = organizedArticles.rightColumn.filter(article => article.image_url);
+
             displayArticles(organizedArticles);
         } catch (error) {
             console.error('Error loading classified articles:', error);
@@ -842,11 +848,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         function createArticleElement(article, addBorderColor = false) {
             const articleElement = document.createElement('article');
             articleElement.className = 'small-article left';
-            articleElement.style.marginBottom = '30px'; // Augmente l'espacement entre les articles
+            articleElement.style.marginBottom = '30px';
 
-            // Définir les valeurs de pourcentage pour rouge, blanc et bleu
-            const redPercentage = Math.floor(Math.random() * 41 + 10); // Entre 10% et 50%
-            const whitePercentage = Math.floor(Math.random() * (51 - redPercentage)); // Blanc = entre 0% et le reste disponible
+            // Définir les pourcentages de manière à assurer des couleurs variées
+            const redPercentage = [50, 30, 20][Math.floor(Math.random() * 3)];
+            const whitePercentage = 100 - redPercentage - Math.floor(Math.random() * (100 - redPercentage));
             const bluePercentage = 100 - redPercentage - whitePercentage;
 
             // Générer la barre de pourcentage
@@ -867,7 +873,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             // Création du contenu de l'article
             articleElement.innerHTML = `
                 <figure>
-                    <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" style="width: 100%; height: 200px; object-fit: cover;" />
+                    <img src="${article.image_url}" alt="${article.title}" style="width: 100%; height: 200px; object-fit: cover;" />
                 </figure>
                 <h3 class="article-title">
                     <a href="${article.url || '#'}">${article.title}</a>
@@ -911,20 +917,22 @@ document.addEventListener("DOMContentLoaded", async function() {
             rotativeWrapper.style.borderRadius = '8px';
             rotativeWrapper.style.backgroundColor = '#111827';
 
-            const article = organizedArticles.middleColumn[0];
-            const articleElement = document.createElement('article');
-            articleElement.className = 'single-article active'; // L'article rotatif actif au chargement
-            articleElement.style.marginBottom = '20px';
-            articleElement.innerHTML = `
-                <figure>
-                    <img src="${article.image_url || 'https://placehold.co/800x400'}" alt="${article.title}" style="width: 100%; height: 400px; object-fit: cover;" />
-                </figure>
-                <h2 class="article-title article-title--large">
-                    <a href="${article.url || '#'}">${article.title}</a>
-                </h2>
-                <p>${article.description || ''}</p>
-            `;
-            rotativeWrapper.appendChild(articleElement);
+            organizedArticles.middleColumn.forEach((article, index) => {
+                const articleElement = document.createElement('article');
+                articleElement.className = index === 0 ? 'single-article active' : 'single-article';
+                articleElement.style.marginBottom = '20px';
+                articleElement.innerHTML = `
+                    <figure>
+                        <img src="${article.image_url}" alt="${article.title}" style="width: 100%; height: 400px; object-fit: cover;" />
+                    </figure>
+                    <h2 class="article-title article-title--large">
+                        <a href="${article.url || '#'}">${article.title}</a>
+                    </h2>
+                    <p>${article.description || ''}</p>
+                `;
+                rotativeWrapper.appendChild(articleElement);
+            });
+
             middleColumn.appendChild(rotativeWrapper);
 
             // Section des articles deux par deux sous l'article rotatif
@@ -949,7 +957,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (organizedArticles.rightColumn) {
             organizedArticles.rightColumn.forEach((article) => {
                 const articleElement = createArticleElement(article);
-                articleElement.style.marginBottom = '30px'; // Espacement supplémentaire
+                articleElement.style.marginBottom = '30px';
                 rightColumn.appendChild(articleElement);
             });
         }
@@ -977,6 +985,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     loadAndDisplayArticles();
 });
 </script>
+
 
 </body>
 </html>
