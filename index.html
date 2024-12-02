@@ -821,8 +821,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             if (!response.ok) throw new Error('Failed to fetch articles');
 
             const organizedArticles = await response.json();
-            console.log('Articles reçus depuis le backend :', organizedArticles); // Log des articles reçus
-
             displayArticles(organizedArticles);
         } catch (error) {
             console.error('Error loading classified articles:', error);
@@ -846,26 +844,27 @@ document.addEventListener("DOMContentLoaded", async function() {
             articleElement.className = 'small-article left';
             articleElement.style.marginBottom = '30px'; // Augmente l'espacement entre les articles
 
-            // Définir les valeurs pourcentage pour rouge, blanc et bleu
-            const randomRed = Math.floor(Math.random() * 40 + 10);
-            const randomWhite = Math.floor(Math.random() * (50 - randomRed));
-            const randomBlue = 100 - randomRed - randomWhite;
+            // Définir les valeurs de pourcentage pour rouge, blanc et bleu
+            const redPercentage = Math.floor(Math.random() * 41 + 10); // Entre 10% et 50%
+            const whitePercentage = Math.floor(Math.random() * (51 - redPercentage)); // Blanc = entre 0% et le reste disponible
+            const bluePercentage = 100 - redPercentage - whitePercentage;
 
             // Générer la barre de pourcentage
             const politicalBarHTML = `
                 <div class="political-bar mb-8">
-                    <div class="section red" style="width: ${randomRed}%;">
-                        ${randomRed > 10 ? `<span>${randomRed}%</span>` : ''}
+                    <div class="section red" style="width: ${redPercentage}%;">
+                        ${redPercentage > 10 ? `<span>${redPercentage}%</span>` : ''}
                     </div>
-                    <div class="section white" style="width: ${randomWhite}%;">
-                        ${randomWhite > 10 ? `<span>${randomWhite}%</span>` : ''}
+                    <div class="section white" style="width: ${whitePercentage}%;">
+                        ${whitePercentage > 10 ? `<span>${whitePercentage}%</span>` : ''}
                     </div>
-                    <div class="section blue" style="width: ${randomBlue}%;">
-                        ${randomBlue > 10 ? `<span>${randomBlue}%</span>` : ''}
+                    <div class="section blue" style="width: ${bluePercentage}%;">
+                        ${bluePercentage > 10 ? `<span>${bluePercentage}%</span>` : ''}
                     </div>
                 </div>
             `;
 
+            // Création du contenu de l'article
             articleElement.innerHTML = `
                 <figure>
                     <img src="${article.image_url || 'https://placehold.co/300x200'}" alt="${article.title}" style="width: 100%; height: 200px; object-fit: cover;" />
@@ -879,11 +878,11 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             // Mise à jour de la couleur de bordure en fonction de la plus grande proportion (pour la colonne de gauche uniquement)
             if (addBorderColor) {
-                const maxColorSection = Math.max(randomRed, randomWhite, randomBlue);
+                const maxColorSection = Math.max(redPercentage, whitePercentage, bluePercentage);
                 let borderColor = '';
-                if (maxColorSection === randomRed) borderColor = '#9E3939';
-                if (maxColorSection === randomWhite) borderColor = '#e4e7ed';
-                if (maxColorSection === randomBlue) borderColor = '#3C3A8E';
+                if (maxColorSection === redPercentage) borderColor = '#9E3939';
+                if (maxColorSection === whitePercentage) borderColor = '#e4e7ed';
+                if (maxColorSection === bluePercentage) borderColor = '#3C3A8E';
 
                 articleElement.style.borderColor = borderColor;
                 articleElement.style.borderWidth = '2px';
@@ -901,9 +900,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
 
-        // Ajout d'un article unique dans la colonne du milieu pour rotation
-        if (organizedArticles.middleColumn) {
-            // Conteneur pour l'article rotatif
+        // Ajout de l'article unique dans la colonne du milieu pour rotation
+        if (organizedArticles.middleColumn && organizedArticles.middleColumn.length > 0) {
             const rotativeWrapper = document.createElement('div');
             rotativeWrapper.className = 'rotative-wrapper';
             rotativeWrapper.style.margin = '0 auto 30px auto';
@@ -913,10 +911,10 @@ document.addEventListener("DOMContentLoaded", async function() {
             rotativeWrapper.style.borderRadius = '8px';
             rotativeWrapper.style.backgroundColor = '#111827';
 
+            const article = organizedArticles.middleColumn[0];
             const articleElement = document.createElement('article');
             articleElement.className = 'single-article active'; // L'article rotatif actif au chargement
             articleElement.style.marginBottom = '20px';
-            const article = organizedArticles.middleColumn[0];
             articleElement.innerHTML = `
                 <figure>
                     <img src="${article.image_url || 'https://placehold.co/800x400'}" alt="${article.title}" style="width: 100%; height: 400px; object-fit: cover;" />
@@ -924,24 +922,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 <h2 class="article-title article-title--large">
                     <a href="${article.url || '#'}">${article.title}</a>
                 </h2>
-                <div class="political-bar mb-8">
-                    <div class="section red" style="width: 30%;">
-                        <span>30%</span>
-                    </div>
-                    <div class="section white" style="width: 50%;">
-                        <span>C 50%</span>
-                    </div>
-                    <div class="section blue" style="width: 20%;">
-                        <span>D 20%</span>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <div class="article-excerpt">
-                            <p>${article.description || ''}</p>
-                        </div>
-                    </div>
-                </div>
+                <p>${article.description || ''}</p>
             `;
             rotativeWrapper.appendChild(articleElement);
             middleColumn.appendChild(rotativeWrapper);
@@ -977,7 +958,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         rotateArticles();
     }
 
-    // Article rotation logic with fade transition
+    // Logique de rotation des articles du milieu avec une transition
     function rotateArticles() {
         const articles = document.querySelectorAll('.single-article');
         let currentArticle = 0;
@@ -992,7 +973,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    // Load and display articles
+    // Charger et afficher les articles
     loadAndDisplayArticles();
 });
 </script>
